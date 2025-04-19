@@ -16,12 +16,14 @@ use App\Models\Wishlist;
 use App\Models\Coupon;
 use App\Models\Setting;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Faker\Factory as Faker;
 class DatabaseSeeder extends Seeder
 {
     public function run()
     {
+        User::factory(2)->create();
         // $danhmuc = [
         //     'Áo thun',
         //     'Áo sơ mi',
@@ -145,7 +147,7 @@ class DatabaseSeeder extends Seeder
         // }
 
         // // Seed product variants
-        ProductVariant::factory(100)->create();
+        // ProductVariant::factory(100)->create();
 
         // // Seed customers
         // Customer::factory(10)->create();

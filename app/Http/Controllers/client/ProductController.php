@@ -12,12 +12,44 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
-        $product = Product::paginate(8);
+        // Lấy tất cả danh mục
+        $categories = Category::withCount('products')->get();
+$colors = ProductVariant::select('color')->distinct()->pluck('color')->filter();
+$sizes = ProductVariant::select('size')->distinct()->pluck('size')->filter();
 
-        return view('client.shop', compact('categories', 'product'));
+
+        // Xây dựng query sản phẩm
+        $query = Product::with(['variants', 'category']);
+
+        // Lọc theo danh mục
+        if ($request->has('category')) {
+            $categorySlug = $request->input('category');
+            $query->whereHas('category', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+
+        // Lọc theo màu sắc
+        if ($request->has('color')) {
+            $color = $request->input('color');
+            $query->whereHas('variants', function ($q) use ($color) {
+                $q->where('color', $color);
+            });
+        }
+
+        // Lọc theo kích cỡ
+        if ($request->has('size')) {
+            $size = $request->input('size');
+            $query->whereHas('variants', function ($q) use ($size) {
+                $q->where('size', $size);
+            });
+        }
+
+        // Lấy sản phẩm với phân trang (10 sản phẩm mỗi trang)
+        $products = $query->paginate(16)->appends($request->query());
+        return view('client.shop', compact('products', 'categories', 'colors', 'sizes'));
     }
     public function filterByCategory($id)
     {
@@ -27,57 +59,80 @@ class ProductController extends Controller
     }
     public function show($id)
     {
-        $categories = Category::find($id);
-        
-        // Lấy sản phẩm cùng với variants và comments với customer
-        $product = Product::with('variants', 'comments.customer','ratings.customer')->findOrFail($id);
-        $averageRating = $product->ratings->avg('rating');
-        $reviewCount =Comment::where('product_id', $product->id)
-        ->whereNotNull('customer_id') // đảm bảo có user
-        ->distinct('customer_id')      // không tính trùng user
-        ->count('customer_id');
-        // Truy xuất biến thể (size, color)
-        $variants = $product->variants;
-    
-        $relatedProducts = Product::where('category_id', $product->category_id)
-                                ->where('id', '!=', $product->id) // Loại trừ sản phẩm hiện tại
-                                ->take(5)
-                                ->get();
+        // $categories = Category::findOrFail($id);
 
-        return view('client.show', compact('categories', 'product', 'variants','averageRating','reviewCount','relatedProducts'));
+        // Lấy sản phẩm cùng với variants và comments với customer
+        $product = Product::with('variants', 'comments.customer', 'ratings.customer', 'category')->findOrFail($id);
+
+        // Tính điểm đánh giá trung bình
+        $averageRating = $product->ratings->avg('rating');
+
+        // Đếm số lượt đánh giá từ khách hàng duy nhất
+        $reviewCount = Comment::where('product_id', $product->id)
+            ->whereNotNull('customer_id')
+            ->distinct('customer_id')
+            ->count('customer_id');
+
+        // Thống kê phần trăm rating (5 sao, 4 sao, ...)
+        $ratingStats = Rating::where('product_id', $product->id)
+            ->groupBy('rating')
+            ->selectRaw('rating, COUNT(*) as count')
+            ->pluck('count', 'rating')
+            ->toArray();
+
+        $totalRatings = array_sum($ratingStats);
+        $ratingPercentages = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $ratingPercentages[$i] = $totalRatings > 0 ? round(($ratingStats[$i] ?? 0) / $totalRatings * 100) : 0;
+        }
+
+        // Lấy biến thể
+        $variants = $product->variants;
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id) // Loại trừ sản phẩm hiện tại
+            ->take(5)
+            ->get();
+
+        return view('client.show', compact('product', 'variants', 'averageRating', 'reviewCount', 'relatedProducts', 'ratingPercentages'));
     }
     public function submitReview(Request $request, $id)
     {
         // Validate dữ liệu
         $request->validate([
-            'product_id' => 'required|exists:products,id', // Kiểm tra sản phẩm có tồn tại
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'review' => 'required|string',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string',
+            'terms_condition' => 'accepted',
         ]);
-    
-        // Trong quá trình test, chúng ta chỉ hardcode customer_id là 1
-        $customer_id = 1; // Tạm thời sử dụng ID khách hàng cố định để test
-    
-        // Tạo mới bình luận
-        $comment = Comment::create([
-            'product_id' => $request->product_id,
-            'customer_id' => $customer_id, // Tạm thời hardcode customer_id
-            'content' => $request->review,
-        ]);
-    
-        // Tạo mới đánh giá (rating)
-        Rating::create([
-            // 'comment_id' => $comment->id,
-            'product_id' => $request->product_id, // Đảm bảo truyền product_id vào bảng ratings
-            'rating' => $request->rating,
-            'customer_id' => $customer_id, // Thêm customer_id vào bảng ratings
-        ]);
-    
-        // Trả về thông báo thành công
-        return redirect()->back()->with('success', 'Đánh giá của bạn đã được gửi!');
+
+        // Lưu comment
+        $comment = new Comment();
+        $comment->product_id = 1;
+        $comment->customer_id = 1; // Nếu có đăng nhập
+        // $comment->name = $request->name;
+        // $comment->email = $request->email;
+        $comment->content = $request->comment;
+        $comment->save();
+
+        // Lưu rating
+        $rating = new Rating();
+        $rating->product_id = 1;
+        $rating->customer_id = 1;
+        $rating->rating = $request->rating;
+        $rating->save();
+
+        return redirect()->back()->with('success', 'Bình luận đã được gửi.');
     }
-    
-    
+    public function search(Request $request)
+    {
+        $categories = Category::all();
+        $keyword = $request->q;
+
+        $product = Product::where('name', 'like', "%$keyword%")
+            ->orWhere('description', 'like', "%$keyword%")
+            ->paginate(10);
+
+        return view('client.shop', compact('product', 'keyword', 'categories'));
+    }
 }

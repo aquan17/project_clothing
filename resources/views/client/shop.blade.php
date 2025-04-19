@@ -3,354 +3,141 @@
 {{-- @section('header')
     @include('client.layout.components.header1') --}}
 @section('content')
-<div class="bg0 m-t-23 p-b-140">
+
+<section class="top-space-margin half-section bg-gradient-very-light-gray">
     <div class="container">
-        <div class="flex-w flex-sb-m p-b-52">
-            
-            <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                <a href="{{ route('products.index') }}"
-                    class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 {{ request()->routeIs('client.index') ? 'how-active1' : '' }}">
-                    All Products
-                </a>
-
-
-                @foreach ($categories as $category)
-                    <a href="{{ route('client.category', $category->id) }}"
-                        class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 {{ request()->is("category/{$category->id}") ? 'how-active1' : '' }}">
-                        {{ $category->name }}
-                    </a>
-                @endforeach
-
+        <div class="row align-items-center justify-content-center" data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 100, "easing": "easeOutQuad" }'>
+            <div class="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
+                <h1 class="alt-font fw-600 text-dark-gray mb-10px">Shop</h1> 
             </div>
-
-            <div class="flex-w flex-c-m m-tb-10">
-                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
-                    <i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
-                    <i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
-                     Filter
-                </div>
-
-                <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
-                    <i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
-                    <i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
-                    Search
-                </div>
-            </div>
-            
-            <!-- Search product -->
-            <div class="dis-none panel-search w-full p-t-10 p-b-15">
-                <div class="bor8 dis-flex p-l-15">
-                    <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
-                        <i class="zmdi zmdi-search"></i>
-                    </button>
-
-                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search">
-                </div>	
-            </div>
-
-            <!-- Filter -->
-            <div class="dis-none panel-filter w-full p-t-10">
-                <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
-                    <div class="filter-col1 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Sort By
-                        </div>
-
-                        <ul>
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Default
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Popularity
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Average rating
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    Newness
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Price: Low to High
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Price: High to Low
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="filter-col2 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Price
-                        </div>
-
-                        <ul>
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    All
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $0.00 - $50.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $50.00 - $100.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $100.00 - $150.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $150.00 - $200.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $200.00+
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="filter-col3 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Color
-                        </div>
-
-                        <ul>
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #222;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Black
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #4272d7;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    Blue
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #b3b3b3;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Grey
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #00ad5f;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Green
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #fa4251;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Red
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #aaa;">
-                                    <i class="zmdi zmdi-circle-o"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    White
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="filter-col4 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Tags
-                        </div>
-
-                        <div class="flex-w p-t-4 m-r--5">
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Fashion
-                            </a>
-
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Lifestyle
-                            </a>
-
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Denim
-                            </a>
-
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Streetstyle
-                            </a>
-
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Crafts
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center">
+                <ul>
+                    <li><a href="demo-fashion-store.html">Home</a></li> 
+                    <li>Shop</li>
+                </ul>
             </div>
         </div>
-
-      
-        <div class="row isotope-grid">
-            @foreach ($product as $item)
-                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                    <!-- Block2 -->
-                    <div class="block2">
-                        <div class="block2-pic hov-img0 label-new" data-label="New">
-                            <img src="{{ asset($item->image) }}" alt="IMG-PRODUCT">
-
-                            <a href="#"
-                                class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                Quick View
-                            </a>
-                        </div>
-
-                        <div class="block2-txt flex-w flex-t p-t-14">
-                            <div class="block2-txt-child1 flex-col-l ">
-                                <a href="{{ route('products.show', $item->id) }}" 
-                                    class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                     {{ $item->name }}
-                                 </a>
-
-                                <span class="stext-105 cl3">
-                                    ${{ $item->price }}
-                                </span>
-                            </div>
-
-                            <div class="block2-txt-child2 flex-r p-t-3">
-                                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                    <img class="icon-heart1 dis-block trans-04"
-                                        src="{{ asset('assets/images/icons/icon-hea') }}rt-01.png" alt="ICON">
-                                    <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                                        src="{{ asset('assets/images/icons/icon-hea') }}rt-02.png" alt="ICON">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-
-
-        </div>
-
-        <!-- Pagination -->
-        @if ($product->hasPages())
-            <div class="flex-c-m flex-w w-full p-t-38">
-
-                {{-- Nút trang trước --}}
-                @if ($product->onFirstPage())
-                    <span class="flex-c-m how-pagination1 trans-04 m-all-7 disabled-pagination1">
-                        <i class="fa fa-angle-left"></i>
-                    </span>
-                @else
-                    <a href="{{ $product->previousPageUrl() }}" class="flex-c-m how-pagination1 trans-04 m-all-7">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
-                @endif
-
-                {{-- Phân trang logic --}}
-                @php
-                    $total = $product->lastPage();
-                    $current = $product->currentPage();
-                    $max = 5; // số trang muốn hiển thị
-                    $half = floor($max / 2);
-                    $start = max(1, $current - $half);
-                    $end = min($total, $current + $half);
-
-                    if ($start > 1) {
-                        echo '<a href="' .
-                            $product->url(1) .
-                            '" class="flex-c-m how-pagination1 trans-04 m-all-7">1</a>';
-                        if ($start > 2) {
-                            echo '<span class="flex-c-m how-pagination1 trans-04 m-all-7">...</span>';
-                        }
-                    }
-
-                    for ($i = $start; $i <= $end; $i++) {
-                        $active = $i == $current ? 'active-pagination1' : '';
-                        echo '<a href="' .
-                            $product->url($i) .
-                            '" class="flex-c-m how-pagination1 trans-04 m-all-7 ' .
-                            $active .
-                            '">' .
-                            $i .
-                            '</a>';
-                    }
-
-                    if ($end < $total) {
-                        if ($end < $total - 1) {
-                            echo '<span class="flex-c-m how-pagination1 trans-04 m-all-7">...</span>';
-                        }
-                        echo '<a href="' .
-                            $product->url($total) .
-                            '" class="flex-c-m how-pagination1 trans-04 m-all-7">' .
-                            $total .
-                            '</a>';
-                    }
-                @endphp
-
-                {{-- Nút trang tiếp --}}
-                @if ($product->hasMorePages())
-                    <a href="{{ $product->nextPageUrl() }}" class="flex-c-m how-pagination1 trans-04 m-all-7">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                @else
-                    <span class="flex-c-m how-pagination1 trans-04 m-all-7 disabled-pagination1">
-                        <i class="fa fa-angle-right"></i>
-                    </span>
-                @endif
-
-            </div>
-        @endif
     </div>
-</div>
+</section>
+<!-- end section -->
+<!-- start section -->
+<section class="pt-0 ps-6 pe-6 lg-ps-2 lg-pe-2 sm-ps-0 sm-pe-0">
+    <div class="container-fluid">
+        <div class="row flex-row-reverse"> 
+            <div class="col-xxl-10 col-lg-9 ps-5 md-ps-15px md-mb-60px">
+                <ul class="shop-modern shop-wrapper grid-loading grid grid-4col xl-grid-3col sm-grid-2col xs-grid-1col gutter-extra-large text-center" data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'>
+                    <li class="grid-sizer"></li>
+                    <!-- start shop item -->
+                    @foreach ($products as $item)
+                    <li class="grid-item">
+                        <div class="shop-box mb-10px">
+                            <div class="shop-image mb-20px">
+                                <a href="demo-fashion-store-single-product.html">
+                                    <img src="{{ asset($item->image) }}" alt=""> 
+                                    <span class="lable new">New</span>
+                                    <div class="shop-overlay bg-gradient-gray-light-dark-transparent"></div>
+                                </a>
+                                <div class="shop-buttons-wrap">
+                                    <a href="demo-fashion-store-single-product.html" class="alt-font btn btn-small btn-box-shadow btn-white btn-round-edge left-icon add-to-cart">
+                                        <i class="feather icon-feather-shopping-bag"></i><span class="quick-view-text button-text">Add to cart</span>
+                                    </a>
+                                </div>
+                                <div class="shop-hover d-flex justify-content-center"> 
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="w-40px h-40px bg-white text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to wishlist"><i class="feather icon-feather-heart fs-16"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="w-40px h-40px bg-white text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick shop"><i class="feather icon-feather-eye fs-16"></i></a>
+                                        </li>
+                                    </ul> 
+                                </div>
+                            </div>
+                            <div class="shop-footer text-center">
+                                <a href="{{ route('products.show',$item->id) }}" class="alt-font text-dark-gray fs-19 fw-500 product-name">{{ $item->name }}</a>
+                                <div class="price lh-22 fs-16">{{ $item->price }} VND</div>
+                            </div>
+                        </div>
+                    </li>
+                    @endforeach
+                    <!-- end shop item -->
+                   
+                </ul>
+                <div class="w-100 d-flex mt-4 justify-content-center md-mt-30px">
+                    <ul class="pagination pagination-style-01 fs-13 fw-500 mb-0">
+                        <!-- Nút Previous -->
+                        <li class="page-item {{ $products->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $products->previousPageUrl() }}" {{ $products->onFirstPage() ? 'aria-disabled="true"' : '' }}>
+                                <i class="feather icon-feather-arrow-left fs-18 d-xs-none"></i>
+                            </a>
+                        </li>
+                
+                        <!-- Các trang -->
+                        @for ($i = 1; $i <= $products->lastPage(); $i++)
+                            <li class="page-item {{ $products->currentPage() == $i ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $products->url($i) }}">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</a>
+                            </li>
+                        @endfor
+                
+                        <!-- Nút Next -->
+                        <li class="page-item {{ $products->hasMorePages() ? '' : 'disabled' }}">
+                            <a class="page-link" href="{{ $products->nextPageUrl() }}" {{ $products->hasMorePages() ? '' : 'aria-disabled="true"' }}>
+                                <i class="feather icon-feather-arrow-right fs-18 d-xs-none"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-lg-3 shop-sidebar" data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
+                {{-- Filter by Category --}}
+                <div class="mb-30px">
+                    <span class="alt-font fw-500 fs-19 text-dark-gray d-block mb-10px">Filter by categories</span>
+                    <ul class="shop-filter category-filter fs-16">
+                        @foreach ($categories as $category)
+                            <li>
+                                <a href="{{ request()->fullUrlWithQuery(['category' => $category->slug]) }}">
+                                    <span class="product-cb product-category-cb {{ request('category') == $category->slug ? 'active' : '' }}"></span>
+                                    {{ $category->name }}
+                                </a>
+                                <span class="item-qty">{{ $category->products_count }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            
+                {{-- Filter by Color --}}
+                <div class="mb-30px">
+                    <span class="alt-font fw-500 fs-19 text-dark-gray d-block mb-10px">Filter by color</span>
+                    <ul class="shop-filter color-filter fs-16">
+                        @foreach ($colors as $color)
+                            <li>
+                                <a href="{{ request()->fullUrlWithQuery(['color' => $color]) }}">
+                                    <span class="product-cb product-color-cb {{ request('color') == $color ? 'active' : '' }}" style="background-color: {{ strtolower($color) }}"></span>
+                                    {{ ucfirst($color) }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            
+                {{-- Filter by Size --}}
+                <div class="mb-30px">
+                    <span class="alt-font fw-500 fs-19 text-dark-gray d-block mb-10px">Filter by size</span>
+                    <ul class="shop-filter price-filter fs-16">
+                        @foreach ($sizes as $size)
+                            <li>
+                                <a href="{{ request()->fullUrlWithQuery(['size' => $size]) }}">
+                                    <span class="product-cb product-category-cb {{ request('size') == $size ? 'active' : '' }}"></span>
+                                    {{ strtoupper($size) }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
     
 @endsection

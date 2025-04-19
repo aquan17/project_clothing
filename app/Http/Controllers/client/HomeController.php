@@ -16,11 +16,6 @@ class HomeController extends Controller
 
         return view('client.index', compact('categories', 'product'));
     }
-    public function filterByCategory($id)
-{
-    $categories = Category::all();
-    $product = Product::where('category_id', $id)->paginate(8);
-    return view('client.index', compact('categories', 'product'));
-}
+    
 
 }
