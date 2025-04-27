@@ -9,7 +9,7 @@ class Customer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'phone', 'address'];
+    protected $fillable = ['name', 'email', 'phone', 'address','user_id'];
 
     // Quan hệ với bảng Order
     public function orders()
@@ -34,4 +34,13 @@ class Customer extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function shippingAddresses()
+{
+    return $this->hasMany(ShippingAddress::class);
+}
+
 }

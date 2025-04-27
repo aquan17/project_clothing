@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -62,11 +63,21 @@ class RegisterController extends Controller
      * @return \App\Models\User
      */
     protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
+{
+    // Tạo bản ghi mới trong bảng users
+    $user = User::create([
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+    ]);
+
+    // Tạo bản ghi mới trong bảng customers và liên kết với user_id
+    Customer::create([
+        'user_id' => $user->id,  // Liên kết với user_id trong bảng customers
+        'name' => $data['name'],  // Lưu name vào bảng customers
+        'email' => $data['email'],  // Lưu email vào bảng customers
+    ]);
+
+    return $user;
+}
 }

@@ -1,6 +1,7 @@
 <?php
 // require __DIR__.'/../vendor/autoload.php';
 
+use App\Http\Middleware\CartMiddleware;
 use App\Http\Middleware\CheckRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,9 +15,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         )
         ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'admin' => CheckRole::class,
-        ]);
+       // Đăng ký alias
+       $middleware->alias([
+        'admin' => CheckRole::class,
+        'cart' => CartMiddleware::class,
+    ]);
+
+    // Áp dụng CartMiddleware cho nhóm web
+    $middleware->web([
+        CartMiddleware::class,
+    ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

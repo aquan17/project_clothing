@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Rating;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -16,8 +17,8 @@ class ProductController extends Controller
     {
         // Lấy tất cả danh mục
         $categories = Category::withCount('products')->get();
-$colors = ProductVariant::select('color')->distinct()->pluck('color')->filter();
-$sizes = ProductVariant::select('size')->distinct()->pluck('size')->filter();
+        $colors = ProductVariant::select('color')->distinct()->pluck('color')->filter();
+        $sizes = ProductVariant::select('size')->distinct()->pluck('size')->filter();
 
 
         // Xây dựng query sản phẩm
@@ -47,6 +48,11 @@ $sizes = ProductVariant::select('size')->distinct()->pluck('size')->filter();
             });
         }
 
+        // ✅ Tìm kiếm theo tên sản phẩm
+        if ($request->has('query')) {
+            $keyword = $request->input('query');
+            $query->where('name', 'like', '%' . $keyword . '%');
+        }
         // Lấy sản phẩm với phân trang (10 sản phẩm mỗi trang)
         $products = $query->paginate(16)->appends($request->query());
         return view('client.shop', compact('products', 'categories', 'colors', 'sizes'));
@@ -99,30 +105,32 @@ $sizes = ProductVariant::select('size')->distinct()->pluck('size')->filter();
     {
         // Validate dữ liệu
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
             'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string',
-            'terms_condition' => 'accepted',
+            'content' => 'required|string|max:1000',
         ]);
 
+        // Tìm sản phẩm
+        $product = Product::findOrFail($id);
+
         // Lưu comment
-        $comment = new Comment();
-        $comment->product_id = 1;
-        $comment->customer_id = 1; // Nếu có đăng nhập
-        // $comment->name = $request->name;
-        // $comment->email = $request->email;
-        $comment->content = $request->comment;
-        $comment->save();
+        Comment::create([
+            'product_id' => $product->id,
+            'customer_id' => Auth::id(),
+            'name' => Auth::user()->name,
+            'content' => $request->content,
+        ]);
 
-        // Lưu rating
-        $rating = new Rating();
-        $rating->product_id = 1;
-        $rating->customer_id = 1;
-        $rating->rating = $request->rating;
-        $rating->save();
+        // Lưu rating (nếu bạn vẫn muốn tách bảng ratings)
+        Rating::create([
+            'product_id' => $product->id,
+            'customer_id' => Auth::id(),
+            'rating' => $request->rating,
+        ]);
 
-        return redirect()->back()->with('success', 'Bình luận đã được gửi.');
+        // Log::info('Comment submitted for product ID: ' . $product->id . ' by user ID: ' . Auth::id());
+
+        // Chuyển hướng về trang trước với #comments
+        return redirect()->to(url()->previous() . '#comments')->with('success', 'Bình luận đã được gửi.');
     }
     public function search(Request $request)
     {

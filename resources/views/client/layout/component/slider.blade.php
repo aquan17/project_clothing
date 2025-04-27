@@ -24,7 +24,7 @@
             <!-- end slider item -->
             <!-- start slider item -->
             <div class="swiper-slide overflow-hidden">
-                <div class="cover-background position-absolute top-0 start-0 w-100 h-100" data-swiper-parallax="500" style="background-image:url('{{ asset('client/images/demo-fashion-store-slider-02.jpg')}}">
+                <div class="cover-background position-absolute top-0 start-0 w-100 h-100" data-swiper-parallax="500" style="background-image:url('{{ asset('client/images/demo-fashion-store-slider-02.jpg')}})">
                     <div class="container h-100">
                         <div class="row align-items-center h-100 justify-content-start">
                             <div class="col-md-10 position-relative text-white d-flex flex-column justify-content-center h-100">
@@ -44,7 +44,7 @@
             <!-- end slider item -->
             <!-- start slider item -->
             <div class="swiper-slide overflow-hidden">
-                <div class="cover-background position-absolute top-0 start-0 w-100 h-100" data-swiper-parallax="500" style="background-image:url('{{ asset('client/images/demo-fashion-store-slider-03.jpg')}}">
+                <div class="cover-background position-absolute top-0 start-0 w-100 h-100" data-swiper-parallax="500" style="background-image:url('{{ asset('client/images/demo-fashion-store-slider-03.jpg')}})">
                     <div class="container h-100">
                         <div class="row align-items-center h-100 justify-content-start">
                             <div class="col-md-10 position-relative text-white d-flex flex-column justify-content-center h-100">

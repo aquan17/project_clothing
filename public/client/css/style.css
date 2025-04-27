@@ -27,6 +27,64 @@ Table of contents
     16. Shop
     17. Footer
 */
+label.mb-10px {
+  background-color: #f0f0f0; /* Màu nền cho label */
+  padding: 5px 10px; /* Thêm padding để tạo khoảng cách giữa nội dung và viền */
+  border-radius: 4px; /* Bo tròn các góc của background */
+  /* Đảm bảo label chiếm không gian theo chiều ngang */
+  font-weight: bold; /* Làm đậm font chữ */
+  width: 646px;
+}
+
+/* Đổi màu chữ khi có dấu * */
+label .text-red {
+  color: red; /* Màu đỏ cho dấu * */
+}
+/* Cải thiện khoảng cách giữa các phần tử select */
+select {
+  margin-bottom: 15px;  /* Thêm khoảng cách dưới mỗi select */
+  width: 100%;  /* Đảm bảo các select chiếm toàn bộ chiều rộng */
+}
+
+/* Đảm bảo các select có chiều rộng đều nhau và có khoảng cách giữa các dòng */
+select + select {
+  margin-top: 10px;  /* Thêm khoảng cách giữa các select */
+}
+
+/* Tùy chỉnh chiều rộng cho mỗi phần tử select để có sự đồng đều */
+input, select {
+  width: 100%;  /* Đảm bảo tất cả các input và select đều có chiều rộng 100% */
+  box-sizing: border-box;  /* Đảm bảo padding và border được tính trong chiều rộng */
+}
+
+/* disable button checkout */
+    /* CSS để disable nút */
+    .btn-switch-text.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+  }
+  
+th.select-all-col {
+  width: 120px; /* cố định chiều rộng */
+  white-space: nowrap;
+}
+a#select-all {
+  display: inline-block;
+  width: 100%;
+  text-align: left;
+}
+.btn-outline-secondary {
+  border: none !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: transparent !important;
+  border: none !important;
+  color: inherit !important;
+  box-shadow: none !important;
+}
+
+
 /* ===================================
     01. Google font
 ====================================== */
@@ -36,6 +94,168 @@ Table of contents
   --alt-font: "Plus Jakarta Sans", sans-serif;
   --primary-font: "Inter", sans-serif;
 }
+/* client - Auth */
+    .header-account-wrapper {
+      position: relative;
+    }
+    
+    .widget-text.icon {
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .widget-text.icon a {
+      display: flex;
+      align-items: center;
+      color: #333;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+    
+    .widget-text.icon a:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      color: #2563eb;
+    }
+    
+    .widget-text.icon i {
+      font-size: 18px;
+      transition: all 0.2s ease;
+    }
+    
+    .small-icon {
+      font-size: 14px !important;
+    }
+    
+    .dropdown-menu {
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+      padding: 8px 0;
+      min-width: 220px;
+      margin-top: 12px !important;
+      animation: dropdown-fade 0.2s ease;
+    }
+    
+    @keyframes dropdown-fade {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .dropdown-menu:before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      right: 20px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      transform: rotate(45deg);
+      border-radius: 2px;
+    }
+    
+    .dropdown-item {
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      color: #444;
+      font-weight: 400;
+      transition: all 0.2s ease;
+      text-align: left;
+      margin-left: 15px;
+    }
+    
+    .dropdown-item:hover {
+      background-color: #f7f9fc;
+      color: #2563eb;
+    }
+    
+    .dropdown-item i {
+      color: #6b7280;
+      margin-right: 10px;
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .dropdown-item:hover i {
+      color: #2563eb;
+    }
+    
+    .dropdown-divider {
+      margin: 8px 0;
+      border-color: #f0f0f0;
+    }
+    
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Badge cho thông báo */
+    .notification-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 2px 6px;
+      border-radius: 10px;
+      background: #ef4444;
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    
+    /* Căn lề cho text */
+    .user-info {
+      text-align: left;
+      line-height: 1.2;
+    }
+    
+    .user-name {
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    
+    .user-email {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    
+    .dropdown-header {
+      padding: 12px 20px;
+      color: #333;
+      font-weight: 600;
+      text-align: left;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .dropdown-item-text {
+      padding: 10px 20px;
+      text-align: left;
+      color: #6b7280;
+    }
+    
+    /* Đảm bảo text căn đều trong dropdown items */
+    .dropdown-item-content {
+      flex: 1;
+      text-align: left;
+    }
+    
+    /* Nút đăng ký đặc biệt */
+   
+  
 /* ===================================
     02. CSS color variable
 ====================================== */

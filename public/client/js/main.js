@@ -9,6 +9,290 @@
  Version: 2.0
  
  ------------------------------------------------------- */
+//  Xử Lý Cart
+// Cập nhật tổng số tiền khi có thay đổi checkbox
+function updateTotal() {
+    let total = 0;
+
+    document.querySelectorAll('.product-checkbox').forEach(function (checkbox) {
+        if (checkbox.checked) {
+            const row = checkbox.closest('tr');
+
+            const priceText = row.querySelector('[data-title="Price"]').innerText.replace(/[^\d]/g, '');
+            const price = parseFloat(priceText);
+
+            const quantityInput = row.querySelector('.qty-text');
+            const quantity = parseInt(quantityInput.value);
+
+            total += price * quantity;
+        }
+    });
+
+    document.getElementById('cart-total').innerText = total.toLocaleString('vi-VN') + 'đ';
+
+    // Disable/enable nút checkout
+    const checkoutBtn = document.getElementById('checkout-button');
+    if (checkoutBtn) {
+        checkoutBtn.disabled = total === 0;
+    }
+}
+
+
+
+function toggleSelectAll() {
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    const selectAllText = document.getElementById('select-all');
+    const isChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+    checkboxes.forEach(cb => cb.checked = !isChecked);
+    updateTotal();
+
+    if (isChecked) {
+        selectAllText.classList.remove('selected');
+        selectAllText.innerHTML = 'Chọn tất cả';
+    } else {
+        selectAllText.classList.add('selected');
+        selectAllText.innerHTML = 'Bỏ chọn tất';
+    }
+}
+
+function attachCheckboxEvents() {
+    document.querySelectorAll('.product-checkbox').forEach(cb => {
+        cb.removeEventListener('change', updateTotal); // tránh gắn trùng
+        cb.addEventListener('change', updateTotal);
+    });
+}
+
+// Khởi động khi load trang
+window.addEventListener('DOMContentLoaded', () => {
+    updateTotal();
+    attachCheckboxEvents();
+});
+
+// Hàm tăng/giảm số lượng
+function changeQuantity(itemId, change) {
+    const qtyInput = document.getElementById(`qty-${itemId}`);
+    let currentQty = parseInt(qtyInput.value);
+
+    let newQty = currentQty + change;
+    if (newQty < 1) {
+        newQty = 1;
+    }
+
+    fetch(`/cart/update/${itemId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ quantity: newQty })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                qtyInput.value = data.quantity; // Đồng bộ quantity từ server
+
+                // Cập nhật thành tiền từng sản phẩm
+                const priceElement = qtyInput.closest('tr').querySelector('[data-title="Price"]');
+                const subtotalElement = qtyInput.closest('tr').querySelector('[data-title="Total"]');
+
+                const priceText = priceElement.innerText.replace(/[^\d]/g, '');
+                const price = parseFloat(priceText);
+
+                const newSubtotal = price * data.quantity;
+                subtotalElement.innerText = newSubtotal.toLocaleString('vi-VN') + 'đ';
+
+                // Cập nhật tổng tiền từ server
+                // document.getElementById('cart-total').innerText = data.cartTotal.toLocaleString('vi-VN') + 'đ';
+            } else {
+                alert('Cập nhật thất bại. Vui lòng thử lại!');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Xóa sản phẩm
+document.querySelectorAll('.delete-item-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        if (confirm('Bạn có chắc muốn xóa sản phẩm này không?')) {
+            const itemId = this.getAttribute('data-id');
+
+            fetch(`/cart/remove/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Xóa dòng sản phẩm trên giao diện
+                        const row = this.closest('tr');
+                        row.remove();
+
+                        // Cập nhật tổng tiền từ server
+                        document.getElementById('cart-total').innerText = data.cartTotal.toLocaleString('vi-VN') + 'đ';
+
+                        // Nếu không còn sản phẩm, hiển thị thông báo
+                        if (!document.querySelectorAll('tr[data-item-id]').length) {
+                            document.getElementById('cart-items').innerHTML = '<tr><td colspan="7" class="text-center">No items in this order.</td></tr>';
+                        }
+                    } else {
+                        alert('Xóa thất bại, vui lòng thử lại!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    });
+});
+
+// Thêm sản phẩm vào giỏ hàng
+$(document).ready(function () {
+    $('#add-to-cart-form').on('submit', function (e) {
+        e.preventDefault(); // Ngăn form submit mặc định
+
+        // Kiểm tra xem người dùng đã đăng nhập hay chưa
+        if (!isLoggedIn) { // biến isLoggedIn ta sẽ set từ server
+            alert('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
+            window.location.href = '/login'; // Hoặc chỉ alert thôi nếu bạn không muốn tự chuyển
+            return;
+        }
+
+        let formData = $(this).serialize(); // Lấy dữ liệu form
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: 'POST',
+            data: formData,
+            success: function (response) {
+                // Xử lý khi thêm vào giỏ thành công
+                showNotification(response.message, 'success');
+                // Bạn có thể cập nhật số lượng giỏ hàng ở đây
+            },
+            error: function (xhr) {
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    showNotification(xhr.responseJSON.message, 'error');
+                } else {
+                    showNotification('Có lỗi xảy ra. Vui lòng thử lại.', 'error');
+                }
+            }
+        });
+    });
+
+    // Hàm hiển thị thông báo
+    function showNotification(message, type) {
+        let box = $('#notification');
+        box.text(message);
+        box.css({
+            display: 'block',
+            backgroundColor: type === 'success' ? '#d4edda' : '#f8d7da',
+            color: type === 'success' ? '#155724' : '#721c24',
+            border: '1px solid ' + (type === 'success' ? '#c3e6cb' : '#f5c6cb')
+        });
+
+        // Tự động ẩn sau 3 giây
+        setTimeout(function () {
+            box.fadeOut();
+        }, 3000);
+    }
+});
+// end Xử Lý Cart
+document.addEventListener('DOMContentLoaded', function () {
+    const locations = {
+        'Hà Nội': {
+            'Cầu Giấy': ['Dịch Vọng Hậu', 'Mai Dịch', 'Trung Hòa'],
+            'Ba Đình': ['Phúc Xá', 'Kim Mã', 'Ngọc Hà'],
+        },
+        'TP. Hồ Chí Minh': {
+            'Quận 1': ['Bến Nghé', 'Bến Thành', 'Phạm Ngũ Lão'],
+            'Quận 3': ['Phường 1', 'Phường 2', 'Phường 3'],
+        },
+        'Đà Nẵng': {
+            'Hải Châu': ['Thạch Thang', 'Hòa Cường Bắc', 'Hòa Thuận Tây'],
+        },
+    };
+
+    const provinceSelect = document.getElementById('province');
+    const districtSelect = document.getElementById('district');
+    const wardSelect = document.getElementById('ward');
+    const resultProvince = document.getElementById('selected-province');
+    const resultDistrict = document.getElementById('selected-district');
+    const resultWard = document.getElementById('selected-ward');
+
+    // Tạo danh sách các tỉnh
+    function loadProvinces() {
+        for (let province in locations) {
+            const option = document.createElement('option');
+            option.value = province;
+            option.textContent = province;
+            provinceSelect.appendChild(option);
+        }
+    }
+
+    // Tạo danh sách các quận tương ứng với tỉnh
+    function loadDistricts(province) {
+        districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+        for (let district in locations[province]) {
+            const option = document.createElement('option');
+            option.value = district;
+            option.textContent = district;
+            districtSelect.appendChild(option);
+        }
+    }
+
+    // Tạo danh sách các xã/phường tương ứng với quận
+    function loadWards(province, district) {
+        wardSelect.innerHTML = '<option value="">Chọn xã/phường</option>';
+        locations[province][district].forEach(ward => {
+            const option = document.createElement('option');
+            option.value = ward;
+            option.textContent = ward;
+            wardSelect.appendChild(option);
+        });
+    }
+
+    // Khi chọn tỉnh, load quận tương ứng
+    provinceSelect.addEventListener('change', function () {
+        const province = this.value;
+        if (province) {
+            loadDistricts(province);
+        } else {
+            districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+            wardSelect.innerHTML = '<option value="">Chọn xã/phường</option>';
+        }
+    });
+
+    // Khi chọn quận, load xã/phường tương ứng
+    districtSelect.addEventListener('change', function () {
+        const province = provinceSelect.value;
+        const district = this.value;
+        if (district) {
+            loadWards(province, district);
+        } else {
+            wardSelect.innerHTML = '<option value="">Chọn xã/phường</option>';
+        }
+    });
+
+    // Khi chọn xã/phường, hiển thị kết quả
+    wardSelect.addEventListener('change', function () {
+        const province = provinceSelect.value;
+        const district = districtSelect.value;
+        const ward = this.value;
+
+        resultProvince.textContent = `Tỉnh: ${province}`;
+        resultDistrict.textContent = `Quận/Huyện: ${district}`;
+        resultWard.textContent = `Xã/Phường: ${ward}`;
+    });
+
+    // Khởi tạo danh sách tỉnh
+    loadProvinces();
+});
+
 
 (function ($) {
 
@@ -36,10 +320,10 @@
      ====================================== */
 
     var lastScroll = 0,
-            simpleDropdown = 0,
-            linkDropdown = 0,
-            isotopeObjs = [],
-            swiperObjs = [];
+        simpleDropdown = 0,
+        linkDropdown = 0,
+        isotopeObjs = [],
+        swiperObjs = [];
     var windowScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     /* ===================================
@@ -47,8 +331,8 @@
      ====================================== */
 
     var isMobile = false,
-            isiPhoneiPad = false,
-            isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        isiPhoneiPad = false,
+        isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         isMobile = true;
@@ -124,7 +408,7 @@
             // Set submenu height after opened toggle menu
             if (getWindowWidth() <= menuBreakPoint) {
                 var windowHeight = getWindowHeight(),
-                        headerHeight = getHeaderHeight();
+                    headerHeight = getHeaderHeight();
                 $('header .navbar-collapse').css('max-height', windowHeight - headerHeight);
             }
         } else {
@@ -186,7 +470,7 @@
         var formObj = $(this).parents('form');
         formObj.find('input[type=text]').each(function (index) {
             var _this = $(this),
-                    searchVal = _this.val();
+                searchVal = _this.val();
             if (searchVal === null || searchVal === '') {
                 formObj.find('input:eq(' + index + ')').addClass('search-error');
                 error = false;
@@ -288,7 +572,7 @@
     // Header submenu on hover
     $('.nav-item.submenu').on('mouseenter touchstart', function (e) {
         var _this = $(this),
-                colorAttr = $('header nav').attr('data-header-hover');
+            colorAttr = $('header nav').attr('data-header-hover');
         if (getWindowWidth() > menuBreakPoint) {
             if ($(e.target).siblings('.dropdown-menu').length) {
                 e.preventDefault();
@@ -345,7 +629,7 @@
     }
     $('.navbar-nav li a, .menu-item-list a').each(function () {
         var _this = $(this),
-                aHref = _this.attr('href');
+            aHref = _this.attr('href');
         if (aHref === pgurl || aHref === pgurl + '.html') {
             _this.parent().addClass('active');
             _this.parents('li.dropdown').addClass('active');
@@ -463,18 +747,18 @@
             simpleDropdown = element;
             linkDropdown = element.find('a.nav-link');
             var menuSpacing = 30,
-                    menuLeftPosition = element.offset().left,
-                    menuWidth = element.children('.dropdown-menu').outerWidth(),
-                    menuDropdownCSS = (windowWidth - menuSpacing) - (menuLeftPosition + menuWidth);
+                menuLeftPosition = element.offset().left,
+                menuWidth = element.children('.dropdown-menu').outerWidth(),
+                menuDropdownCSS = (windowWidth - menuSpacing) - (menuLeftPosition + menuWidth);
             if (menuDropdownCSS < 0) {
                 element.children('.dropdown-menu').css('left', menuDropdownCSS);
             }
         }
         if (element.parent().hasClass('dropdown-menu') && element.parents('.simple-dropdown')) {
             var dropdownWidth = 0,
-                    maxValueInArray = 0,
-                    lastValue = 0,
-                    multiDepth = 0;
+                maxValueInArray = 0,
+                lastValue = 0,
+                multiDepth = 0;
             dropdownWidth = element.outerWidth() - linkDropdown.outerWidth();
             element.children('.dropdown-menu').each(function () {
                 var arr = [];
@@ -496,10 +780,10 @@
             if (dropdownWidth > menuRightPosition) {
                 if (element.find('.dropdown-menu').length > 0) {
                     var menuTopPosition = element.position().top,
-                            submenuObj = element.find('.dropdown-menu'),
-                            submenuHeight = submenuObj.outerHeight(),
-                            totalHeight = menuTopPosition + submenuHeight + getHeaderHeight(),
-                            windowHeight = getWindowHeight();
+                        submenuObj = element.find('.dropdown-menu'),
+                        submenuHeight = submenuObj.outerHeight(),
+                        totalHeight = menuTopPosition + submenuHeight + getHeaderHeight(),
+                        windowHeight = getWindowHeight();
                     if (totalHeight > windowHeight) {
                         submenuObj.css('top', '-' + (totalHeight - windowHeight) + 'px');
                     }
@@ -517,30 +801,30 @@
             }, 500);
         }
     }
-    
-    // Without link
-    $('.nav-item  .nav-link').on('click',function(e) {
-    var submenuLenth = $(this).closest('.dropdown').find('.dropdown').length;
 
-    if ( $( window ).width() < 992 && $(this).closest('.dropdown').length > 0 ) {
-        var HasClass = $(this).closest('.nav-item').find( '.dropdown-menu' ).hasClass ('show');
-        if ($(this).closest('.nav-item').find( '.dropdown-menu' ).hasClass ('show')) {
-            $(this).closest('.nav-item').find( '.dropdown-menu' ).removeClass('show')
-            $(this).closest('.nav-item').find( '.dropdown-toggle' ).removeClass('show')
-        }
-        else{
-            $( '.navbar-nav' ).find( '.dropdown-menu' ).removeClass('show');
-            $( '.navbar-nav' ).find( '.dropdown-toggle' ).removeClass('show');
-             $(this).closest('.nav-item').find( '.dropdown-menu' ).addClass('show')
-             $(this).closest('.nav-item').find( '.dropdown-toggle' ).addClass('show')
-        }
+    // Without link
+    $('.nav-item  .nav-link').on('click', function (e) {
+        var submenuLenth = $(this).closest('.dropdown').find('.dropdown').length;
+
+        if ($(window).width() < 992 && $(this).closest('.dropdown').length > 0) {
+            var HasClass = $(this).closest('.nav-item').find('.dropdown-menu').hasClass('show');
+            if ($(this).closest('.nav-item').find('.dropdown-menu').hasClass('show')) {
+                $(this).closest('.nav-item').find('.dropdown-menu').removeClass('show')
+                $(this).closest('.nav-item').find('.dropdown-toggle').removeClass('show')
+            }
+            else {
+                $('.navbar-nav').find('.dropdown-menu').removeClass('show');
+                $('.navbar-nav').find('.dropdown-toggle').removeClass('show');
+                $(this).closest('.nav-item').find('.dropdown-menu').addClass('show')
+                $(this).closest('.nav-item').find('.dropdown-toggle').addClass('show')
+            }
         }
     });
 
-    $(window).resize( function () {
-        if ( $( window ).width() > 991 ) {
-            $( '.navbar-nav' ).find( '.dropdown-menu' ).removeClass('show');
-            $( '.navbar-nav' ).find( '.dropdown-toggle' ).removeClass('show');
+    $(window).resize(function () {
+        if ($(window).width() > 991) {
+            $('.navbar-nav').find('.dropdown-menu').removeClass('show');
+            $('.navbar-nav').find('.dropdown-toggle').removeClass('show');
         }
     });
 
@@ -588,7 +872,7 @@
                 if (typeof $.fn.isotope === 'function') {
                     var currentPortfolioActive = $('.portfolio-filter > li.active > a').attr('data-filter');
                     if (currentPortfolioActive != '' && currentPortfolioActive != undefined) {
-                        _this.isotope({filter: currentPortfolioActive});
+                        _this.isotope({ filter: currentPortfolioActive });
                     }
                 }
             });
@@ -598,22 +882,22 @@
             });
 
             $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-                _this.isotope({transitionDuration: 0});
+                _this.isotope({ transitionDuration: 0 });
             });
         });
     }
 
     $(document).on('click', '.portfolio-filter > li > a', function () {
         var _this = $(this),
-                parentSectionObj = _this.parents('section');
+            parentSectionObj = _this.parents('section');
         parentSectionObj.find('.portfolio-filter > li').removeClass('active');
         _this.parent().addClass('active');
         var selector = _this.attr('data-filter'),
-                portfolioFilter = parentSectionObj.find('.portfolio-wrapper');
+            portfolioFilter = parentSectionObj.find('.portfolio-wrapper');
 
         portfolioFilter.find('.grid-item[data-anime]').addClass('appear');
         if (typeof portfolioFilter.isotope === 'function') {
-            portfolioFilter.isotope({filter: selector});
+            portfolioFilter.isotope({ filter: selector });
         }
 
         if (parentSectionObj.length && $(parentSectionObj).hasClass('overlap-height')) {
@@ -637,12 +921,12 @@
     const ThreeDLetterMenuEffect = () => {
         $(".threeD-letter-menu .menu-item").each(function () {
             let _self = this,
-                    MenuLink = _self.querySelector(".menu-item-text"),
-                    MenuText = MenuLink.querySelector("span"),
-                    imgHeight = _self.querySelector(".hover-reveal").clientHeight,
-                    imgWidth = _self.querySelector(".hover-reveal").clientWidth,
-                    windowHeight = window.innerHeight,
-                    windowWidth = window.innerWidth;
+                MenuLink = _self.querySelector(".menu-item-text"),
+                MenuText = MenuLink.querySelector("span"),
+                imgHeight = _self.querySelector(".hover-reveal").clientHeight,
+                imgWidth = _self.querySelector(".hover-reveal").clientWidth,
+                windowHeight = window.innerHeight,
+                windowWidth = window.innerWidth;
 
             MenuLink.innerHTML = `<span>${MenuText.innerHTML}</span><span class="clone">${MenuText.innerHTML}</span>`
 
@@ -696,7 +980,7 @@
             if (typeof TweenLite !== "undefined") {
                 document.addEventListener("mousemove", function (e) {
                     let posX = e.clientX + 20,
-                            posY = e.clientY + 20;
+                        posY = e.clientY + 20;
 
                     TweenLite.to(_self.querySelector(".hover-reveal"), .6, {
                         x: posX + imgWidth > windowWidth ? e.clientX - imgWidth : posX,
@@ -712,7 +996,7 @@
     const sticky_container = document.querySelector(".sticky-image-distortion-wrapper");
     if (typeof (sticky_container) != 'undefined' && sticky_container != null) {
         let winsize;
-        const calcWinsize = () => winsize = {width: window.innerWidth, height: window.innerHeight};
+        const calcWinsize = () => winsize = { width: window.innerWidth, height: window.innerHeight };
         calcWinsize();
         window.addEventListener('resize', calcWinsize);
 
@@ -722,10 +1006,10 @@
                     menu: document.querySelector('.sticky-image-distortion-wrapper nav.menu')
                 };
                 this.DOM.menuLinks = [...this.DOM.menu.querySelectorAll('.menu__link')];
-                this.mousePos = {x: winsize.width / 2, y: winsize.height / 2};
+                this.mousePos = { x: winsize.width / 2, y: winsize.height / 2 };
                 this.lastMousePos = {
-                    translation: {x: winsize.width / 2, y: winsize.height / 2},
-                    displacement: {x: 0, y: 0}
+                    translation: { x: winsize.width / 2, y: winsize.height / 2 },
+                    displacement: { x: 0, y: 0 }
                 };
                 this.dmScale = 0;
                 this.current = -1;
@@ -756,7 +1040,7 @@
                         item.classList.add("active");
                         if (typeof TweenMax !== 'undefined' && typeof TweenMax !== null) {
                             if (item !== active_item) {
-                                TweenMax.fromTo(displaceMentEl, 1.2, {attr: {scale: 50}}, {attr: {scale: 0.3}});
+                                TweenMax.fromTo(displaceMentEl, 1.2, { attr: { scale: 50 } }, { attr: { scale: 0.3 } });
                             }
                         }
                         document.body.style.setProperty('--body-bgcolor', bgColor)
@@ -800,7 +1084,7 @@
                 isotopeObjs.push(_this);
                 var currentBlogActive = $('.blog-filter > li.active > a').attr('data-filter');
                 if (currentBlogActive != '' && currentBlogActive != undefined) {
-                    _this.isotope({filter: currentBlogActive});
+                    _this.isotope({ filter: currentBlogActive });
                 }
             });
         });
@@ -808,13 +1092,13 @@
 
     $(document).on('click', '.blog-filter > li > a', function () {
         var _this = $(this),
-                parentSectionObj = _this.parents('section');
+            parentSectionObj = _this.parents('section');
         parentSectionObj.find('.blog-filter > li').removeClass('active');
         _this.parent().addClass('active');
         var selector = _this.attr('data-filter'),
-                blogFilter = parentSectionObj.find('.blog-wrapper');
+            blogFilter = parentSectionObj.find('.blog-wrapper');
         blogFilter.find('.grid-item[data-anime]').addClass('appear');
-        blogFilter.isotope({filter: selector});
+        blogFilter.isotope({ filter: selector });
         return false;
     });
 
@@ -866,7 +1150,7 @@
                 type: 'image',
                 closeOnContentClick: true,
                 closeBtnInside: false,
-                gallery: {enabled: true}
+                gallery: { enabled: true }
             });
         });
     }
@@ -878,7 +1162,7 @@
         if ($('.justified-gallery').length) {
             $('.justified-gallery').each(function () {
                 var _this = $(this),
-                        justifiedOptions = _this.attr('data-justified-options') || '{ "rowHeight": 400, "maxRowHeight": false, "captions": true, "margins": 10, "waitThumbnailsLoad": true }';
+                    justifiedOptions = _this.attr('data-justified-options') || '{ "rowHeight": 400, "maxRowHeight": false, "captions": true, "margins": 10, "waitThumbnailsLoad": true }';
                 if (typeof $.fn.justifiedGallery !== 'undefined') {
                     if (typeof (justifiedOptions) !== 'undefined' && justifiedOptions !== null) {
                         _this.imagesLoaded(function () {
@@ -897,8 +1181,8 @@
 
     $('.accordion').each(function () {
         var _this = $(this),
-                activeIconClass = _this.attr('data-active-icon') || '',
-                inactiveIconClass = _this.attr('data-inactive-icon') || '';
+            activeIconClass = _this.attr('data-active-icon') || '',
+            inactiveIconClass = _this.attr('data-inactive-icon') || '';
         $('.collapse', this).on('show.bs.collapse', function () {
             var id = $(this).attr('id');
             $('a[data-bs-target="#' + id + '"]').closest('.accordion-header').parent('.accordion-item').addClass('active-accordion');
@@ -929,7 +1213,7 @@
             if (!$(this).hasClass('appear')) {
                 $(this).addClass('appear');
                 var total = $(this).attr('aria-valuenow'), delay = 300;
-                $(this).animate({'width': total + '%'}, {
+                $(this).animate({ 'width': total + '%' }, {
                     duration: delay,
                     easing: "swing",
                     progress: function (animation, progress, msRemaining) {
@@ -1005,9 +1289,9 @@
     // Vertical counter
     $('.vertical-counter').each(function () {
         var _this = $(this),
-                counterValue = _this.attr('data-to'),
-                individualValue = counterValue.toString().split(''),
-                valueLength = counterValue.length;
+            counterValue = _this.attr('data-to'),
+            individualValue = counterValue.toString().split(''),
+            valueLength = counterValue.length;
 
         // Adding the div.vertical-counter-number in div.counter multiple(valueLength) times
         for (var i = 0; i < valueLength; i++) {
@@ -1026,7 +1310,7 @@
         function calculateHeight() {
             $('.vertical-counter').each(function () {
                 var _this = $(this),
-                        divHeight = _this.find('.vertical-counter-number').find('li').height();
+                    divHeight = _this.find('.vertical-counter-number').find('li').height();
 
                 $(this).height(divHeight);
             });
@@ -1045,7 +1329,7 @@
                 if ($(window).scrollTop() + getWindowHeight() >= $('.vertical-counter').offset().top) {
                     $(this).find('.vertical-counter-number').each(function () {
                         var _this = $(this),
-                                value = _this.attr('data-to');
+                            value = _this.attr('data-to');
                         if (value <= 9) {
                             anime({
                                 targets: this.querySelector('ul'),
@@ -1063,12 +1347,12 @@
 
             activeTabPane.find('.vertical-counter').each(function () {
                 var _this = $(this),
-                        value = _this.attr('data-to'),
-                        divHeight = _this.find('li').height();
+                    value = _this.attr('data-to'),
+                    divHeight = _this.find('li').height();
                 _this.height(divHeight);
 
                 if (value <= 9) {
-                    _this.find('ul').css({'transform': 'translateY(-' + value * 10 + '%)'});
+                    _this.find('ul').css({ 'transform': 'translateY(-' + value * 10 + '%)' });
                 }
             });
         });
@@ -1110,15 +1394,15 @@
     function slideboxstyle() {
         $('.sliding-box').each(function (index, value) {
             var valueObj = $(value),
-                    totalWidth = valueObj.outerWidth(),
-                    slidingLength = valueObj.find('.sliding-box-item').length,
-                    devideRightPadding = parseInt(valueObj.css('padding-right')) / slidingLength,
-                    devideLeftPadding = parseInt(valueObj.css('padding-left')) / slidingLength,
-                    usageWidth = (slidingLength * 30) + 30 + devideRightPadding + devideLeftPadding,
-                    useWidth = totalWidth - usageWidth,
-                    devideLength = slidingLength + 1,
-                    devideWidth = (useWidth / devideLength),
-                    activeWidth = devideWidth * 2;
+                totalWidth = valueObj.outerWidth(),
+                slidingLength = valueObj.find('.sliding-box-item').length,
+                devideRightPadding = parseInt(valueObj.css('padding-right')) / slidingLength,
+                devideLeftPadding = parseInt(valueObj.css('padding-left')) / slidingLength,
+                usageWidth = (slidingLength * 30) + 30 + devideRightPadding + devideLeftPadding,
+                useWidth = totalWidth - usageWidth,
+                devideLength = slidingLength + 1,
+                devideWidth = (useWidth / devideLength),
+                activeWidth = devideWidth * 2;
 
             valueObj.find('.sliding-box-item, .sliding-box-img, .sliding-box-item .sliding-box-content').css('width', devideWidth);
             valueObj.find('.sliding-box-item .sliding-box-content').css('left', devideWidth);
@@ -1142,11 +1426,11 @@
     function setSpaceInTeamStyle() {
         $('.team-style-01').each(function () {
             let _this = $(this),
-                    figure = _this.find('figure'),
-                    figcaption = _this.find('figcaption');
+                figure = _this.find('figure'),
+                figcaption = _this.find('figcaption');
 
             setTimeout(function () {
-                figure.css({'padding-bottom': figcaption.outerHeight()});
+                figure.css({ 'padding-bottom': figcaption.outerHeight() });
             }, 200);
         });
     }
@@ -1159,11 +1443,11 @@
     function setSpaceInInteractiveBannerStyle() {
         $('.interactive-banner-style-02').each(function () {
             let _this = $(this),
-                    figure = _this.find('figure'),
-                    figcaption = _this.find('figcaption');
+                figure = _this.find('figure'),
+                figcaption = _this.find('figcaption');
 
             setTimeout(function () {
-                figure.css({'padding-bottom': figcaption.outerHeight()});
+                figure.css({ 'padding-bottom': figcaption.outerHeight() });
             }, 500);
         });
     }
@@ -1235,7 +1519,7 @@
 
         if (options.el === "lines") {
             function lineSplitting() {
-                const lines = Splitting({target: target, by: 'lines'});
+                const lines = Splitting({ target: target, by: 'lines' });
                 const line = lines[0].lines.map(item => item.map(i => i.innerHTML).join(" "));
                 target.innerHTML = line.map(item => `<span class="d-inline-flex">${item}</span>`).join(' ');
             }
@@ -1246,7 +1530,7 @@
 
         if (options.el === "words") {
             function lineSplitting() {
-                const words = Splitting({target: target, by: 'words'});
+                const words = Splitting({ target: target, by: 'words' });
                 const word = words[0].words.join(" ");
             }
             lineSplitting();
@@ -1265,7 +1549,7 @@
         anime_animation.add({
             targets: child,
             ...options,
-            delay: anime.stagger(staggerValue, {start: delay}),
+            delay: anime.stagger(staggerValue, { start: delay }),
             complete: function () {
                 if (options.el) {
                     target.classList.add('anime-child');
@@ -1336,8 +1620,8 @@
     // Anime text revealer js
     const slideAnimation = (target, options) => {
         let duration = options.speed ? options.speed : 100,
-                direction = options.direction ? options.direction : "lr",
-                delay = options.delay ? options.delay : 0;
+            direction = options.direction ? options.direction : "lr",
+            delay = options.delay ? options.delay : 0;
 
         target.style.position = 'relative';
 
@@ -1400,7 +1684,7 @@
         }).add({
             targets: target.querySelector('*'),
             easing: 'easeOutQuint',
-            delay: direction === 'lr' ? anime.stagger(duration, {start: 1000}) : anime.stagger(-duration, {start: 1000}),
+            delay: direction === 'lr' ? anime.stagger(duration, { start: 1000 }) : anime.stagger(-duration, { start: 1000 }),
             opacity: [0, 1]
         }, "-=900");
     }
@@ -1412,12 +1696,12 @@
     // Curved text effect
     const curvedTextAnimation = (target, options) => {
         let duration = options.duration ? (options.duration <= 2000 ? 2000 : options.duration) : 2000,
-                content = options.string,
-                curveText = anime.timeline();
+            content = options.string,
+            curveText = anime.timeline();
 
         const lineEq = (y2, y1, x2, x1, currentVal) => {
             var m = (y2 - y1) / (x2 - x1),
-                    b = y1 - m * x1;
+                b = y1 - m * x1;
             return m * currentVal + b;
         }
 
@@ -1428,18 +1712,18 @@
             opacity: 1,
             translateY: function (el, index) {
                 var p = el.parentNode,
-                        lastElOffW = p.lastElementChild.offsetWidth,
-                        firstElOffL = p.firstElementChild.offsetLeft,
-                        w = p.offsetWidth - lastElOffW - firstElOffL - (p.offsetWidth - lastElOffW - p.lastElementChild.offsetLeft),
-                        tyVal = lineEq(0, 100, firstElOffL + w / 2, firstElOffL, el.offsetLeft);
+                    lastElOffW = p.lastElementChild.offsetWidth,
+                    firstElOffL = p.firstElementChild.offsetLeft,
+                    w = p.offsetWidth - lastElOffW - firstElOffL - (p.offsetWidth - lastElOffW - p.lastElementChild.offsetLeft),
+                    tyVal = lineEq(0, 100, firstElOffL + w / 2, firstElOffL, el.offsetLeft);
                 return [Math.abs(tyVal) + '%', '0%'];
             },
             rotateZ: function (el, index) {
                 var p = el.parentNode,
-                        lastElOffW = p.lastElementChild.offsetWidth,
-                        firstElOffL = p.firstElementChild.offsetLeft,
-                        w = p.offsetWidth - lastElOffW - p.firstElementChild.offsetLeft - (p.offsetWidth - lastElOffW - p.lastElementChild.offsetLeft),
-                        rz = lineEq(90, -90, firstElOffL + w, firstElOffL, el.offsetLeft);
+                    lastElOffW = p.lastElementChild.offsetWidth,
+                    firstElOffL = p.firstElementChild.offsetLeft,
+                    w = p.offsetWidth - lastElOffW - p.firstElementChild.offsetLeft - (p.offsetWidth - lastElOffW - p.lastElementChild.offsetLeft),
+                    rz = lineEq(90, -90, firstElOffL + w, firstElOffL, el.offsetLeft);
                 return [rz, 0];
             }
         }).add({
@@ -1449,18 +1733,18 @@
             opacity: content.length > 1 ? 0 : 1,
             translateY: function (el, index) {
                 var p = el.parentNode,
-                        lastElOffW = p.lastElementChild.offsetWidth,
-                        firstElOffL = p.firstElementChild.offsetLeft,
-                        w = p.offsetWidth - lastElOffW - firstElOffL - (p.offsetWidth - lastElOffW - p.lastElementChild.offsetLeft),
-                        tyVal = lineEq(0, 100, firstElOffL + w / 2, firstElOffL, el.offsetLeft);
+                    lastElOffW = p.lastElementChild.offsetWidth,
+                    firstElOffL = p.firstElementChild.offsetLeft,
+                    w = p.offsetWidth - lastElOffW - firstElOffL - (p.offsetWidth - lastElOffW - p.lastElementChild.offsetLeft),
+                    tyVal = lineEq(0, 100, firstElOffL + w / 2, firstElOffL, el.offsetLeft);
                 return content.length > 1 ? [-Math.abs(tyVal) + '%'] : [Math.abs(tyVal) + '%', '0%'];
             },
             rotateZ: function (el, index) {
                 var p = el.parentNode,
-                        lastElOffW = p.lastElementChild.offsetWidth,
-                        firstElOffL = p.firstElementChild.offsetLeft,
-                        w = p.offsetWidth - lastElOffW - p.firstElementChild.offsetLeft - (p.offsetWidth - lastElOffW - p.lastElementChild.offsetLeft),
-                        rz = lineEq(-90, 90, firstElOffL + w, firstElOffL, el.offsetLeft);
+                    lastElOffW = p.lastElementChild.offsetWidth,
+                    firstElOffL = p.firstElementChild.offsetLeft,
+                    w = p.offsetWidth - lastElOffW - p.firstElementChild.offsetLeft - (p.offsetWidth - lastElOffW - p.lastElementChild.offsetLeft),
+                    rz = lineEq(-90, 90, firstElOffL + w, firstElOffL, el.offsetLeft);
                 return content.length > 1 ? [rz] : [rz, 0];
             }
         }, duration - 1500);
@@ -1469,7 +1753,7 @@
     // Slide text effect
     const slideTextAnimation = (target, options) => {
         let current_anime_text = target.querySelectorAll('.anime-text')[0],
-                speed = options.speed ? options.speed : 100;
+            speed = options.speed ? options.speed : 100;
 
         current_anime_text.style.position = 'relative';
 
@@ -1517,7 +1801,7 @@
         }).add({
             targets: target.querySelectorAll('.anime-text > .word > .char'),
             easing: 'easeOutQuint',
-            delay: options.direction === 'left' ? anime.stagger(speed, {start: 1000}) : anime.stagger(-speed, {start: 1000}),
+            delay: options.direction === 'left' ? anime.stagger(speed, { start: 1000 }) : anime.stagger(-speed, { start: 1000 }),
             opacity: [0, 1],
             translateX: options.direction === 'left' ? [100, 0] : [-100, 0]
         }, "-=600");
@@ -1526,10 +1810,10 @@
     // Wave text effect
     const waveTextAnimation = (target, options) => {
         let duration = options.duration ? options.duration : 3000,
-                direction = options.direction,
-                content = options.string,
-                speed = options.speed,
-                waveText = anime.timeline();
+            direction = options.direction,
+            content = options.string,
+            speed = options.speed,
+            waveText = anime.timeline();
 
         waveText.add({
             targets: target.querySelectorAll('.anime-text > .word > .char'),
@@ -1540,17 +1824,17 @@
             targets: target.querySelectorAll('.anime-text .word .char'),
             opacity: content.length > 1 ? [1, 0] : [1, 1],
             translateY: content.length > 1 ? (direction === 'down' ? [0, 20] : [0, -20]) : [0, 0],
-            delay: anime.stagger(speed ? speed : 50, {start: duration - 1500})
+            delay: anime.stagger(speed ? speed : 50, { start: duration - 1500 })
         });
     }
 
     // Smooth wave text effect
     const smoothWaveTextAnimation = (target, options) => {
         let duration = options.duration ? options.duration : 3000,
-                direction = options.direction,
-                content = options.string,
-                speed = options.speed,
-                smoothWaveText = anime.timeline();
+            direction = options.direction,
+            content = options.string,
+            speed = options.speed,
+            smoothWaveText = anime.timeline();
 
         smoothWaveText.add({
             targets: target.querySelectorAll('.anime-text > .word > .char'),
@@ -1558,23 +1842,23 @@
             translateY: direction === 'down' ? [-50, 0] : [50, 0],
             duration: 500,
             easing: 'easeOutQuad',
-            delay: anime.stagger(speed ? speed : 40, {direction: 'reverse'}),
+            delay: anime.stagger(speed ? speed : 40, { direction: 'reverse' }),
         }).add({
             targets: target.querySelectorAll('.anime-text .word .char'),
             opacity: content.length > 1 ? [1, 0] : [1, 1],
             translateY: content.length > 1 ? (direction === 'down' ? 50 : -50) : 0,
             duration: 500,
             easing: 'easeOutQuad',
-            delay: anime.stagger(speed ? speed : 40, {start: duration - 1000, direction: 'reverse'})
+            delay: anime.stagger(speed ? speed : 40, { start: duration - 1000, direction: 'reverse' })
         });
     }
 
     // Rotate text effect
     const rotateTextAnimation = (target, options) => {
         let duration = options.duration ? options.duration : 3000,
-                content = options.string,
-                speed = options.speed,
-                rotateText = anime.timeline();
+            content = options.string,
+            speed = options.speed,
+            rotateText = anime.timeline();
 
         rotateText.add({
             targets: target.querySelectorAll('.anime-text > .word > .char'),
@@ -1588,7 +1872,7 @@
             opacity: content.length > 1 ? 0 : 1,
             rotateX: content.length > 1 ? [0, 70] : [0, 0],
             duration: 150,
-            delay: anime.stagger(speed ? speed : 50, {start: duration - 1500}),
+            delay: anime.stagger(speed ? speed : 50, { start: duration - 1500 }),
             easing: "linear"
         });
     }
@@ -1596,10 +1880,10 @@
     // Jump text effect
     const jumpTextAnimation = (target, options) => {
         let duration = options.duration ? options.duration : 3000,
-                content = options.string,
-                speed = options.speed,
-                delay = options.delay,
-                movingLetter9 = anime.timeline();
+            content = options.string,
+            speed = options.speed,
+            delay = options.delay,
+            movingLetter9 = anime.timeline();
 
         movingLetter9.add({
             targets: target.querySelectorAll('.anime-text > .word > .char'),
@@ -1607,7 +1891,7 @@
             duration: 1500,
             elasticity: 600,
             transformOrigin: '50% 100%',
-            delay: anime.stagger(speed ? speed : 45, {start: delay})
+            delay: anime.stagger(speed ? speed : 45, { start: delay })
         }).add({
             targets: target.querySelectorAll('.anime-text > .word > .char'),
             opacity: content.length > 1 ? 0 : 1,
@@ -1621,9 +1905,9 @@
     // Zoom text effect
     const zoomTextAnimation = (target, options) => {
         let duration = options.duration ? options.duration : 3000,
-                content = options.string,
-                speed = options.speed,
-                movingLetter2 = anime.timeline();
+            content = options.string,
+            speed = options.speed,
+            movingLetter2 = anime.timeline();
 
         movingLetter2.add({
             targets: target.querySelectorAll('.anime-text > .word > .char'),
@@ -1645,10 +1929,10 @@
     // Rubber band text effect
     const rubberbandTextAnimation = (target, options) => {
         let duration = options.duration ? options.duration : 3000,
-                content = options.string,
-                speed = options.speed,
-                direction = options.direction,
-                rubberband = anime.timeline();
+            content = options.string,
+            speed = options.speed,
+            direction = options.direction,
+            rubberband = anime.timeline();
 
         rubberband.add({
             targets: target.querySelectorAll('.anime-text > .word > .char'),
@@ -1657,23 +1941,23 @@
             opacity: [0, 1],
             easing: "easeOutExpo",
             duration: 1200,
-            delay: anime.stagger(speed ? speed : 75, {direction: direction === "right" ? 'reverse' : 'normal'})
+            delay: anime.stagger(speed ? speed : 75, { direction: direction === "right" ? 'reverse' : 'normal' })
         }).add({
             targets: target.querySelectorAll('.anime-text > .word > .char'),
             translateX: content.length > 1 ? (direction === "left" ? -40 : 40) : 0,
             opacity: content.length > 1 ? 0 : 1,
             easing: "easeInExpo",
             duration: 500,
-            delay: anime.stagger(speed ? speed : 75, {start: duration - 2500, direction: direction === "right" ? 'reverse' : 'normal'})
+            delay: anime.stagger(speed ? speed : 75, { start: duration - 2500, direction: direction === "right" ? 'reverse' : 'normal' })
         });
     }
 
     // Fade text effect
     const fadeTextAnimation = (target, options) => {
         let duration = options.duration ? options.duration : 3000,
-                content = options.string,
-                speed = options.speed,
-                fade = anime.timeline();
+            content = options.string,
+            speed = options.speed,
+            fade = anime.timeline();
 
         fade.add({
             targets: target.querySelectorAll('.anime-text > .word > .char'),
@@ -1687,17 +1971,17 @@
             translateY: content.length > 1 ? [0, -100] : [0, 0],
             opacity: content.length > 1 ? [1, 0] : [1, 1],
             easing: "easeInExpo",
-            delay: anime.stagger(speed ? speed : 40, {start: duration - 3000})
+            delay: anime.stagger(speed ? speed : 40, { start: duration - 3000 })
         });
     }
 
     // Fancy text 
     function FancyTextDefault(item, ftOptions) {
         let text_effect = ftOptions.effect,
-                duration = ftOptions.duration ? ftOptions.duration : 3000,
-                content = ftOptions.string,
-                speed = ftOptions.speed,
-                delay = ftOptions.delay;
+            duration = ftOptions.duration ? ftOptions.duration : 3000,
+            content = ftOptions.string,
+            speed = ftOptions.speed,
+            delay = ftOptions.delay;
 
         if (content) {
             item.innerHTML = `<span class="anime-text">${content[0]}</span>`;
@@ -1749,7 +2033,7 @@
                     anime({
                         targets: item.querySelectorAll('.anime-text > .word > .char'),
                         ...ftOptions,
-                        delay: anime.stagger(speed ? speed : 0, {start: delay ? delay : 0})
+                        delay: anime.stagger(speed ? speed : 0, { start: delay ? delay : 0 })
                     })
                 }
             }
@@ -1814,7 +2098,7 @@
                         anime({
                             targets: item.querySelectorAll('.anime-text > .word > .char'),
                             ...ftOptions,
-                            delay: anime.stagger(speed ? speed : 0, {start: delay ? delay : 0})
+                            delay: anime.stagger(speed ? speed : 0, { start: delay ? delay : 0 })
                         });
                     }
                 }, duration);
@@ -1845,12 +2129,12 @@
     var instagramWrapperItems = document.querySelectorAll('.instafeed-wrapper');
     instagramWrapperItems.forEach(function (instagramWrapperItem) {
         var token = 'IGQWRPSWZAleS1CRk5UR2dqcWhkam5lTFZAQQUxmQU9MLTgzVi11WjYzY0NVSS10UlVSR195aWxMZAnh5cC1OZAUdFUlFLRnV0M0hFR19pcnhXOU1MZAi1UQTYzZAHl2NmVGVzA1ZAE5pZAllHMGdDaFZA5bFBzUzUxeWF2NVkZD',
-                _this = $(instagramWrapperItem),
-                token = _this.attr('data-token') || token,
-                total = _this.attr('data-total') || '6', // how much photos do you want to get
-                slider = _this.attr('data-slider-options'),
-                _html = _this.html(),
-                outputHTML = '';
+            _this = $(instagramWrapperItem),
+            token = _this.attr('data-token') || token,
+            total = _this.attr('data-total') || '6', // how much photos do you want to get
+            slider = _this.attr('data-slider-options'),
+            _html = _this.html(),
+            outputHTML = '';
         if (typeof (slider) !== 'undefined' && slider !== null) {
             _this.html('');
         }
@@ -1875,18 +2159,18 @@
                             output = output.replace('data-src', 'src');
                             output = output.replace('{{link}}', link);
                             output = output.replace('{{image}}', image);
-                            
+
                             output = output.replace('{{likes}}', likes);
                             output = output.replace('{{comments}}', comments);
-                            output = output.replace( '{{image-class}}', 'image' );
+                            output = output.replace('{{image-class}}', 'image');
                             outputHTML += output;
 
-                        }else if( response.data[x]['media_type'] == 'VIDEO' ){
+                        } else if (response.data[x]['media_type'] == 'VIDEO') {
                             var link = response.data[x]['permalink'] || '',
                                 video = response.data[x]['media_url'] || '';
 
-                            output = output.replace( '{{video}}', video );
-                            output = output.replace( '{{video-class}}', 'video' );
+                            output = output.replace('{{video}}', video);
+                            output = output.replace('{{video-class}}', 'video');
                             outputHTML += output;
                         }
                     }
@@ -1931,8 +2215,8 @@
     if (typeof $.fn.magnificPopup === 'function') {
         if ($('#subscribe-popup').length > 0) {
             let delaySecond = 1.5,
-                    expireDays = 30,
-                    cookieName = 'crafto-promo-popup';
+                expireDays = 30,
+                cookieName = 'crafto-promo-popup';
             if (getCookie(cookieName) != 'shown') {
                 setTimeout(function () {
                     $.magnificPopup.open({
@@ -2065,19 +2349,19 @@
     // Contact form validation on submit
     $(document).on('click', '.submit', function () {
         var error = false,
-                _this = $(this),
-                formObj = _this.parents('form'),
-                emailFormat = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
-                urlformat = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
-                telFormat = /[0-9 -()+]+$/,
-                actionURL = formObj.attr('action'),
-                resultsObj = formObj.find('.form-results'),
-                grecaptchav3= _this.attr( 'data-sitekey' ) || '',
-                redirectVal = formObj.find('[name="redirect"]').val();
+            _this = $(this),
+            formObj = _this.parents('form'),
+            emailFormat = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
+            urlformat = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+            telFormat = /[0-9 -()+]+$/,
+            actionURL = formObj.attr('action'),
+            resultsObj = formObj.find('.form-results'),
+            grecaptchav3 = _this.attr('data-sitekey') || '',
+            redirectVal = formObj.find('[name="redirect"]').val();
         formObj.find('.required').removeClass('is-invalid');
         formObj.find('.required').each(function () {
             var __this = $(this),
-                    fieldVal = __this.val();
+                fieldVal = __this.val();
             if (fieldVal == '' || fieldVal == undefined) {
                 error = true;
                 __this.addClass('is-invalid');
@@ -2101,17 +2385,17 @@
         }
 
         // Google reCaptcha verify
-        if ( typeof ( grecaptcha ) !== 'undefined' && grecaptcha !== null ) {
+        if (typeof (grecaptcha) !== 'undefined' && grecaptcha !== null) {
             if (formObj.find('.g-recaptcha').length) {
                 var gResponse = grecaptcha.getResponse();
                 if (!(gResponse.length)) {
                     error = true;
                     formObj.find('.g-recaptcha').addClass('is-invalid');
                 }
-            } else if( grecaptchav3 != '' && grecaptchav3 != undefined ) { // For Version 3
-                grecaptcha.ready(function() {
-                  grecaptcha.execute(grecaptchav3, {action: 'submit'}).then(function(token) {
-                  });
+            } else if (grecaptchav3 != '' && grecaptchav3 != undefined) { // For Version 3
+                grecaptcha.ready(function () {
+                    grecaptcha.execute(grecaptchav3, { action: 'submit' }).then(function (token) {
+                    });
                 });
             }
         }
@@ -2152,9 +2436,9 @@
     // Contact form validation on blur
     $(document).on('blur', '.required', function () {
         var emailFormat = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
-                telFormat = /[0-9 -()+]+$/,
-                urlformat = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
-                fieldVal = $(this).val();
+            telFormat = /[0-9 -()+]+$/,
+            urlformat = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+            fieldVal = $(this).val();
         if (fieldVal == '' || fieldVal == undefined) {
             $(this).addClass('is-invalid');
         } else if ($(this).attr('type') == 'email' && !emailFormat.test(fieldVal)) {
@@ -2350,7 +2634,7 @@
 
         // Sticky nav Start
         var navHeight = 0,
-                miniHeaderHeight = 0;
+            miniHeaderHeight = 0;
         if ($('header nav.navbar').length) {
             navHeight = $('header nav.navbar').outerHeight();
         }
@@ -2362,18 +2646,18 @@
             if (scrollPos >= headerHeight) {
                 $('header').addClass('sticky');
                 if (!$('.header-top-bar').is(':hidden')) {
-                    $('.header-top-bar').css({'top': '-' + (miniHeaderHeight) + 'px'});
-                    $('.header-top-bar + .navbar').css({'top': '0px'});
+                    $('.header-top-bar').css({ 'top': '-' + (miniHeaderHeight) + 'px' });
+                    $('.header-top-bar + .navbar').css({ 'top': '0px' });
                 } else {
-                    $('.header-top-bar, .header-top-bar + .navbar').css({'top': ''});
+                    $('.header-top-bar, .header-top-bar + .navbar').css({ 'top': '' });
                 }
             } else if (scrollPos <= headerHeight) {
                 $('header').removeClass('sticky');
                 if (!$('.header-top-bar').is(':hidden')) {
-                    $('.header-top-bar').css({'top': '0px'});
-                    $('.header-top-bar + .navbar').css({'top': (miniHeaderHeight) + 'px'});
+                    $('.header-top-bar').css({ 'top': '0px' });
+                    $('.header-top-bar + .navbar').css({ 'top': (miniHeaderHeight) + 'px' });
                 } else {
-                    $('.header-top-bar, .header-top-bar + .navbar').css({'top': ''});
+                    $('.header-top-bar, .header-top-bar + .navbar').css({ 'top': '' });
                 }
             }
         }
@@ -2403,18 +2687,18 @@
         } else {
             $('.scroll-top-arrow').fadeOut('300');
         }
-        
-        if ( $( 'nav.header-reverse-back-scroll' ).length > 0 ) {
+
+        if ($('nav.header-reverse-back-scroll').length > 0) {
             var st = scrollPos;
-            if ( st > lastScroll ) {
+            if (st > lastScroll) {
                 st = st - 1;
-                $( 'header' ).removeClass( 'sticky-appear' );
+                $('header').removeClass('sticky-appear');
             } else {
                 $('header').addClass('sticky-appear');
             }
             lastScroll = st;
-            if ( lastScroll <= headerHeight ) {
-                $( 'header' ).removeClass( 'sticky-appear' );
+            if (lastScroll <= headerHeight) {
+                $('header').removeClass('sticky-appear');
             }
         }
 
@@ -2441,7 +2725,7 @@
     // Check IE browser
     function isIE() {
         var ua = window.navigator.userAgent,
-                msie = ua.indexOf('MSIE ');
+            msie = ua.indexOf('MSIE ');
         if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
             return true;
         } else {
@@ -2463,8 +2747,8 @@
     // Full screen
     function fullScreenHeight() {
         var fullScreenObj = $('.full-screen'),
-                minHeight = getWindowHeight(),
-                headerHeight = getHeaderHeight();
+            minHeight = getWindowHeight(),
+            headerHeight = getHeaderHeight();
         if (!$('header').hasClass('sticky')) {
             fullScreenObj.parents('section').imagesLoaded(function () {
                 if ($('section:first.full-screen, section:first .full-screen').length && ($('.top-space-margin').length || $('.mobile-top-space').length) || $('.ipad-top-space-margin').length) {
@@ -2529,7 +2813,7 @@
         var swipers = document.querySelectorAll('[data-slider-options]:not(.instafeed-wrapper)');
         swipers.forEach(function (swiperItem) {
             var _this = $(swiperItem),
-                    sliderOptions = _this.attr('data-slider-options');
+                sliderOptions = _this.attr('data-slider-options');
             if (typeof (sliderOptions) !== 'undefined' && sliderOptions !== null) {
 
                 sliderOptions = $.parseJSON(sliderOptions);
@@ -2608,9 +2892,9 @@
                     init: function () {
                         let slides = this.slides;
                         let activeIndex = this.activeIndex,
-                                current_slide = this.slides[activeIndex],
-                                anime_el = current_slide.querySelectorAll('[data-anime]'),
-                                fancy_el = current_slide.querySelectorAll('[data-fancy-text]');
+                            current_slide = this.slides[activeIndex],
+                            anime_el = current_slide.querySelectorAll('[data-anime]'),
+                            fancy_el = current_slide.querySelectorAll('[data-fancy-text]');
 
                         if (getWindowWidth() > animeBreakPoint) {
                             if (anime_el) {
@@ -2640,9 +2924,9 @@
                         // Get active slide
                         let slides = this.slides;
                         let activeIndex = this.activeIndex,
-                                current_slide = this.slides[activeIndex],
-                                anime_el = current_slide.querySelectorAll('[data-anime]'),
-                                fancy_el = current_slide.querySelectorAll('[data-fancy-text]');
+                            current_slide = this.slides[activeIndex],
+                            anime_el = current_slide.querySelectorAll('[data-anime]'),
+                            fancy_el = current_slide.querySelectorAll('[data-fancy-text]');
 
                         if (getWindowWidth() > animeBreakPoint) {
                             if (fancy_el) {
@@ -2716,7 +3000,7 @@
                                         type: 'image',
                                         closeOnContentClick: true,
                                         closeBtnInside: false,
-                                        gallery: {enabled: true}
+                                        gallery: { enabled: true }
                                     });
                                 }
                             }
@@ -2727,9 +3011,9 @@
                                     var slideLength = this.slides.length;
                                 }
                                 var length = this.slides.length,
-                                        active = (this.realIndex) + 1,
-                                        next = active + 1,
-                                        prev = active - 1;
+                                    active = (this.realIndex) + 1,
+                                    next = active + 1,
+                                    prev = active - 1;
                                 if (active == 1) {
                                     prev = length;
                                 }
@@ -2818,7 +3102,7 @@
         if (($('.overlap-section').length > 0 || $('.overlap-section-one-fourth').length > 0 || $('.overlap-section-three-fourth').length > 0)) {
             $('.overlap-section, .overlap-section-one-fourth, .overlap-section-three-fourth').each(function () {
                 let _this = $(this),
-                        overlayBreakpoint = 767;
+                    overlayBreakpoint = 767;
 
                 if (_this.hasClass('md-overlap-disable')) {
                     overlayBreakpoint = 991;
@@ -2834,8 +3118,8 @@
                                 closestSectionObj = _this.closest('footer');
                             }
                             var sectionPaddingTop = parseInt(closestSectionObj.css('padding-top')),
-                                    areaHeight = _this.find('*').outerHeight(),
-                                    overlayTop = areaHeight + sectionPaddingTop;
+                                areaHeight = _this.find('*').outerHeight(),
+                                overlayTop = areaHeight + sectionPaddingTop;
                             if (_this.hasClass('overlap-section-one-fourth')) {
                                 overlayTop = (areaHeight / 4) - overlayTop;
                             } else if (_this.hasClass('overlap-section-three-fourth')) {
@@ -2845,7 +3129,7 @@
                             }
                             _this.css('margin-top', overlayTop);
                             var parentSectionObj = closestSectionObj.prev('.overlap-height'),
-                                    overlapGap = parentSectionObj.find('.overlap-gap-section');
+                                overlapGap = parentSectionObj.find('.overlap-gap-section');
                             parentSectionObj.imagesLoaded(function () {
                                 if (overlapGap.length > 0) {
                                     var gapSectionHeight = overlapGap.outerHeight() + (Math.abs(overlayTop) - sectionPaddingTop);
@@ -2869,11 +3153,11 @@
         if (($('.overlap-section-bottom').length > 0) && getWindowWidth() >= 768) {
             $('.overlap-section-bottom').each(function () {
                 var _this = $(this),
-                        timeOut = (_this.find('.instafeed-wrapper').length > 0) ? delay : 10;
+                    timeOut = (_this.find('.instafeed-wrapper').length > 0) ? delay : 10;
                 setTimeout(function () {
                     _this.imagesLoaded(function () {
                         var areaHeight = _this.outerHeight(),
-                                overlayerMargin = ((areaHeight / 2) - areaHeight);
+                            overlayerMargin = ((areaHeight / 2) - areaHeight);
                         _this.parents('section').next('.overlap-gap-section-bottom').css('margin-top', overlayerMargin);
                         _this.parents('section').next('.overlap-gap-section-bottom').css('padding-top', areaHeight);
                     });
@@ -2912,14 +3196,14 @@
             x: 0,
             y: 0
         },
-                pos = {
-                    x: 0,
-                    y: 0
-                },
-                ratio = .65,
-                active = !1,
-                ball = document.getElementById('ball-cursor'),
-                ballloader = document.getElementById('ball-cursor-loader');
+            pos = {
+                x: 0,
+                y: 0
+            },
+            ratio = .65,
+            active = !1,
+            ball = document.getElementById('ball-cursor'),
+            ballloader = document.getElementById('ball-cursor-loader');
 
         function mouseMove(e) {
             var a = window.pageYOffset || document.documentElement.scrollTop;
@@ -2982,9 +3266,9 @@
     }
 
     $(document).on('mouseenter', '.swiper-button-next, .swiper-button-prev, .swiper-pagination, a:not(.force-magic-cursor)', function () {
-        $('.magic-cursor-wrapper').css({'opacity': 0});
+        $('.magic-cursor-wrapper').css({ 'opacity': 0 });
     }).on('mouseleave', '.swiper-button-next, .swiper-button-prev, .swiper-pagination, a:not(.force-magic-cursor)', function () {
-        $('.magic-cursor-wrapper').css({'opacity': 1});
+        $('.magic-cursor-wrapper').css({ 'opacity': 1 });
     });
 
     /* ===================================
@@ -3286,16 +3570,16 @@
                             if (yMove > _this.outerHeight()) {
                                 yMove = _this.outerHeight();
                             }
-                            $(stackItems[i]).css({'height': 'calc(100vh - ' + yMove + 'px)'});
+                            $(stackItems[i]).css({ 'height': 'calc(100vh - ' + yMove + 'px)' });
                             $(stackItems[i]).addClass('active');
                         } else {
-                            $(stackItems[i]).css({'height': 'calc(100vh - 0px)'});
+                            $(stackItems[i]).css({ 'height': 'calc(100vh - 0px)' });
                             $(stackItems[i]).removeClass('active');
                         }
                     }
                 }
             } else {
-                $('.stack-box .stack-item').css({'height': 'inherit'});
+                $('.stack-box .stack-item').css({ 'height': 'inherit' });
             }
         });
 
@@ -3343,13 +3627,13 @@
             if (e && e.type == 'resize') {
                 viewportHeight = docElm.clientHeight;
             }
-            for (i = opts.elements.length; i--; ) {
+            for (i = opts.elements.length; i--;) {
                 var elm = opts.elements[i],
-                        pos = elm.getBoundingClientRect(),
-                        topPerc = pos.top / viewportHeight * 100,
-                        bottomPerc = pos.bottom / viewportHeight * 100,
-                        middle = (topPerc + bottomPerc) / 2,
-                        inViewport = middle > opts.zone[1] && middle < (100 - opts.zone[1]);
+                    pos = elm.getBoundingClientRect(),
+                    topPerc = pos.top / viewportHeight * 100,
+                    bottomPerc = pos.bottom / viewportHeight * 100,
+                    middle = (topPerc + bottomPerc) / 2,
+                    inViewport = middle > opts.zone[1] && middle < (100 - opts.zone[1]);
 
                 elm.classList.toggle(opts.markedClass, inViewport);
 
@@ -3448,19 +3732,19 @@
     function onScroll() {
         if (window.sections.length > 0) {
             const section = window.sections
-                    .map(section => {
-                        const el = section;
-                        const rect = el.getBoundingClientRect();
-                        return {el, rect};
-                    })
-                    .find(section => section.rect.bottom >= (window.innerHeight * 0.5));
+                .map(section => {
+                    const el = section;
+                    const rect = el.getBoundingClientRect();
+                    return { el, rect };
+                })
+                .find(section => section.rect.bottom >= (window.innerHeight * 0.5));
             if (section && section.el !== activeSection) {
                 activeSection = section.el;
                 const sectionBg = activeSection.getAttribute('data-background');
                 activeSection.closest(".page-content").querySelectorAll("[data-background]").forEach(item => item.classList.remove("active"))
                 activeSection.classList.add("active")
                 if (typeof gsap !== "undefined") {
-                    gsap.to(activeSection.closest(".page-content"), {backgroundColor: sectionBg})
+                    gsap.to(activeSection.closest(".page-content"), { backgroundColor: sectionBg })
                 }
             }
         }
@@ -3473,7 +3757,7 @@
         if ($('body').find('#cookies-model').length > 0) {
             setTimeout(function () {
                 var cookieModel = $('#cookies-model'),
-                        cookieConsentclosed = $.cookie('cookieConsent');
+                    cookieConsentclosed = $.cookie('cookieConsent');
 
                 if (cookieConsentclosed == 'closed') {
                     cookieModel.remove();
@@ -3485,7 +3769,7 @@
                     e.preventDefault();
                     var expiresDays = 1;
                     cookieModel.remove();
-                    $.cookie('cookieConsent', 'closed', {expires: expiresDays, path: '/'});
+                    $.cookie('cookieConsent', 'closed', { expires: expiresDays, path: '/' });
                 });
             }, 1000);
         }
@@ -3495,7 +3779,7 @@
      Back to top scroll
      ====================================== */
     $(document).on('click', '.scroll-top', function () {
-        $('html, body').animate({scrollTop: 0}, 800);
+        $('html, body').animate({ scrollTop: 0 }, 800);
         return false;
     });
 
@@ -3561,7 +3845,7 @@
         $('body').removeClass('overflow-hidden');
         clearTimeout(timer);
         timer = setTimeout(function () {
-            $('.theme-demos-main').animate({scrollTop: '0'}, 'slow');
+            $('.theme-demos-main').animate({ scrollTop: '0' }, 'slow');
         }, 800);
 
     });
@@ -3573,7 +3857,7 @@
             $('body').removeClass('overflow-hidden');
             clearTimeout(timer);
             timer = setTimeout(function () {
-                $('.theme-demos-main').animate({scrollTop: '0'}, 'slow');
+                $('.theme-demos-main').animate({ scrollTop: '0' }, 'slow');
             }, 800);
         }
     });
@@ -3591,7 +3875,7 @@
 function initMap() {
     $('.map').each(function (e) {
         let _this = $(this),
-                mapOptions = _this.attr('data-map-options');
+            mapOptions = _this.attr('data-map-options');
 
         // Convert String into the Json
         if (typeof (mapOptions) !== 'undefined' && mapOptions !== null) {
@@ -3599,9 +3883,9 @@ function initMap() {
         }
 
         let lat = mapOptions.lat ? mapOptions.lat : 19.07,
-                lng = mapOptions.lng ? mapOptions.lng : 72.87,
-                marker = mapOptions.marker,
-                popup = mapOptions.popup;
+            lng = mapOptions.lng ? mapOptions.lng : 72.87,
+            marker = mapOptions.marker,
+            popup = mapOptions.popup;
 
         switch (mapOptions.style && mapOptions.style.toLowerCase()) {
             case 'retro':
@@ -3667,13 +3951,13 @@ function initMap() {
 
                     if (popup.defaultOpen === true) {
                         flag = true;
-                        infowindow.setOptions({pixelOffset: new google.maps.Size(10, -30)});
+                        infowindow.setOptions({ pixelOffset: new google.maps.Size(10, -30) });
                         infowindow.open(gmap);
                     }
 
                     google.maps.event.addDomListener(div, "click", function (event) {
                         if (popup) {
-                            infowindow.setOptions({pixelOffset: new google.maps.Size(10, -30)});
+                            infowindow.setOptions({ pixelOffset: new google.maps.Size(10, -30) });
                             if (flag === false) {
                                 infowindow.open(gmap);
                                 flag = true;
@@ -3699,8 +3983,8 @@ function initMap() {
             } else {
                 // Custom Image Marker
                 const image_marker = new google.maps.Marker({
-                    icon: {url: marker.src},
-                    position: {lat: lat, lng: lng},
+                    icon: { url: marker.src },
+                    position: { lat: lat, lng: lng },
                     map: gmap,
                     animation: google.maps.Animation.DROP,
                 });
@@ -3740,7 +4024,7 @@ function initMap() {
         } else {
             // Default Marker
             const marker = new google.maps.Marker({
-                position: {lat: lat, lng: lng},
+                position: { lat: lat, lng: lng },
                 map: gmap
             });
 

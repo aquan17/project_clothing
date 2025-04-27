@@ -1,4 +1,4 @@
-@extends('client.layout.ClientLayout')
+@extends('client.layout.clientlayout')
 @section('title', 'Sản Phẩm')
 {{-- @section('header')
     @include('client.layout.components.header1') --}}
@@ -18,7 +18,19 @@
             </div>
         </div>
     </div>
+    
+    
 </section>
+    
+    <form action="{{ route('products.index') }}" method="GET" class="mb-4" style="max-width: 220px; margin-left: 105px;">
+        <div class="input-group input-group-sm">
+            <input type="text" name="query" class="form-control" placeholder="Tìm sản phẩm..." value="{{ request('query') }}">
+            <button class="btn btn-outline-secondary" type="submit">
+                Tìm Kiếm
+            </button>
+        </div>
+    </form>
+    
 <!-- end section -->
 <!-- start section -->
 <section class="pt-0 ps-6 pe-6 lg-ps-2 lg-pe-2 sm-ps-0 sm-pe-0">
@@ -32,13 +44,13 @@
                     <li class="grid-item">
                         <div class="shop-box mb-10px">
                             <div class="shop-image mb-20px">
-                                <a href="demo-fashion-store-single-product.html">
+                                <a href="{{ route('products.show',$item->id) }}" class="d-block position-relative">
                                     <img src="{{ asset($item->image) }}" alt=""> 
                                     <span class="lable new">New</span>
                                     <div class="shop-overlay bg-gradient-gray-light-dark-transparent"></div>
                                 </a>
                                 <div class="shop-buttons-wrap">
-                                    <a href="demo-fashion-store-single-product.html" class="alt-font btn btn-small btn-box-shadow btn-white btn-round-edge left-icon add-to-cart">
+                                    <a href="{{ route('cart.index') }}" class="alt-font btn btn-small btn-box-shadow btn-white btn-round-edge left-icon add-to-cart">
                                         <i class="feather icon-feather-shopping-bag"></i><span class="quick-view-text button-text">Add to cart</span>
                                     </a>
                                 </div>
@@ -88,7 +100,10 @@
                     </ul>
                 </div>
             </div>
+            
             <div class="col-xxl-2 col-lg-3 shop-sidebar" data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
+                
+                
                 {{-- Filter by Category --}}
                 <div class="mb-30px">
                     <span class="alt-font fw-500 fs-19 text-dark-gray d-block mb-10px">Filter by categories</span>

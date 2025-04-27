@@ -1,11 +1,13 @@
 <header class="header-with-topbar">
     <!-- start header top bar -->
-    <div class="header-top-bar top-bar-light bg-base-color disable-fixed md-border-bottom border-color-transparent-dark-very-light">
+    <div
+        class="header-top-bar top-bar-light bg-base-color disable-fixed md-border-bottom border-color-transparent-dark-very-light">
         <div class="container-fluid">
             <div class="row h-40px align-items-center m-0">
                 <div class="col-12 justify-content-center alt-font fs-13 fw-500 text-uppercase">
                     <div class="text-dark-gray">Enjoy FREE standard delivery on orders over $100.</div>
-                    <a href="#" class="text-dark-gray fw-600 ms-5px text-dark-gray-hover"><span class="text-decoration-line-bottom">Shop now</span></a>
+                    <a href="#" class="text-dark-gray fw-600 ms-5px text-dark-gray-hover"><span
+                            class="text-decoration-line-bottom">Shop now</span></a>
                 </div>
             </div>
         </div>
@@ -14,63 +16,76 @@
     <!-- start navigation -->
     <nav class="navbar navbar-expand-lg header-light bg-white disable-fixed center-logo">
         <div class="container-fluid">
-            <div class="col-auto col-xxl-3 col-lg-2 menu-logo">  
-                <div class="header-icon d-none d-lg-flex"> 
+            <div class="col-auto col-xxl-3 col-lg-2 menu-logo">
+                <div class="header-icon d-none d-lg-flex">
                     <div class="widget-text icon alt-font">
-                        <a href="demo-fashion-store-contact.html"><i class="feather icon-feather-map-pin d-inline-block me-5px"></i><span class="d-none d-xxl-inline-block">Find stores</span></a>
+                        <a href="demo-fashion-store-contact.html"><i
+                                class="feather icon-feather-map-pin d-inline-block me-5px"></i><span
+                                class="d-none d-xxl-inline-block">Find stores</span></a>
                     </div>
                     <div class="widget-text icon alt-font">
-                        <a href="https://www.instagram.com/" target="_blank"><i class="feather icon-feather-instagram d-inline-block me-5px"></i><span class="d-none d-xxl-inline-block">100k Followers</span></a>
+                        <a href="https://www.instagram.com/" target="_blank"><i
+                                class="feather icon-feather-instagram d-inline-block me-5px"></i><span
+                                class="d-none d-xxl-inline-block">100k Followers</span></a>
                     </div>
-                </div> 
+                </div>
                 <a class="navbar-brand" href="demo-fashion-store.html">
-                    <img src="{{asset('client/images/demo-fashion-store-logo-black@2x.png')}}" data-at2x="{{asset('client/images/demo-fashion-store-logo-black@2x.png')}}" alt="" class="default-logo">
-                    <img src="{{asset('client/images/demo-fashion-store-logo-black@2x.png')}}" data-at2x="{{asset('client/images/demo-fashion-store-logo-black@2x.png')}}" alt="" class="alt-logo">
-                    <img src="{{asset('client/images/demo-fashion-store-logo-black@2x.png')}}" data-at2x="{{asset('client/images/demo-fashion-store-logo-black@2x.png')}}" alt="" class="mobile-logo">
-                </a>   
+                    <img src="{{ asset('client/images/demo-fashion-store-logo-black@2x.png') }}"
+                        data-at2x="{{ asset('client/images/demo-fashion-store-logo-black@2x.png') }}" alt=""
+                        class="default-logo">
+                    <img src="{{ asset('client/images/demo-fashion-store-logo-black@2x.png') }}"
+                        data-at2x="{{ asset('client/images/demo-fashion-store-logo-black@2x.png') }}" alt=""
+                        class="alt-logo">
+                    <img src="{{ asset('client/images/demo-fashion-store-logo-black@2x.png') }}"
+                        data-at2x="{{ asset('client/images/demo-fashion-store-logo-black@2x.png') }}" alt=""
+                        class="mobile-logo">
+                </a>
             </div>
             <div class="col-auto col-xxl-6 col-lg-8 menu-order">
-                <button class="navbar-toggler float-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
+                <button class="navbar-toggler float-end" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
                     <span class="navbar-toggler-line"></span>
                     <span class="navbar-toggler-line"></span>
                     <span class="navbar-toggler-line"></span>
                     <span class="navbar-toggler-line"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-between" id="navbarNav"> 
+                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                     <ul class="navbar-nav alt-font navbar-left justify-content-end">
                         <li class="nav-item">
                             <a href="{{ route('home') }}" class="nav-link">Home</a>
                         </li>
                         <li class="nav-item dropdown submenu">
                             <a href="{{ route('products.index') }}" class="nav-link">Shop</a>
-                            <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                            <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink1"> 
+                            <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink1"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                            <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink1">
                                 <div class="d-lg-flex mega-menu m-auto flex-column">
-                                    <div class="row row-cols-1 row-cols-lg-5 row-cols-md-3 row-cols-sm-3 mb-50px md-mb-25px xs-mb-15px">
+                                    <div
+                                        class="row row-cols-1 row-cols-lg-5 row-cols-md-3 row-cols-sm-3 mb-50px md-mb-25px xs-mb-15px">
                                         <div class="col">
-                                            <ul>  
+                                            <ul>
                                                 <li class="sub-title">Men</li>
                                                 <li><a href="#">Jeans</a></li>
                                                 <li><a href="#">Trousers</a></li>
                                                 <li><a href="#">Swimwear</a></li>
                                                 <li><a href="#">Casual shirts</a></li>
                                                 <li><a href="#">Rain jackets</a></li>
-                                                <li><a href="#">Loungewear</a></li> 
+                                                <li><a href="#">Loungewear</a></li>
                                             </ul>
-                                        </div> 
+                                        </div>
                                         <div class="col">
-                                            <ul>  
+                                            <ul>
                                                 <li class="sub-title">Women</li>
                                                 <li><a href="#">Dupattas</a></li>
                                                 <li><a href="#">Leggings</a></li>
                                                 <li><a href="#">Ethnic wear</a></li>
                                                 <li><a href="#">Kurtas & suits</a></li>
                                                 <li><a href="#">Western wear</a></li>
-                                                <li><a href="#">Dress materials</a></li> 
+                                                <li><a href="#">Dress materials</a></li>
                                             </ul>
                                         </div>
                                         <div class="col">
-                                            <ul>  
+                                            <ul>
                                                 <li class="sub-title">Kids</li>
                                                 <li><a href="#">Dresses</a></li>
                                                 <li><a href="#">Jumpsuits</a></li>
@@ -81,108 +96,138 @@
                                             </ul>
                                         </div>
                                         <div class="col">
-                                            <ul>  
+                                            <ul>
                                                 <li class="sub-title">Divided</li>
                                                 <li><a href="#">Tops</a></li>
                                                 <li><a href="#">Dresses</a></li>
                                                 <li><a href="#">Shorts</a></li>
                                                 <li><a href="#">Swimwear</a></li>
                                                 <li><a href="#">Jeans</a></li>
-                                                <li><a href="#">Jackets</a></li> 
+                                                <li><a href="#">Jackets</a></li>
                                             </ul>
                                         </div>
                                         <div class="col">
-                                            <ul>  
+                                            <ul>
                                                 <li class="sub-title">Accessories</li>
                                                 <li><a href="#">Shoes</a></li>
                                                 <li><a href="#">Scarves</a></li>
                                                 <li><a href="#">Watches</a></li>
                                                 <li><a href="#">Wristwear</a></li>
                                                 <li><a href="#">Backpacks</a></li>
-                                                <li><a href="#">Sunglasses</a></li> 
+                                                <li><a href="#">Sunglasses</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="row row-cols-1 row-cols-sm-2">
                                         <div class="col">
-                                            <a href="demo-fashion-store-shop.html"><img src="{{asset('client/images/demo-fashion-store-menu-banner-01.jpg')}}" alt=""></a>
+                                            <a href="demo-fashion-store-shop.html"><img
+                                                    src="{{ asset('client/images/demo-fashion-store-menu-banner-01.jpg') }}"
+                                                    alt=""></a>
                                         </div>
                                         <div class="col">
-                                            <a href="demo-fashion-store-shop.html"><img src="{{asset('client/images/demo-fashion-store-menu-banner-02.jpg')}}" alt=""></a>
+                                            <a href="demo-fashion-store-shop.html"><img
+                                                    src="{{ asset('client/images/demo-fashion-store-menu-banner-02.jpg') }}"
+                                                    alt=""></a>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
-                        </li> 
+                        </li>
                         <li class="nav-item dropdown submenu">
                             <a href="demo-fashion-store-collection.html" class="nav-link">Collection</a>
-                            <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                            <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink2"> 
-                                <div class="d-lg-flex mega-menu m-auto flex-column"> 
-                                    <div class="row row-cols-2 row-cols-lg-6 row-cols-md-3 row-cols-sm-2 md-mx-0 align-items-center justify-content-center">
+                            <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink2"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                            <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink2">
+                                <div class="d-lg-flex mega-menu m-auto flex-column">
+                                    <div
+                                        class="row row-cols-2 row-cols-lg-6 row-cols-md-3 row-cols-sm-2 md-mx-0 align-items-center justify-content-center">
                                         <div class="col md-mb-25px">
-                                            <a href="demo-fashion-store-collection.html" class="justify-content-center mb-10px"> 
-                                                <img src="{{asset('client/images/demo-fashion-store-menu-category-01.jpg')}}" class="border-radius-4px w-100" alt="">  
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="justify-content-center mb-10px">
+                                                <img src="{{ asset('client/images/demo-fashion-store-menu-category-01.jpg') }}"
+                                                    class="border-radius-4px w-100" alt="">
                                             </a>
-                                            <a href="demo-fashion-store-collection.html" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
-                                                <span> 
-                                                    <span class="btn-text text-dark-gray fs-17">Polo t-shirts</span> 
-                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
+                                                <span>
+                                                    <span class="btn-text text-dark-gray fs-17">Polo t-shirts</span>
+                                                    <span class="btn-icon"><i
+                                                            class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
                                                 </span>
                                             </a>
                                         </div>
                                         <div class="col md-mb-25px">
-                                            <a href="demo-fashion-store-collection.html" class="justify-content-center mb-10px"> 
-                                                <img src="{{asset('client/images/demo-fashion-store-menu-category-02.jpg')}}" class="border-radius-4px w-100" alt="">  
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="justify-content-center mb-10px">
+                                                <img src="{{ asset('client/images/demo-fashion-store-menu-category-02.jpg') }}"
+                                                    class="border-radius-4px w-100" alt="">
                                             </a>
-                                            <a href="demo-fashion-store-collection.html" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
-                                                <span> 
-                                                    <span class="btn-text text-dark-gray fs-17">Sunglasses</span> 
-                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
+                                                <span>
+                                                    <span class="btn-text text-dark-gray fs-17">Sunglasses</span>
+                                                    <span class="btn-icon"><i
+                                                            class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
                                                 </span>
                                             </a>
                                         </div>
                                         <div class="col md-mb-25px">
-                                            <a href="demo-fashion-store-collection.html" class="justify-content-center mb-10px"> 
-                                                <img src="{{asset('client/images/demo-fashion-store-menu-category-03.jpg')}}" class="border-radius-4px w-100" alt="">  
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="justify-content-center mb-10px">
+                                                <img src="{{ asset('client/images/demo-fashion-store-menu-category-03.jpg') }}"
+                                                    class="border-radius-4px w-100" alt="">
                                             </a>
-                                            <a href="demo-fashion-store-collection.html" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
-                                                <span> 
-                                                    <span class="btn-text text-dark-gray fs-17">Skinny blazer</span> 
-                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
+                                                <span>
+                                                    <span class="btn-text text-dark-gray fs-17">Skinny blazer</span>
+                                                    <span class="btn-icon"><i
+                                                            class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
                                                 </span>
-                                            </a> 
+                                            </a>
                                         </div>
                                         <div class="col sm-mb-25px">
-                                            <a href="demo-fashion-store-collection.html" class="justify-content-center mb-10px"> 
-                                                <img src="{{asset('client/images/demo-fashion-store-menu-category-04.jpg')}}" class="border-radius-4px w-100" alt="">  
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="justify-content-center mb-10px">
+                                                <img src="{{ asset('client/images/demo-fashion-store-menu-category-04.jpg') }}"
+                                                    class="border-radius-4px w-100" alt="">
                                             </a>
-                                            <a href="demo-fashion-store-collection.html" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
-                                                <span> 
-                                                    <span class="btn-text text-dark-gray fs-17">Casual shoes</span> 
-                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
+                                                <span>
+                                                    <span class="btn-text text-dark-gray fs-17">Casual shoes</span>
+                                                    <span class="btn-icon"><i
+                                                            class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
                                                 </span>
-                                            </a> 
+                                            </a>
                                         </div>
                                         <div class="col">
-                                            <a href="demo-fashion-store-collection.html" class="justify-content-center mb-10px">
-                                                <img src="{{asset('client/images/demo-fashion-store-menu-category-05.jpg')}}" class="border-radius-4px w-100" alt="">
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="justify-content-center mb-10px">
+                                                <img src="{{ asset('client/images/demo-fashion-store-menu-category-05.jpg') }}"
+                                                    class="border-radius-4px w-100" alt="">
                                             </a>
-                                            <a href="demo-fashion-store-collection.html" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
                                                 <span>
                                                     <span class="btn-text text-dark-gray fs-17">Winter jackets</span>
-                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                                    <span class="btn-icon"><i
+                                                            class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
                                                 </span>
                                             </a>
                                         </div>
                                         <div class="col">
-                                            <a href="demo-fashion-store-collection.html" class="justify-content-center mb-10px"> 
-                                                <img src="{{asset('client/images/demo-fashion-store-menu-category-06.jpg')}}" class="border-radius-4px w-100" alt="">  
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="justify-content-center mb-10px">
+                                                <img src="{{ asset('client/images/demo-fashion-store-menu-category-06.jpg') }}"
+                                                    class="border-radius-4px w-100" alt="">
                                             </a>
-                                            <a href="demo-fashion-store-collection.html" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
+                                            <a href="demo-fashion-store-collection.html"
+                                                class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0">
                                                 <span>
                                                     <span class="btn-text text-dark-gray fs-17">Men's shorts</span>
-                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                                    <span class="btn-icon"><i
+                                                            class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
                                                 </span>
                                             </a>
                                         </div>
@@ -191,14 +236,15 @@
                             </div>
                         </li>
                     </ul>
-                    <ul class="navbar-nav alt-font navbar-right justify-content-start"> 
+                    <ul class="navbar-nav alt-font navbar-right justify-content-start">
                         <li class="nav-item">
                             <a href="demo-fashion-store-magazine.html" class="nav-link">Magazine</a>
                         </li>
                         <li class="nav-item dropdown simple-dropdown">
                             <a href="javascript:void(0);" class="nav-link">Pages</a>
-                            <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3"> 
+                            <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink3"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
                                 <li><a href="demo-fashion-store-about.html">About</a></li>
                                 <li><a href="demo-fashion-store-faq.html">Faq</a></li>
                                 <li><a href="demo-fashion-store-wishlist.html">Wishlist</a></li>
@@ -212,10 +258,10 @@
                         </li>
                     </ul>
                 </div>
-            </div> 
+            </div>
             <div class="col-auto col-xxl-3 col-lg-2 text-end">
                 <div class="header-icon">
-                    <div class="header-search-icon icon alt-font">
+                    {{-- <div class="header-search-icon icon alt-font">
                         <a href="javascript:void(0)" class="search-form-icon header-search-form"><i class="feather icon-feather-search me-5px"></i><span class="d-none d-xxl-inline-block">Search</span></a>
                         <div class="search-form-wrapper">
                             <button title="Close" type="button" class="search-close alt-font">×</button>
@@ -229,43 +275,161 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
-                    <div class="widget-text icon alt-font">
-                        <a href="demo-fashion-store-account.html"><i class="feather icon-feather-user d-inline-block me-5px"></i><span class="d-none d-xxl-inline-block">Account</span></a>
+                    </div> --}}
+                    <!-- Dropdown menu cho đăng nhập/đăng xuất/profile với CSS nâng cao -->
+                    <!-- Dropdown menu cho đăng nhập/đăng ký và profile với CSS nâng cao -->
+
+
+                    <div class="header-account-wrapper">
+                        @guest
+                            <!-- Menu khi chưa đăng nhập -->
+                            <div class="widget-text icon alt-font dropdown">
+                                <a href="#" class="dropdown-toggle d-flex align-items-center" id="loginDropdown"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="feather icon-feather-user d-inlin e-block me-5px"></i>
+                                    <span class="d-none d-xxl-inline-block">Tài khoản</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loginDropdown">
+                                    <li class="dropdown-header">Chào mừng bạn</li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('login') }}?redirect={{ urlencode(url()->current()) }}">
+                                            <i class="feather icon-feather-user d-inline-block me-5px"></i>
+                                            <span class="dropdown-item-content">Đăng nhập</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('register') }}">
+                                            <i class="feather icon-feather-user-plus me-2"></i>
+                                            <span class="dropdown-item-content">Đăng Ký</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        @else
+                            <!-- Menu khi đã đăng nhập -->
+                            <div class="widget-text icon alt-font dropdown">
+                                <a href="#" class="dropdown-toggle d-flex align-items-center" id="userDropdown"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @if (Auth::user()->avatar)
+                                        <img src="{{ Auth::user()->avatar }}" alt="Avatar"
+                                            class="user-avatar me-2 d-none d-md-block">
+                                    @else
+                                        <i class="feather icon-feather-user d-inline-block me-5px"></i>
+                                    @endif
+                                    <span class="d-none d-xxl-inline-block">{{ Auth::user()->name }}</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li class="px-3 py-2 d-md-none">
+                                        <div class="d-flex align-items-center">
+                                            @if (Auth::user()->avatar)
+                                                <img src="{{ Auth::user()->avatar }}" alt="Avatar"
+                                                    class="user-avatar me-2">
+                                            @else
+                                                <i class="feather icon-feather-user d-inline-block me-8"></i>
+                                            @endif
+                                            <div class="user-info">
+                                                <div class="user-name">{{ Auth::user()->name }}</div>
+                                                <div class="user-email">{{ Auth::user()->email }}</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider d-md-none">
+                                    </li>
+                                    <li class="dropdown-header d-none d-md-block">Tài khoản của tôi</li>
+                                    <li>
+                                        <a class="dropdown-item" href="">
+                                            <i class="feather icon-feather-user"></i>
+                                            <span class="dropdown-item-content">Hồ sơ của tôi</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="">
+                                            <i class="feather icon-feather-shopping-bag"></i>
+                                            <span class="dropdown-item-content">Đơn hàng</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="">
+                                            <i class="feather icon-feather-heart"></i>
+                                            <span class="dropdown-item-content">Danh sách yêu thích</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="{{ route('logout') }}?redirect={{ urlencode(url()->current()) }}"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <i class="feather icon-feather-log-out"></i>
+                                            <span class="dropdown-item-content">Đăng xuất</span>
+                                        </a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                            <input type="hidden" name="redirect" value="{{ url()->current() }}">
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        @endguest
                     </div>
                     <div class="header-cart-icon icon">
                         <div class="header-cart dropdown">
-                            <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font text-white bg-dark-gray">2</span></a> 
+                            <a href="javascript:void(0);">
+                                <i class="feather icon-feather-shopping-bag"></i>
+                                <span class="cart-count alt-font text-white bg-dark-gray">
+                                    {{ $cartItems->count() }}
+                                </span>
+                            </a>
                             <ul class="cart-item-list">
-                                <li class="cart-item align-items-center">
-                                    <a href="javascript:void(0);" class="alt-font close">×</a>
-                                    <div class="product-image">
-                                        <a href="demo-fashion-store-single-product.html"><img src="{{asset('client/images/demo-fashion-store-product-01.jpg')}}" class="cart-thumb" alt=""></a>
-                                    </div>
-                                    <div class="product-detail fw-600">
-                                        <a href="demo-fashion-store-single-product.html">Ribbed tank</a>
-                                        <span class="item-ammount fw-400">1 x $23.00</span> 
-                                    </div>
-                                </li>
-                                <li class="cart-item align-items-center">
-                                    <a href="javascript:void(0);" class="alt-font close">×</a>
-                                    <div class="product-image">
-                                        <a href="demo-fashion-store-single-product.html"><img src="{{asset('client/images/demo-fashion-store-product-02.jpg')}}" class="cart-thumb" alt=""></a>
-                                    </div>
-                                    <div class="product-detail fw-600">
-                                        <a href="demo-fashion-store-single-product.html">Pleated dress</a>
-                                        <span class="item-ammount fw-400">2 x $15.00</span> 
-                                    </div>
-                                </li>
+                                @if($cartItems->isEmpty())
+                                    <li class="cart-item">
+                                        <span>No items in cart.</span>
+                                    </li>
+                                @else
+                                    @foreach ($cartMiniItems  as $item)
+                                        <li class="cart-item align-items-center">
+                                            <a href="javascript:void(0);" class="alt-font close">×</a>
+                                            <div class="product-image">
+                                                <a href="{{ route('products.show', $item->productVariant->product->id) }}">
+                                                    <img src="{{ asset($item->productVariant->product->image) }}" class="cart-thumb" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="product-detail fw-600">
+                                                <a href="{{ route('products.show', $item->productVariant->product->id) }}">
+                                                    {{ $item->productVariant->product->name }}
+                                                </a>
+                                                <span class="item-ammount fw-400">
+                                                    {{ $item->quantity }} x {{ number_format($item->productVariant->product->price * $item->quantity) }}đ
+                                                </span>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                @endif
+                    
                                 <li class="cart-total">
-                                    <div class="fs-18 alt-font mb-15px"><span class="w-50 fw-500 text-start">Subtotal:</span><span class="w-50 text-end fw-700">$199.99</span></div>
-                                    <a href="{{ route('cart') }}" class="btn btn-large btn-transparent-light-gray border-color-extra-medium-gray">View cart</a>
-                                    <a href="demo-fashion-store-checkout.html" class="btn btn-large btn-dark-gray btn-box-shadow">Checkout</a>
+                                    <div class="fs-18 alt-font mb-15px">
+                                        <span class="w-50 fw-500 text-start">Subtotal:</span>
+                                        <span class="w-50 text-end fw-700">
+                                        {{ number_format($cartTotal, 0, ',', '.') }}đ
+                                        </span>
+                                        
+                                        
+                                        
+                                    </div>
+                                    <a href="{{ route('cart.index') }}" class="btn btn-large btn-transparent-light-gray border-color-extra-medium-gray">
+                                        View cart
+                                    </a>
+                                    <a href="" class="btn btn-large btn-dark-gray btn-box-shadow">
+                                        Checkout
+                                    </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                </div> 
+                    
+                    
+                </div>
             </div>
         </div>
     </nav>
