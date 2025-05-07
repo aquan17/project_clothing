@@ -23,27 +23,28 @@ class CartMiddleware
         $cartItems = collect();         // Tất cả sản phẩm trong giỏ
         $cartMiniItems = collect();     // 2 sản phẩm mới nhất hiển thị
         $cartTotal = 0;                 // Tổng giá trị toàn bộ giỏ hàng
-
+    
         if (Auth::check()) {
             Log::info('User is authenticated', ['user_id' => Auth::id()]);
             $customer = Auth::user()->customer;
-
+    
             if ($customer) {
                 Log::info('Customer found', ['customer_id' => $customer->id]);
-
+    
                 // Lấy đơn hàng với tất cả items
                 $order = Order::with(['items.productVariant.product'])
                     ->where('customer_id', $customer->id)
                     ->where('status', 'pending') // Giả sử giỏ hàng là 'pending'
                     ->latest()
                     ->first();
-
+    
                 if ($order) {
                     Log::info('Order found', ['order_id' => $order->id]);
                     // Gán tất cả sản phẩm vào biến chính
                     $cartItems = $order->items ?? collect([]);
+                    // dd($cartItems);
                     // Lấy 2 sản phẩm mới nhất để hiển thị mini cart
-                    $cartMiniItems = $cartItems->sortByDesc('created_at')->take(2);
+                    $cartMiniItems = $cartItems->sortByDesc('created_at')->take(6)->values();
                     // Tính tổng giá trị toàn bộ giỏ hàng
                     $cartTotal = $cartItems->sum(function ($item) {
                         return $item->productVariant->product->price * $item->quantity;
@@ -57,16 +58,17 @@ class CartMiddleware
         } else {
             Log::info('User is not authenticated');
         }
-
+    
         // Đảm bảo $cartItems luôn là Collection
         Log::info('Cart Items', ['cartItems' => $cartItems->toArray()]);
         Log::info('Cart Total', ['cartTotal' => $cartTotal]);
-
+    
         // Chia sẻ ra tất cả view
         View::share('cartItems', $cartItems);           // Tất cả sản phẩm
         View::share('cartMiniItems', $cartMiniItems);   // 2 sản phẩm hiển thị
         View::share('cartTotal', $cartTotal);           // Tổng giá trị giỏ hàng
-
+    
         return $next($request);
     }
+    
 }

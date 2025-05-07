@@ -18,6 +18,7 @@ class ShippingAddress extends Model
         'district',
         'ward',
         'notes',
+        'is_default',
     ];
 
     /**

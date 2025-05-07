@@ -1,252 +1,240 @@
 @extends('client.layout.ClientLayout')
 @section('title', 'Thanh Toán')
 @section('content')
-    <section class="top-space-margin half-section bg-gradient-very-light-gray">
+    <section class="page-wrapper bg-primary">
         <div class="container">
-            <div class="row align-items-center justify-content-center"
-                data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'>
-                <div class="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
-                    <h1 class="alt-font fw-600 text-dark-gray mb-10px">Checkout</h1>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center d-flex align-items-center justify-content-between">
+                        <h4 class="text-white mb-0">Checkout</h4>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb breadcrumb-light justify-content-center mb-0 fs-15">
+                                <li class="breadcrumb-item"><a href="#!">Shop</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                            </ol>
+                        </nav>
+                    </div>
                 </div>
-                <div class="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center">
-                    <ul>
-                        <li><a href="demo-fashion-store.html">Home</a></li>
-                        <li>Checkout</li>
-                    </ul>
-                </div>
+                <!--end col-->
             </div>
+            <!--end row-->
         </div>
+        <!--end container-->
     </section>
-    <!-- end section -->
-    <!-- start section -->
-    <section class="pt-0">
-        <div class="container">
-            <div class="row justify-content-center mb-8 lg-mb-10 align-items-center">
-                <div class="col-auto icon-with-text-style-08 lg-mb-10px">
-                    <div class="feature-box feature-box-left-icon">
-                        <div class="feature-box-icon me-5px">
-                            <i class="feather icon-feather-user top-9px position-relative text-dark-gray icon-small"></i>
+
+    <form action="{{ route('client.payment.showPaymentPage') }}" method="GET">
+        @csrf
+        <!-- Địa chỉ giao hàng -->
+        <input type="hidden" name="shipping_address_id" value="{{ $defaultAddress->id }}">
+
+        <!-- Danh sách sản phẩm đã chọn -->
+        @foreach ($selectedItems as $item)
+            <input type="hidden" name="selected_items[]" value="{{ $item->id }}">
+        @endforeach
+
+        <!-- Mã voucher, nếu có -->
+        <input type="hidden" name="voucher_code" value="{{ session('voucher.code') ?? '' }}">
+
+        <!-- Tổng tiền cuối cùng -->
+        <input type="hidden" name="total_price" value="{{ $finalTotal }}">
+
+        <section class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-danger alert-modern alert-dismissible fade show" role="alert">
+                            <i class="bi bi-box-arrow-in-right icons"></i>Returning customer?<a
+                                href="auth-signin-basic.html" class="link-danger"><strong> Click here to login</strong>.</a>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <div class="feature-box-content">
-                            <span class="d-inline-block text-dark-gray align-middle alt-font fw-500">Returning customer? <a
-                                    href="#" class="text-decoration-line-bottom fw-600 text-dark-gray">Click here to
-                                    login</a></span>
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="row">
+                    <div class="col-xl-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive table-card">
+                                    <table class="table align-middle table-borderless table-nowrap text-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Product</th>
+                                                <th scope="col">Rate</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($selectedItems as $item)
+                                                <tr>
+                                                    <td class="text-start">
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <div class="avatar-sm flex-shrink-0">
+                                                                <div class="avatar-title bg-success-subtle rounded-3">
+                                                                    <img src="{{ asset('client/images/fashion/product/' . $item->productVariant->product->image) }}"
+                                                                        alt="" class="avatar-xs">
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <h6>{{ $item->productVariant->product->name }}</h6>
+                                                                <p class="text-muted mb-0">Color:
+                                                                    {{ $item->productVariant->color }} - Size:
+                                                                    {{ $item->productVariant->size }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        ${{ $item->productVariant->product->price }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->quantity }}
+                                                    </td>
+                                                    <td class="text-end">
+                                                        ${{ $item->productVariant->product->price * $item->quantity }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-2">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="flex-grow-1">
+                                    <h5 class="mb-0">Shipping Address</h5>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <a href="{{ route('address.index') }}"
+                                        class="badge bg-secondary-subtle text-secondary  link-secondary">
+                                        Add Address
+                                    </a>
+                                </div>
+                            </div>
+                            @if ($defaultAddress)
+                                {{--  --}}
+                                <div class="row gy-3">
+                                    <div class="col-12"> {{-- Chỉ hiển thị 1 địa chỉ được chọn --}}
+                                        <div class="form-check card-radio">
+                                            <input id="shippingAddress_{{ $defaultAddress->id }}"
+                                                name="selected_shipping_address_radio" {{-- Đổi tên radio để tránh trùng với input ẩn --}} type="radio"
+                                                class="form-check-input" value="{{ $defaultAddress->id }}" checked>
+                                            {{-- Luôn check cái này ban đầu --}}
+                                            <label class="form-check-label w-100"
+                                                for="shippingAddress_{{ $defaultAddress->id }}">
+                                                <span class="mb-3 text-uppercase fw-semibold d-block">
+                                                    {{ $defaultAddress->is_default ? 'Địa chỉ mặc định' : 'Địa chỉ giao hàng' }}
+                                                </span>
+                                                <span
+                                                    class="fs-14 mb-2 d-block fw-semibold">{{ $defaultAddress->name }}</span>
+                                                @php
+                                                    $fullAddress = implode(
+                                                        ', ',
+                                                        array_filter([
+                                                            $defaultAddress->notes,
+                                                            $defaultAddress->ward,
+                                                            $defaultAddress->district,
+                                                            $defaultAddress->province,
+                                                            $defaultAddress->country,
+                                                        ]),
+                                                    );
+                                                @endphp
+                                                <span
+                                                    class="text-muted fw-normal text-wrap mb-1 d-block">{{ $fullAddress }}</span>
+                                                <span class="text-muted fw-normal d-block">SĐT:
+                                                    {{ $defaultAddress->phone }}</span>
+                                            </label>
+                                        </div>
+                                        {{-- Bỏ nút Edit/Remove ở đây, chỉ giữ nút quản lý chung --}}
+                                        {{-- <div class="d-flex flex-wrap p-2 py-1 bg-light rounded-bottom border mt-n1"> ... </div> --}}
+                                    </div>
+                                </div>
+                                {{-- Nút để thay đổi địa chỉ (tùy chọn) --}}
+                                <div class="mt-3 text-center">
+                                    <a href="{{ route('address.index') }}"
+                                        class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                                        <i class="bi bi-house-gear me-1"></i>
+                                        Chọn hoặc thay đổi địa chỉ khác
+                                    </a>
+                                </div>
+                            @else
+                                {{-- Không tìm thấy địa chỉ nào --}}
+                                <div class="alert alert-warning" role="alert">
+                                    Bạn chưa có địa chỉ giao hàng. Vui lòng <a href="{{ route('address.index') }}"
+                                        class="alert-link">Thêm địa chỉ mới</a>.
+                                </div>
+                            @endif
+
+                        </div>
+
+
+                    </div>
+                    <!-- end col -->
+                    <div class="col-lg-4">
+                        <div class="sticky-side-div">
+
+                            <div class="card overflow-hidden">
+                                <div class="card-header border-bottom-dashed">
+                                    <h5 class="card-title mb-0 fs-15">Order Summary</h5>
+                                </div>
+                                <div class="card-body pt-4">
+                                    <div class="table-responsive table-card">
+                                        <table class="table table-borderless mb-0 fs-15">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Tổng tiền hàng:</td>
+                                                    {{-- Sửa dòng này: Hiển thị $subtotal từ Controller --}}
+                                                    <td class="text-end">${{ number_format($subtotal, 2) }}</td>
+                                                </tr>
+                                                {{-- Chỉ hiển thị dòng giảm giá nếu $discountAmount > 0 --}}
+                                                @if ($discount > 0)
+                                                    <tr>
+                                                        <td>
+                                                            Giảm giá
+                                                            @if ($voucherCode)
+                                                                <span class="text-muted">({{ $voucherCode }})</span>
+                                                            @endif
+                                                            :
+                                                        </td>
+                                                        <td class="text-end">-${{ number_format($discount, 2) }}</td>
+                                                    </tr>
+                                                @endif
+                                                {{-- Kết thúc kiểm tra hiển thị giảm giá --}}
+                                                <tr>
+                                                    <td>Phí vận chuyển:</td>
+                                                    {{-- Sửa dòng này: Hiển thị $shippingFee từ Controller --}}
+                                                    <td class="text-end">${{ number_format($shippingFee ?? 0, 2) }}</td>
+                                                </tr>
+                                                {{-- Nếu bạn có tính thuế và truyền biến $taxAmount thì thêm dòng tương tự --}}
+                                                <tr class="table-active">
+                                                    <th>Tổng cộng:</th>
+                                                    <td class="text-end">
+                                                        {{-- Sửa dòng này: Hiển thị $finalTotal từ Controller --}}
+                                                        <span
+                                                            class="fw-semibold">${{ number_format($finalTotal, 2) }}</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hstack gap-2 justify-content-end">
+                                <a href="{{ route('client.products') }}" class="btn btn-hover btn-danger">Continue
+                                    Shopping</a>
+                                <button type="submit" class="btn btn-hover btn-success" id="checkout-button">
+                                    Check Out <i class="ri-logout-box-r-line align-bottom ms-1"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-auto d-none d-lg-inline-block">
-                    <span class="w-1px h-20px bg-extra-medium-gray d-block"></span>
-                </div>
-                <div class="col-auto icon-with-text-style-08">
-                    <div class="feature-box feature-box-left-icon">
-                        <div class="feature-box-icon me-5px">
-                            <i
-                                class="feather icon-feather-scissors top-9px position-relative text-dark-gray icon-small"></i>
-                        </div>
-                        <div class="feature-box-content">
-                            <span class="d-inline-block text-dark-gray align-middle alt-font fw-500">Have a coupon? <a
-                                    href="#" class="text-decoration-line-bottom fw-600 text-dark-gray">Click here to
-                                    enter your code</a></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row align-items-start">
-                <div class="col-lg-7 pe-50px md-pe-15px md-mb-50px xs-mb-35px">
-                    <span class="fs-26 alt-font fw-600 text-dark-gray mb-20px d-block">Billing details</span>
-                    <form method="POST" action="">
-                        @csrf
-                        <div class="row">
-                            <div class="col-12 mb-20px">
-                                <label class="mb-10px">Thông tin liên hệ<span class="text-red">*</span></label>
-                                <input name="name" class="border-radius-4px input-small" type="text" required
-                                    value="{{ old('name') }}" placeholder="Nhập họ tên...">
-                            </div>
-
-                            <div class="col-12 mb-20px">
-                                {{-- <label class="mb-10px">Số điện thoại <span class="text-red">*</span></label> --}}
-                                <input name="phone" class="border-radius-4px input-small" type="text" required
-                                    value="{{ old('phone') }}" placeholder="Nhập số điện thoại...">
-                            </div>
-
-                            <div class="col-12 mb-20px">
-                                <label class="mb-10px">Thông tin địa chỉ <span class="text-red">*</span></label>
-                                <input name="country" class="border-radius-4px input-small" type="text" value="Việt Nam"
-                                    readonly>
-                            </div>
-
-                            <div class="col-12 mb-20px">
-                                <!-- Tỉnh -->
-                                <select id="province" class="border-radius-4px input-small" required>
-                                    <option value="">Chọn tỉnh/thành</option>
-                                    <!-- Options sẽ được điền qua JavaScript -->
-                                </select>
-
-                                <!-- Quận/Huyện -->
-                                <select id="district" class="border-radius-4px input-small" required>
-                                    <option value="">Chọn quận/huyện</option>
-                                    <!-- Options sẽ được điền qua JavaScript -->
-                                </select>
-
-                                <!-- Xã/Phường -->
-                                <select id="ward" class="border-radius-4px input-small" required>
-                                    <option value="">Chọn xã/phường</option>
-                                    <!-- Options sẽ được điền qua JavaScript -->
-                                </select>
-                                <textarea name="notes" class="border-radius-4px textarea-small" rows="3"
-                                    placeholder="Ghi chú địa chỉ...">{{ old('notes') }}</textarea>
-                            </div>
-                            <div class="col-12 mb-20px">
-                                <label class="mb-10px">Ghi chú đơn hàng (không bắt buộc)</label>
-                                <textarea name="order_notes" class="border-radius-4px textarea-small" rows="5"
-                                    placeholder="Ghi chú cho đơn hàng...">{{ old('order_notes') }}</textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="col-lg-5">
-                    <div class="bg-very-light-gray border-radius-6px p-50px lg-p-25px your-order-box">
-                        <span class="fs-26 alt-font fw-600 text-dark-gray mb-5px d-block">Your order</span>
-                        <table class="w-100 total-price-table your-order-table">
-                            <tbody>
-                                <tr>
-                                    <th class="w-60 lg-w-55 xs-w-50 fw-600 text-dark-gray alt-font">Product</th>
-                                    <td class="fw-600 text-dark-gray alt-font">Total</td>
-                                </tr>
-                                <tr class="product">
-                                    <td class="product-thumbnail">
-                                        <a href="demo-jewellery-store-single-product.html"
-                                            class="text-dark-gray fw-500 d-block lh-initial">Textured sweater x 1</a>
-                                        <span class="fs-14 d-block">Color: Pink</span>
-                                    </td>
-                                    <td class="product-price" data-title="Price">$23.00</td>
-                                </tr>
-                               
-                               
-                                <tr class="shipping">
-                                    <th class="fw-600 text-dark-gray alt-font">Shipping</th>
-                                    <td data-title="Shipping">
-                                        <ul class="p-0">
-                                            <li class="d-flex align-items-center">
-                                                <input id="free_shipping" type="radio" name="shipping-option"
-                                                    class="d-block w-auto mb-0 me-10px p-0" checked="checked">
-                                                <label class="md-line-height-18px" for="free_shipping">Free
-                                                    shipping</label>
-                                            </li>
-                                            <li class="d-flex align-items-center">
-                                                <input id="flat" type="radio" name="shipping-option"
-                                                    class="d-block w-auto mb-0 me-10px p-0">
-                                                <label class="md-line-height-18px" for="flat">Flat: $12.00</label>
-                                            </li>
-                                            <li class="d-flex align-items-center">
-                                                <input id="local_pickup" type="radio" name="shipping-option"
-                                                    class="d-block w-auto mb-0 me-10px p-0">
-                                                <label class="md-line-height-18px" for="local_pickup">Local pickup</label>
-                                            </li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                                <tr class="total-amount">
-                                    <th class="fw-600 text-dark-gray alt-font">Total</th>
-                                    <td data-title="Total">
-                                        <h6 class="d-block fw-700 mb-0 text-dark-gray alt-font">$405.00</h6>
-                                        <span class="fs-14">(Includes $19.29 tax)</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div
-                            class="p-40px lg-p-25px bg-white border-radius-6px box-shadow-large mt-10px mb-30px sm-mb-25px checkout-accordion">
-                            <div class="w-100" id="accordion-style-05">
-                                <!-- start tab content -->
-                                <div class="heading active-accordion">
-                                    <label class="mb-5px">
-                                        <input class="d-inline w-auto me-5px mb-0 p-0" type="radio"
-                                            name="payment-option" checked="checked">
-                                        <span class="d-inline-block text-dark-gray fw-500">Direct bank transfer</span>
-                                        <a class="accordion-toggle" data-bs-toggle="collapse"
-                                            data-bs-parent="#accordion-style-05" href="#style-5-collapse-1"></a>
-                                    </label>
-                                </div>
-                                <div id="style-5-collapse-1" class="collapse show" data-bs-parent="#accordion-style-05">
-                                    <div class="p-25px bg-very-light-gray mt-20px mb-20px fs-14 lh-24">Make your payment
-                                        directly into our bank account. Please use your Order ID as the payment reference.
-                                        Your order will not be shipped until the funds have cleared in our account.</div>
-                                </div>
-                                <!-- end tab content -->
-                                <!-- start tab content -->
-                                <div class="heading active-accordion">
-                                    <label class="mb-5px">
-                                        <input class="d-inline w-auto me-5px mb-0 p-0" type="radio"
-                                            name="payment-option">
-                                        <span class="d-inline-block text-dark-gray fw-500">Check payments</span>
-                                        <a class="accordion-toggle" data-bs-toggle="collapse"
-                                            data-bs-parent="#accordion-style-05" href="#style-5-collapse-2"></a>
-                                    </label>
-                                </div>
-                                <div id="style-5-collapse-2" class="collapse" data-bs-parent="#accordion-style-05">
-                                    <div class="p-25px bg-very-light-gray mt-20px mb-20px fs-14 lh-24">Please send a check
-                                        to store name, store street, store town, store state / county, store postcode.</div>
-                                </div>
-                                <!-- end tab content -->
-                                <!-- start tab content -->
-                                <div class="heading active-accordion">
-                                    <label class="mb-5px">
-                                        <input class="d-inline w-auto me-5px mb-0 p-0" type="radio"
-                                            name="payment-option">
-                                        <span class="d-inline-block text-dark-gray fw-500">Cash on delivery</span>
-                                        <a class="accordion-toggle" data-bs-toggle="collapse"
-                                            data-bs-parent="#accordion-style-05" href="#style-5-collapse-3"></a>
-                                    </label>
-                                </div>
-                                <div id="style-5-collapse-3" class="collapse" data-bs-parent="#accordion-style-05">
-                                    <div class="p-25px bg-very-light-gray mt-20px mb-20px fs-14 lh-24">Pay with cash upon
-                                        delivery.</div>
-                                </div>
-                                <!-- end tab content -->
-                                <!-- start tab content -->
-                                <div class="heading active-accordion">
-                                    <label class="mb-5px">
-                                        <input class="d-inline w-auto me-5px mb-0 p-0" type="radio"
-                                            name="payment-option">
-                                        <span class="d-inline-block text-dark-gray fw-500">PayPal <img
-                                                src="images/paypal-logo.jpg" class="w-120px ms-10px"
-                                                alt="" /></span>
-                                        <a class="accordion-toggle" data-bs-toggle="collapse"
-                                            data-bs-parent="#accordion-style-05" href="#style-5-collapse-4"></a>
-                                    </label>
-                                </div>
-                                <div id="style-5-collapse-4" class="collapse" data-bs-parent="#accordion-style-05">
-                                    <div class="p-25px bg-very-light-gray mt-20px fs-14 lh-24">You can pay with your credit
-                                        card if you don't have a PayPal account.</div>
-                                </div>
-                                <!-- end tab content -->
-                            </div>
-                        </div>
-                        <p class="fs-14 lh-24">Your personal data will be used to process your order, support your
-                            experience throughout this website, and for other purposes described in our <a
-                                class="text-decoration-line-bottom text-dark-gray fw-500" href="#">privacy
-                                policy.</a></p>
-                        <div class="position-relative terms-condition-box text-start d-flex align-items-center">
-                            <label>
-                                <input type="checkbox" name="terms_condition" value="1"
-                                    class="check-box align-middle">
-                                <span class="box fs-14 lh-28">I have agree to the website <a href="#"
-                                        class="text-decoration-line-bottom text-dark-gray fw-500">terms and
-                                        conditions.</a></span>
-                            </label>
-                        </div>
-                        <a href="#"
-                            class="btn btn-dark-gray btn-large btn-switch-text btn-round-edge btn-box-shadow w-100 mt-30px">
-                            <span>
-                                <span class="btn-double-text" data-text="Place order">Place order</span>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                </div><!--end row-->
+                <div id="toast-container" class="position-fixed top-0 end-0 p-3" style="z-index: 11;"></div>
+            </div><!--end container-->
+        </section>
+    </form>
 
 @endsection
+@push('scripts')
+    <script src="{{ asset('client/js/pages/form-wizard.init.js') }}"></script>
+    {{-- <script src="{{ asset('client/js/cart.js') }}"></script> --}}
+@endpush

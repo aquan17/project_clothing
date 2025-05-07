@@ -23,7 +23,28 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        User::factory(2)->create();
+        $totalImages = 18;
+        $index = 1;
+    
+        // Lấy tất cả sản phẩm hiện có
+        $products = Product::all();
+    
+        foreach ($products as $product) {
+            // Tạo tên ảnh dạng img-01.png → img-18.png
+            $imageName = 'img-' . str_pad($index, 2, '0', STR_PAD_LEFT) . '.png';
+    
+            // Cập nhật cột ảnh
+            $product->update([
+                'image' =>  $imageName,
+            ]);
+    
+            // Tăng chỉ số ảnh, reset về 1 nếu > 18
+            $index++;
+            if ($index > $totalImages) {
+                $index = 1;
+            }
+        }
+        // User::factory(2)->create();
         // $danhmuc = [
         //     'Áo thun',
         //     'Áo sơ mi',

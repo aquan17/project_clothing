@@ -20,9 +20,8 @@ class ProductController extends Controller
         $colors = ProductVariant::select('color')->distinct()->pluck('color')->filter();
         $sizes = ProductVariant::select('size')->distinct()->pluck('size')->filter();
 
-
         // Xây dựng query sản phẩm
-        $query = Product::with(['variants', 'category']);
+        $query = Product::with(['variants', 'category', 'ratings']);
 
         // Lọc theo danh mục
         if ($request->has('category')) {
@@ -48,20 +47,62 @@ class ProductController extends Controller
             });
         }
 
-        // ✅ Tìm kiếm theo tên sản phẩm
+        // Tìm kiếm theo tên sản phẩm
         if ($request->has('query')) {
             $keyword = $request->input('query');
             $query->where('name', 'like', '%' . $keyword . '%');
         }
-        // Lấy sản phẩm với phân trang (10 sản phẩm mỗi trang)
-        $products = $query->paginate(16)->appends($request->query());
+
+        // Sắp xếp sản phẩm
+        if ($request->has('sort')) {
+            $sortType = $request->input('sort');
+            if ($sortType === 'low_to_high') {
+                $query->orderBy('price', 'asc');
+            } elseif ($sortType === 'high_to_low') {
+                $query->orderBy('price', 'desc');
+            }
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        // Lấy tất cả sản phẩm (không phân trang để JavaScript xử lý)
+        $products = $query->get()->map(function ($product) {
+            // Lấy màu sắc và kích cỡ từ variants
+            $colors = $product->variants->pluck('color')->filter()->unique()->toArray();
+            $sizes = $product->variants->pluck('size')->filter()->unique()->toArray();
+
+            // Tính trung bình rating (nếu có)
+            $rating = $product->ratings->avg('rating') ?? 0;
+
+            return [
+                'id' => $product->id,
+                'wishList' => false, // Giá trị mặc định vì không có cột wish_list
+                'productImg' => $product->image ? asset('client/images/fashion/product/' . $product->image) : '', // Đường dẫn hình ảnh
+                'productTitle' => $product->name,
+                'category' => $product->category->name ?? '', // Tên danh mục
+                'price' => number_format($product->price, 2), // Giá dạng chuỗi
+                'discount' => '0%', // Giá trị mặc định vì không có cột discount
+                'rating' => number_format($rating, 1), // Rating dạng chuỗi
+                'arrival' => false, // Giá trị mặc định vì không có cột arrival
+                'color' => $colors, // Mảng màu sắc
+                'size' => $sizes, // Mảng kích cỡ
+            ];
+        });
+
         return view('client.shop', compact('products', 'categories', 'colors', 'sizes'));
     }
     public function filterByCategory($id)
     {
-        $categories = Category::all();
-        $product = Product::where('category_id', $id)->paginate(8);
-        return view('client.shop', compact('categories', 'product'));
+        $categories = Category::withCount('products')->get();
+        $colors = ProductVariant::select('color')->distinct()->pluck('color')->filter();
+        $sizes = ProductVariant::select('size')->distinct()->pluck('size')->filter();
+        
+        $products = Product::with(['variants', 'category', 'ratings'])
+            ->where('category_id', $id)
+            ->orderBy('id', 'desc')
+            ->paginate(16);
+        
+        return view('client.shop', compact('categories', 'products', 'colors', 'sizes'));
     }
     public function show($id)
     {
@@ -134,13 +175,19 @@ class ProductController extends Controller
     }
     public function search(Request $request)
     {
-        $categories = Category::all();
+        $categories = Category::withCount('products')->get();
+        $colors = ProductVariant::select('color')->distinct()->pluck('color')->filter();
+        $sizes = ProductVariant::select('size')->distinct()->pluck('size')->filter();
+        
         $keyword = $request->q;
 
-        $product = Product::where('name', 'like', "%$keyword%")
+        $products = Product::with(['variants', 'category', 'ratings'])
+            ->where('name', 'like', "%$keyword%")
             ->orWhere('description', 'like', "%$keyword%")
-            ->paginate(10);
+            ->orderBy('id', 'desc')
+            ->paginate(16)
+            ->appends($request->query());
 
-        return view('client.shop', compact('product', 'keyword', 'categories'));
+        return view('client.shop', compact('products', 'keyword', 'categories', 'colors', 'sizes'));
     }
 }
