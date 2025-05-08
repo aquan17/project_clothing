@@ -3,12 +3,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'slug', 'description', 'price', 'image', 'status', 'category_id'];
+    protected $fillable = ['name', 'slug', 'description', 'price', 'image', 'status', 'category_id', 'total_stock', 'sku'];
 
     // Quan hệ với bảng Category
     public function category()

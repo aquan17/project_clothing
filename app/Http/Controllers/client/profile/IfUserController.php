@@ -53,7 +53,7 @@ class IfUserController extends Controller
                 return ($item->price ?? 0) * $item->quantity;
             });
 // dd($subtotal);
-            // Lấy giá trị discount (voucher_discount), shipping và tính total
+            // Lấy giá trị discount (voucher_discount), shipping và tính total`
             $discount = (float) ($order->voucher_discount ?? 0);
             $shipping = (float) ($order->shipping_fee ?? 0);
             $total = $subtotal + $shipping - $discount;

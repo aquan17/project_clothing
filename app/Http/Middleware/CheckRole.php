@@ -16,9 +16,9 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || !Auth::user()->role === 'admin') {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
             abort(403, 'Unauthorized');
         }
-        return redirect('/')->with('error', 'Bạn không có quyền truy cập khu vực này!');
+        return $next($request);
     }
 }

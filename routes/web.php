@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\product\AdminProductController;
 use App\Http\Controllers\client\AddressController;
 use App\Http\Controllers\client\profile\IfUserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\client\CartController;
 use App\Http\Controllers\client\CheckoutController;
 use App\Http\Controllers\client\HomeController;
@@ -12,8 +13,7 @@ use App\Http\Controllers\client\PaymentController;
 use App\Http\Controllers\client\ProductController;
 use App\Http\Controllers\client\UserController;
 use App\Http\Controllers\client\VoucherController;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,37 +21,6 @@ use Illuminate\Support\Facades\Session;
 |--------------------------------------------------------------------------
 */
 
-// Route::get('/test-order-info', function () {
-//     $fakeOrder = [
-//         'defaultAddress' => \App\Models\ShippingAddress::first(),
-//         'finalTotal' => 500000,
-//         'subtotal' => 500000,
-//         'voucherDiscount' => 50000,
-//         'shippingFee' => 20000,
-//         'coupon_id' => 1,
-//         'notes' => 'Đơn hàng test',
-//         'selectedItems' => collect([
-//             (object)[
-//                 'product_variant_id' => 1,
-//                 'quantity' => 2,
-//                 'price' => 150000,
-//             ],
-//             (object)[
-//                 'product_variant_id' => 2,
-//                 'quantity' => 1,
-//                 'price' => 200000,
-//             ],
-//         ]),
-//     ];
-
-//     Session::put('order_info', $fakeOrder);
-//     Session::save(); // <- rất quan trọng
-//     Log::info('Dữ liệu order_info đã được lưu vào session:', ['order_info' => $fakeOrder]);
-
-//     // Kiểm tra session
-//     Log::debug('Dữ liệu trong session:', [Session::get('order_info')]);
-//     return redirect()->route('client.payment.showPaymentPage');
-// });
 Route::get('/', [HomeController::class, 'index'])->name('client.home');
 
 Route::middleware('web')->group(function () {
@@ -99,22 +68,33 @@ Route::middleware(['auth', 'preventDirectAccess'])->group(function () {
     Route::get('/order/invoice/{order}', [IfUserController::class, 'getInvoiceDetails'])->name('client.profile.invoice');
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-});
 
-/*
-|--------------------------------------------------------------------------
-| Optional: Profile, Orders, Wishlist
-|--------------------------------------------------------------------------
-*/
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/profile', [UserController::class, 'profile'])->name('client.profile');
-//     Route::get('/orders', [OrderController::class, 'index'])->name('client.orders');
-//     Route::get('/wishlist', [WishlistController::class, 'index'])->name('client.wishlist');
-// });
+Route::prefix('admin')
+    ->middleware(['web', 'auth', 'admin']) // Sử dụng middleware theo cách chuẩn
+    ->group(function () {
+        // Route cho trang dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+        
+        // Resource route cho sản phẩm
+        Route::resource('products', AdminProductController::class)->names([
+            'index' => 'admin.products.index',
+            'create' => 'admin.products.create',
+            'store' => 'admin.products.store',
+            'show' => 'admin.products.show',
+            'edit' => 'admin.products.edit',
+            'update' => 'admin.products.update',
+            'destroy' => 'admin.products.destroy',
+        ]);
+
+        // Route phục hồi sản phẩm đã xóa (soft delete)
+        Route::get('/products/restore/{id}', [AdminProductController::class, 'restore'])->name('admin.products.restore');
+        
+        // Route xóa sản phẩm vĩnh viễn (force delete)
+        Route::delete('/products/force-delete/{id}', [AdminProductController::class, 'forceDelete'])->name('admin.products.forceDelete');
+    });
