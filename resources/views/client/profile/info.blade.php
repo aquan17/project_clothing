@@ -250,45 +250,45 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($orders as $order)
-                                                    @foreach ($order->items as $item)
-                                                        <tr>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="text-body">{{ $order->order_code }}</a>
-                                                            </td>
-                                                            <td>
-                                                                <a
-                                                                    href="{{ route('client.products.show', $item->productVariant->product->id) }}">
-                                                                    <h6 class="fs-15 mb-1">
-                                                                        {{ $item->productVariant->product->name }}</h6>
+                                                @foreach ($order->items as $item)
+                                                    @php
+                                                        $productVariant = $item->productVariant;
+                                                        $product = $productVariant?->product;
+                                                    @endphp
+                                                    <tr>
+                                                        <td>
+                                                            <a href="#" class="text-body">{{ $order->order_code }}</a>
+                                                        </td>
+                                                        <td>
+                                                            @if ($product)
+                                                                <a href="{{ route('client.products.show', $product->id) }}">
+                                                                    <h6 class="fs-15 mb-1">{{ $product->name }}</h6>
                                                                 </a>
                                                                 <p class="mb-0 text-muted fs-13">
-                                                                    {{ $item->productVariant->product->category->name }}
+                                                                    {{ $product->category?->name }}
                                                                 </p>
-                                                            </td>
-                                                            <td><span
-                                                                    class="text-muted">{{ $order->created_at->format('d M, Y') }}</span>
-                                                            </td>
-                                                            <td class="fw-medium">
-                                                                ${{ number_format($order->total_price, 2) }}</td>
-                                                            <td>
-                                                                <span
-                                                                    class="badge bg-{{ $order->status == 'completed' ? 'success' : ($order->status == 'pending' ? 'warning' : 'danger') }}-subtle text-{{ $order->status == 'completed' ? 'success' : ($order->status == 'pending' ? 'warning' : 'danger') }}">
-                                                                    {{ ucfirst($order->status) }}
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                {{-- <button class="btn btn-secondary btn-sm btn-invoice"
-                                                                    data-id="{{ $order->id }}" data-bs-toggle="modal"
-                                                                    data-bs-target="#invoiceModal">Invoice</button> --}}
-                                                                    <a href="{{ route('client.profile.invoice', $order->id) }}" class="btn btn-secondary btn-sm">Invoice</a>
-
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
+                                                            @else
+                                                                <span class="text-danger">Sản phẩm không tồn tại</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <span class="text-muted">{{ $order->created_at->format('d M, Y') }}</span>
+                                                        </td>
+                                                        <td class="fw-medium">
+                                                            ${{ number_format($order->total_price, 2) }}
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge bg-{{ $order->status == 'completed' ? 'success' : ($order->status == 'pending' ? 'warning' : 'danger') }}-subtle text-{{ $order->status == 'completed' ? 'success' : ($order->status == 'pending' ? 'warning' : 'danger') }}">
+                                                                {{ ucfirst($order->status) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('client.profile.invoice', $order->id) }}" class="btn btn-secondary btn-sm">Invoice</a>
+                                                        </td>
+                                                    </tr>
                                                 @endforeach
-                                            </tbody>
-
+                                            @endforeach
+                                            
                                         </table>
 
                                     </div>

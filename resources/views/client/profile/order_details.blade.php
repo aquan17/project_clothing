@@ -65,8 +65,10 @@
                                 <!--end col-->
                                 <div class="col-lg-3 col-6">
                                     <p class="text-muted mb-2 text-uppercase fw-semibold fs-14">Date</p>
-                                    <h5 class="fs-15 mb-0"><span id="invoice-date">{{ $order->created_at->format('d M, Y') }}</span> <small
-                                            class="text-muted" id="invoice-time">{{ $order->created_at->format('H:i') }}</small></h5>
+                                    <h5 class="fs-15 mb-0"><span
+                                            id="invoice-date">{{ $order->created_at->format('d M, Y') }}</span> <small
+                                            class="text-muted"
+                                            id="invoice-time">{{ $order->created_at->format('H:i') }}</small></h5>
                                 </div>
                                 <!--end col-->
                                 <div class="col-lg-3 col-6">
@@ -89,14 +91,19 @@
                     <div class="col-lg-12">
                         <div class="card-body p-4 border-top border-top-dashed">
                             <div class="row g-3">
-                               
+
                                 <!--end col-->
                                 <div class="col-6">
-                                    <h6 class="text-muted text-uppercase fw-semibold fs-14 mb-3">{{ $shippingAddress->is_default ? 'Default' : 'Shipping Address' }}</h6>
-                                    <p class="fw-medium mb-2 fs-16" id="shipping-name">{{ $shippingAddress->name }}</p>
-                                    <p class="text-muted mb-1" id="shipping-address-line-1">{{ $shippingAddress->address }}</p>
-                                    <p class="text-muted mb-1"><span>Phone: +</span><span
-                                            id="shipping-phone-no">{{ $shippingAddress->phone }}</span></p>
+                                    @if (property_exists($shippingAddress, 'is_default') && $shippingAddress->is_default)
+                                        <h6 class="text-muted text-uppercase fw-semibold fs-14 mb-3">
+                                            {{ $shippingAddress->is_default ? 'Default Address' : 'Shipping Address' }}
+                                        </h6>
+                                        <p class="fw-medium mb-2 fs-16" id="shipping-name">{{ $shippingAddress->name }}</p>
+                                        <p class="text-muted mb-1" id="shipping-address-line-1">
+                                            {{ $shippingAddress->address }}</p>
+                                        <p class="text-muted mb-1"><span>Phone: +</span><span
+                                                id="shipping-phone-no">{{ $shippingAddress->phone }}</span></p>
+                                    @endif
                                 </div>
                                 <!--end col-->
                             </div>
@@ -124,15 +131,16 @@
                                                 <td>
                                                     <div class="d-flex gap-3">
                                                         <div class="avatar-sm flex-shrink-0">
-                                                            <div
-                                                                class="avatar-title bg-dark-subtle rounded">
+                                                            <div class="avatar-title bg-dark-subtle rounded">
                                                                 <img src="{{ asset('client/images/fashion/product/' . $item->productVariant->product->image) }}"
                                                                     alt="" class="avatar-xs">
                                                             </div>
                                                         </div>
                                                         <div class="flex-grow-1">
-                                                            <a href="{{ route('client.products.show', $item->productVariant->product->id) }}">
-                                                                    <h6 class="fs-16">{{ $item->productVariant->product->name }}</h6>
+                                                            <a
+                                                                href="{{ route('client.products.show', $item->productVariant->product->id) }}">
+                                                                <h6 class="fs-16">
+                                                                    {{ $item->productVariant->product->name }}</h6>
                                                             </a>
                                                             <p class="mb-0 text-muted fs-13">
                                                                 {{ $item->productVariant->product->category->name }},
@@ -142,7 +150,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                               
+
                                                 <td>${{ number_format($item->price, 2) }}</td>
                                                 <td>{{ $item->quantity }}</td>
                                                 <td class="text-end">
@@ -160,7 +168,7 @@
                                             <td>Sub Total</td>
                                             <td class="text-end">${{ number_format($subtotal, 2) }}</td>
                                         </tr>
-                                       
+
                                         @if ($discount > 0)
                                             <tr>
                                                 <td>Discount</td>

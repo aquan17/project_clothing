@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin\product;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -79,6 +80,24 @@ class AdminProductController extends Controller
 
         return view('admin.product.index', compact('data', 'categories', 'activeProducts', 'deletedData', 'deletedProducts'));
     }
+    public function show($id)
+    {
+        $product = Product::with('category', 'ratings.customer', 'variants','comments.customer')->findOrFail($id);
+
+        
+        $variants = $product->variants;
+        // Tính điểm đánh giá trung bình
+        $averageRating = $product->ratings->avg('rating');
+
+        // Đếm số lượt đánh giá từ khách hàng duy nhất
+        $reviewCount = Comment::where('product_id', $product->id)
+            ->whereNotNull('customer_id')
+            ->distinct('customer_id')
+            ->count('customer_id');
+
+        return view('admin.product.show', compact('product', 'averageRating', 'reviewCount', 'variants'));
+    }
+
 
     // Form tạo mới
     public function create()
@@ -125,26 +144,26 @@ class AdminProductController extends Controller
 
                 // Move uploaded file to destination
                 if ($image->move($fullPath, $imageName)) {
-                    Log::info("Image uploaded successfully: {$directory}/{$imageName}");
+                    // Log::info("Image uploaded successfully: {$directory}/{$imageName}");
                     $data['image'] = $imageName; // Store only filename
                 } else {
-                    Log::error("Failed to move uploaded file to {$directory}");
+                    // Log::error("Failed to move uploaded file to {$directory}");
                     return redirect()->back()->withErrors(['image' => 'Failed to save image.']);
                 }
             } catch (\Exception $e) {
-                Log::error("Failed to upload image: " . $e->getMessage());
+                // Log::error("Failed to upload image: " . $e->getMessage());
                 return redirect()->back()->withErrors(['image' => 'Failed to upload image: ' . $e->getMessage()]);
             }
         }
 
         // Debug data before saving
-        Log::info('Data to be saved:', $data);
+        // Log::info('Data to be saved:', $data);
 
         // Create product
         $product = Product::create($data);
 
         // Verify data saved
-        Log::info('Product created with ID: ' . $product->id . ', Image: ' . $product->image);
+        // Log::info('Product created with ID: ' . $product->id . ', Image: ' . $product->image);
 
         // Verify file still exists after product creation
         // Verify file still exists after product creation
@@ -152,7 +171,7 @@ class AdminProductController extends Controller
             $fullPath = storage_path('app/public/' . $imagePath);
             sleep(5); // Đợi 5 giây
             if (!file_exists($fullPath)) {
-                Log::error("Image file missing after 5-second delay at {$fullPath}");
+                // Log::error("Image file missing after 5-second delay at {$fullPath}");
                 $product->delete();
                 return redirect()->back()->withErrors(['image' => 'Image file was deleted after 5 seconds.']);
             } else {
@@ -172,27 +191,66 @@ class AdminProductController extends Controller
     }
 
     // Cập nhật sản phẩm
-    public function update(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
+    // Cập nhật sản phẩm
+public function update(Request $request, $id)
+{
+    // Lấy sản phẩm cần chỉnh sửa
+    $product = Product::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'sku' => 'required|unique:products,sku,' . $id,
-            'price' => 'required|numeric',
-            'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image',
-        ]);
+    // Validate dữ liệu
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'sku' => 'required|unique:products,sku,' . $id,
+        'price' => 'required|numeric',
+        'category_id' => 'required|exists:categories,id',
+        'image' => 'nullable|image|mimes:jpeg,png,gif,jpg',
+        'status' => 'required|in:Active,Inactive',
+        'description' => 'required|string|max:1000',
+        'total_stock' => 'required|numeric',
+    ]);
 
-        $data = $request->all();
+    // Lấy dữ liệu từ request
+    $data = $request->all();
+    $data['slug'] = Str::slug($request->input('name'));
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
+    // Kiểm tra và xử lý hình ảnh
+    if ($request->hasFile('image') && $request->file('image')->isValid()) {
+        try {
+            $directory = 'client/images/fashion/product';
+            $fullPath = public_path($directory);
+
+            // Tạo thư mục nếu chưa có
+            if (!file_exists($fullPath)) {
+                mkdir($fullPath, 0755, true);
+                Log::info("Directory created: {$directory}");
+            }
+
+            // Xử lý tải ảnh lên
+            $image = $request->file('image');
+            $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+
+            // Di chuyển ảnh vào thư mục
+            if ($image->move($fullPath, $imageName)) {
+                // Cập nhật tên ảnh vào dữ liệu
+                $data['image'] = $imageName;
+            } else {
+                return redirect()->back()->withErrors(['image' => 'Failed to save image.']);
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['image' => 'Failed to upload image: ' . $e->getMessage()]);
         }
-
-        $product->update($data);
-        return redirect()->route('products.index')->with('success', 'Cập nhật sản phẩm thành công!');
+    } else {
+        // Nếu không có ảnh mới, giữ nguyên ảnh cũ
+        $data['image'] = $product->image;
     }
+
+    // Cập nhật thông tin sản phẩm
+    $product->update($data);
+
+    // Chuyển hướng và thông báo thành công
+    return redirect()->route('admin.products.index')->with('success', 'Cập nhật sản phẩm thành công!');
+}
+
 
     public function destroy($id)
     {
@@ -228,8 +286,8 @@ class AdminProductController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Product deleted successfully']);
     } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-    }
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
     // Add restore method

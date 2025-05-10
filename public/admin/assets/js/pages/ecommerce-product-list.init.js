@@ -65,10 +65,10 @@ var inputValueJson = sessionStorage.getItem("inputValue")
                                 <i class="ri-more-fill"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="apps-ecommerce-product-details.html">
+                                <li><a class="dropdown-item" href="/admin/products/${id}">
                                     <i class="ri-eye-fill align-bottom me-2 text-muted"></i> View
                                 </a></li>
-                                <li><a class="dropdown-item edit-list" data-edit-id="${id}" href="apps-ecommerce-add-product.html">
+                                <li><a class="dropdown-item edit-list" data-edit-id="${id}" href="/admin/products/${id}/edit">
                                     <i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit
                                 </a></li>
                                 <li class="dropdown-divider"></li>

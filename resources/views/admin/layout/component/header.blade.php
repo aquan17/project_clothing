@@ -156,7 +156,7 @@
                     <button type="button"
                         class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img id="header-lang-img" src="assets/images/flags/us.svg" alt="Header Language"
+                        <img id="header-lang-img" src="{{ asset('admin/assets/images/flags/us.svg') }}" alt="Header Language"
                             height="20" class="rounded">
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">

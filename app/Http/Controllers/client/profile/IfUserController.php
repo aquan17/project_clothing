@@ -37,6 +37,7 @@ class IfUserController extends Controller
                 'province' => 'N/A',
                 'district' => 'N/A',
                 'ward' => 'N/A',
+                'is_default' => false, // thêm dòng này
             ];
 
             // Lấy danh sách sản phẩm trong đơn hàng

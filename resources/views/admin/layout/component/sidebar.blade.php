@@ -201,7 +201,7 @@
                                                 data-key="t-create-product"> Create Product </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="apps-ecommerce-orders.html" class="nav-link"
+                                            <a href="{{ route('admin.orders.index') }}" class="nav-link"
                                                 data-key="t-orders">
                                                 Orders </a>
                                         </li>

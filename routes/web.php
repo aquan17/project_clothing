@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\order\AdminOrderController;
 use App\Http\Controllers\admin\product\AdminProductController;
 use App\Http\Controllers\client\AddressController;
 use App\Http\Controllers\client\profile\IfUserController;
@@ -97,4 +98,20 @@ Route::prefix('admin')
         
         // Route xóa sản phẩm vĩnh viễn (force delete)
         Route::delete('/products/force-delete/{id}', [AdminProductController::class, 'forceDelete'])->name('admin.products.forceDelete');
+
+        // Route cho đơn hàng
+            Route::resource('orders', AdminOrderController::class)->names([
+                'index' => 'admin.orders.index',
+                'create' => 'admin.orders.create',
+                'store' => 'admin.orders.store',
+                'show' => 'admin.orders.show',
+                'edit' => 'admin.orders.edit',
+                'update' => 'admin.orders.update',
+                'destroy' => 'admin.orders.destroy',
+            ]);
+        Route::get('admin/orders/data', [AdminOrderController::class, 'getOrdersData'])->name('admin.orders.data');
     });
+    Route::put('/test-update/{id}', function ($id) {
+        return response()->json(['message' => 'PUT request successful', 'id' => $id]);
+    });
+    
