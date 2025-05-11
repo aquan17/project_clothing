@@ -19,17 +19,17 @@ class CartMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        Log::info('Middleware ShareCartItems is running');
+        // Log::info('Middleware ShareCartItems is running');
         $cartItems = collect();         // Tất cả sản phẩm trong giỏ
         $cartMiniItems = collect();     // 2 sản phẩm mới nhất hiển thị
         $cartTotal = 0;                 // Tổng giá trị toàn bộ giỏ hàng
     
         if (Auth::check()) {
-            Log::info('User is authenticated', ['user_id' => Auth::id()]);
+            // Log::info('User is authenticated', ['user_id' => Auth::id()]);
             $customer = Auth::user()->customer;
     
             if ($customer) {
-                Log::info('Customer found', ['customer_id' => $customer->id]);
+                // Log::info('Customer found', ['customer_id' => $customer->id]);
     
                 // Lấy đơn hàng với tất cả items
                 $order = Order::with(['items.productVariant.product'])
@@ -39,7 +39,7 @@ class CartMiddleware
                     ->first();
     
                 if ($order) {
-                    Log::info('Order found', ['order_id' => $order->id]);
+                    // Log::info('Order found', ['order_id' => $order->id]);
                     // Gán tất cả sản phẩm vào biến chính
                     $cartItems = $order->items ?? collect([]);
                     // dd($cartItems);
@@ -50,18 +50,18 @@ class CartMiddleware
                         return $item->productVariant->product->price * $item->quantity;
                     });
                 } else {
-                    Log::info('No pending order found for customer');
+                    // Log::info('No pending order found for customer');
                 }
             } else {
-                Log::info('Customer not found for user');
+                // Log::info('Customer not found for user');
             }
         } else {
-            Log::info('User is not authenticated');
+            // Log::info('User is not authenticated');
         }
     
         // Đảm bảo $cartItems luôn là Collection
-        Log::info('Cart Items', ['cartItems' => $cartItems->toArray()]);
-        Log::info('Cart Total', ['cartTotal' => $cartTotal]);
+        // Log::info('Cart Items', ['cartItems' => $cartItems->toArray()]);
+        // Log::info('Cart Total', ['cartTotal' => $cartTotal]);
     
         // Chia sẻ ra tất cả view
         View::share('cartItems', $cartItems);           // Tất cả sản phẩm

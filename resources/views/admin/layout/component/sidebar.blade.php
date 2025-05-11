@@ -210,7 +210,7 @@
                                                 data-key="t-order-details"> Order Details </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="apps-ecommerce-customers.html" class="nav-link"
+                                            <a href="{{ route('admin.users.index') }}" class="nav-link"
                                                 data-key="t-customers"> Customers </a>
                                         </li>
                                         <li class="nav-item">
