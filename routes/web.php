@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\admin\category\AdminCategoryController;
+use App\Http\Controllers\admin\coupon\AdminCouponController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\order\AdminOrderController;
 use App\Http\Controllers\admin\product\AdminProductController;
 use App\Http\Controllers\admin\user\AdminUserController;
 use App\Http\Controllers\client\AddressController;
+use App\Http\Controllers\client\blog\BLogController;
 use App\Http\Controllers\client\profile\IfUserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +39,13 @@ Route::middleware('web')->group(function () {
     Route::post('/products/{id}/review', [ProductController::class, 'submitReview'])->name('client.products.review');
     Route::get('/profile', [UserController::class, 'profile'])->name('client.profile');
     Auth::routes(); // Login/Register
+    // Blog
+    Route::get('/about-us', [BLogController::class, 'about'])->name('client.blog.about');
+    Route::get('/purchase-guide', [BLogController::class, 'purchase'])->name('client.blog.purchase');
+    Route::get('/ecommerce-faq', [BLogController::class, 'ecommerce'])->name('client.blog.ecommerce');
+    Route::get('/privacy-policy', [BLogController::class, 'privacy'])->name('client.blog.privacy');
+    Route::get('/terms-conditions', [BLogController::class, 'terms'])->name('client.blog.terms');
+    Route::get('/contact', [BLogController::class, 'contact'])->name('client.blog.contact');
 });
 
 /*
@@ -68,6 +78,7 @@ Route::middleware(['auth', 'preventDirectAccess'])->group(function () {
 
     Route::get('/profile', [IfUserController::class, 'profile'])->name('client.profile');
     Route::get('/order/invoice/{order}', [IfUserController::class, 'getInvoiceDetails'])->name('client.profile.invoice');
+    Route::get('/profile/cancelled/{id}', [IfUserController::class, 'cancelled'])->name('client.profile.cancelled');
 });
 
 
@@ -122,6 +133,28 @@ Route::prefix('admin')
         ]);
         Route::get('admin/users/data', [AdminUserController::class, 'getUsersData'])->name('admin.users.data');
     });
+    // Route cho Category
+    Route::resource('categories', AdminCategoryController::class)->names([
+        'index' => 'admin.categories.index',
+        'create' => 'admin.categories.create',
+        'store' => 'admin.categories.store',
+        'show' => 'admin.categories.show',
+        'edit' => 'admin.categories.edit',
+        'update' => 'admin.categories.update',
+        'destroy' => 'admin.categories.destroy',
+    ]);
+    // Route cho coupon
+    
+    Route::resource('coupons', AdminCouponController::class)->names([
+        'index' => 'admin.coupons.index',
+        'create' => 'admin.coupons.create',
+        'store' => 'admin.coupons.store',
+        'show' => 'admin.coupons.show',
+        'edit' => 'admin.coupons.edit',
+        'update' => 'admin.coupons.update',
+        'destroy' => 'admin.coupons.destroy',
+    ]);
+// Test route for PUT request
     Route::put('/test-update/{id}', function ($id) {
         return response()->json(['message' => 'PUT request successful', 'id' => $id]);
     });

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class AdminUserController extends Controller
 {
@@ -75,27 +76,48 @@ class AdminUserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
+       // Tìm user theo ID
+    $user = User::findOrFail($id);
 
-        // Kiểm tra nếu có mật khẩu mới trong yêu cầu, thì mã hóa mật khẩu trước khi cập nhật
-        if ($request->has('password')) {
-            $request->merge(['password' => Hash::make($request->password)]);
-        }
-    
-        $user->update([
-            'name' => $request->customer_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-            'status' => $request->status,
-            'role' => $request->role,
-        ]);
-    
+    // Validate dữ liệu đầu vào
+    $validator = Validator::make($request->all(), [
+        'customer_name' => 'required|string|max:255',
+        'email'         => 'required|email|unique:users,email,' . $id,
+        'phone'         => 'nullable|string|max:20',
+        'password'      => 'nullable|string|min:6',
+        'status'        => 'required|in:active,inactive', // tuỳ cách bạn định nghĩa status
+        'role'          => 'required|in:user,admin',      // tuỳ vai trò bạn hỗ trợ
+    ]);
+
+    if ($validator->fails()) {
         return response()->json([
-            'success' => true,
-            'message' => 'User updated successfully!',
-            'user' => $user,
-        ], 200);
+            'success' => false,
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    // Chuẩn bị dữ liệu để update
+    $data = [
+        'name'   => $request->customer_name,
+        'email'  => $request->email,
+        'phone'  => $request->phone,
+        'status' => $request->status,
+        'role'   => $request->role,
+    ];
+
+    // Nếu có mật khẩu mới thì mã hóa
+    if ($request->filled('password')) {
+        $data['password'] = Hash::make($request->password);
+    }
+
+    // Cập nhật
+    $user->update($data);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'User updated successfully!',
+        'user' => $user,
+    ], 200);
     }
     public function destroy(string $id)
 {

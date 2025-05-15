@@ -206,16 +206,16 @@
                                                 Orders </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="apps-ecommerce-order-details.html" class="nav-link"
-                                                data-key="t-order-details"> Order Details </a>
+                                            <a href="{{ route('admin.categories.index') }}" class="nav-link"
+                                                data-key="t-order-details"> Category </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="{{ route('admin.users.index') }}" class="nav-link"
                                                 data-key="t-customers"> Customers </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="apps-ecommerce-cart.html" class="nav-link"
-                                                data-key="t-shopping-cart"> Shopping Cart </a>
+                                            <a href="{{ route('admin.coupons.index') }}" class="nav-link"
+                                                data-key="t-shopping-cart"> Coupon </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="apps-ecommerce-checkout.html" class="nav-link"

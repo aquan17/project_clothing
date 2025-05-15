@@ -24,8 +24,8 @@
 
     <form action="{{ route('client.payment.showPaymentPage') }}" method="GET">
         @csrf
-        <!-- Địa chỉ giao hàng -->
-        <input type="hidden" name="shipping_address_id" value="{{ $defaultAddress->id }}">
+        {{-- <!-- Địa chỉ giao hàng -->
+        <input type="hidden" name="shipping_address_id" value="{{ $defaultAddress->id }}"> --}}
 
         <!-- Danh sách sản phẩm đã chọn -->
         @foreach ($selectedItems as $item)

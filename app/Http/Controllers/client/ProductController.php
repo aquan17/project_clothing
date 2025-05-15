@@ -88,7 +88,7 @@ class ProductController extends Controller
                 'size' => $sizes, // Mảng kích cỡ
             ];
         });
-
+// dd($sizes);
         return view('client.shop', compact('products', 'categories', 'colors', 'sizes'));
     }
     public function filterByCategory($id)
@@ -189,5 +189,19 @@ class ProductController extends Controller
             ->appends($request->query());
 
         return view('client.shop', compact('products', 'keyword', 'categories', 'colors', 'sizes'));
+    }
+    public function header(Request $request){
+         $query = Product::query();
+
+    if ($request->has('category')) {
+        $categorySlug = $request->input('category');
+        $query->whereHas('category', fn($q) => $q->where('slug', $categorySlug));
+    }
+
+    $products = $query->paginate(12);
+
+    $categoriesGrouped = Category::withCount('products')->get()->groupBy('group');
+
+    return view('client.layout.component.header', compact( 'categoriesGrouped'));
     }
 }

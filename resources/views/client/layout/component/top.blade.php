@@ -21,13 +21,17 @@
                     <hr class="vr d-none d-lg-block">
                     <div class="dropdown topbar-head-dropdown topbar-tag-dropdown justify-content-end">
                         <button type="button" class="btn btn-icon btn-topbar text-reset rounded-circle fs-14 fw-medium" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img id="header-lang-img" src="https://themesbrand.com/toner/html/assets/images/flags/us.svg" alt="Header Language" height="16" class="rounded-circle me-2"> <span id="lang-name">English</span>
+                            <img id="header-lang-img" src="{{ asset('client/us.svg') }}" alt="Header Language" height="16" class="rounded-circle me-2"> <span id="lang-name">English</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language py-2" data-lang="en" title="English">
                                 <img src="https://themesbrand.com/toner/html/assets/images/flags/us.svg" alt="user-image" class="me-2 rounded-circle" height="18">
                                 <span class="align-middle">English</span>
+                            </a>
+                            <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="vi" title="Tiếng Việt">
+                                <img src="https://themesbrand.com/toner/html/assets/images/flags/us.svg" alt="user-image" class="me-2 rounded-circle" height="18">
+                                <span class="align-middle">Tiếng Việt</span>
                             </a>
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp" title="Spanish">

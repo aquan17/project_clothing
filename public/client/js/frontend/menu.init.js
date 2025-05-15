@@ -24,9 +24,12 @@ function initLanguage() {
 function setLanguage(lang) {
     if (document.getElementById("header-lang-img")) {
         if (lang == "en") {
-            document.getElementById("header-lang-img").src = "../client/images/flags/us.svg";
+            document.getElementById("header-lang-img").src = "client/us.svg";
             document.getElementById("lang-name").innerHTML = "English"
-        } else if (lang == "sp") {
+        }  else if (lang == "vi") {
+            document.getElementById("header-lang-img").src = "/client/vietnam.svg";
+            document.getElementById("lang-name").innerHTML = "Tiếng Việt"
+        }else if (lang == "sp") {
             document.getElementById("header-lang-img").src = "../client/images/flags/spain.svg";
             document.getElementById("lang-name").innerHTML = "Española"
         } else if (lang == "gr") {

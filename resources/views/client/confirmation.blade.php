@@ -74,7 +74,7 @@
                         </div>
 
                         <div class="mt-4 pt-2 hstack gap-2 justify-content-center">
-                            <a href="" class="btn btn-primary btn-hover">Xem lịch sử đơn hàng <i class="ri-arrow-right-line align-bottom ms-1"></i></a>
+                            <a href="{{ route('client.profile') }}" class="btn btn-primary btn-hover">Xem lịch sử đơn hàng <i class="ri-arrow-right-line align-bottom ms-1"></i></a>
                             <a href="{{ route('client.home') }}" class="btn btn-soft-danger btn-hover">Về trang chủ <i class="ri-home-4-line align-bottom ms-1"></i></a>
                         </div>
                     </div>

@@ -195,6 +195,11 @@
                                         class="fw-medium">{{ ucfirst($order->payment_status) }}</span></p>
                             </div>
                             <div class="hstack gap-2 justify-content-end d-print-none mt-4">
+                                @if ($order->status == 'pending')
+                                    <a href="{{ route('client.profile.cancelled', $order->id) }}" onclick="return confirm('Are you sure you want to cancel this order?')"
+                                        class="btn btn-danger"><i class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                        Cancel Order</a>
+                                @endif
                                 <a href="javascript:window.print()" class="btn btn-success"><i
                                         class="ri-printer-line align-bottom me-1"></i> Print</a>
                                 <a href="javascript:void(0);" class="btn btn-primary"><i

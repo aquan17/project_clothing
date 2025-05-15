@@ -606,20 +606,44 @@ document.querySelectorAll("#color-filter li").forEach(function (item) {
 });
 
 // size-filter
+// size-filter
 document.querySelectorAll("#size-filter li").forEach(function (item) {
     var input = item.querySelector("input[type='radio']");
-    var inputVal = input.value.toLowerCase(); // đảm bảo so sánh không phân biệt hoa thường
-
+    
     input.addEventListener("change", function () {
+        // Lấy giá trị khi event xảy ra
+        var inputVal = this.value.toLowerCase();
+        console.log("Selected size:", inputVal); // Debug log
+
         var filterData = productListData.filter(function (product) {
-            // nếu product có size là mảng, kiểm tra xem có chứa inputVal không
-            if (Array.isArray(product.size)) {
-                return product.size.map(s => s.toLowerCase()).includes(inputVal);
+            // Kiểm tra dữ liệu size
+            console.log("Product:", product.name, "Sizes:", product.size); // Debug log
+            
+            // Kiểm tra nhiều định dạng size có thể có
+            if (product.size) {
+                // Nếu là mảng
+                if (Array.isArray(product.size)) {
+                    return product.size
+                        .map(s => String(s).toLowerCase())
+                        .includes(inputVal);
+                }
+                // Nếu là string
+                if (typeof product.size === 'string') {
+                    return product.size.toLowerCase() === inputVal;
+                }
+                // Nếu là object
+                if (typeof product.size === 'object') {
+                    return Object.values(product.size)
+                        .map(s => String(s).toLowerCase())
+                        .includes(inputVal);
+                }
             }
             return false;
         });
 
-        // Gọi lại hàm hiển thị kết quả lọc
+        // Debug log
+        console.log("Filtered products:", filterData);
+
         searchResult(filterData);
         loadProductList(filterData, currentPage);
     });

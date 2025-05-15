@@ -632,11 +632,23 @@ const ShoppingCart = (() => {
      */
     const handleVoucherError = (error) => {
         showVoucherMessage(error.message || CONFIG.messages.voucherError, false);
-        CONFIG.discountRate = 0;
-        currentVoucher = null;
-        domCache.voucherName.textContent = CONFIG.messages.noVoucher;
-        updateRemoveVoucherButtonVisibility();
-        updateAllCartCalculations();
+        // Reset tất cả các giá trị discount
+     CONFIG.discountRate = 0;
+    CONFIG.discountAmount = 0;
+    CONFIG.discountType = 'percentage';
+    
+    // Reset voucher hiện tại
+    currentVoucher = null;
+    
+    // Cập nhật giao diện
+    domCache.voucherName.textContent = CONFIG.messages.noVoucher;
+    updateRemoveVoucherButtonVisibility();
+    updateAllCartCalculations();
+    
+    // Clear input field
+    // if (domCache.voucherCodeInput) {
+    //     domCache.voucherCodeInput.value = '';
+    // }
     };
 
     /**

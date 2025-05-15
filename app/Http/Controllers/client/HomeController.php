@@ -10,12 +10,19 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function index()
-    {
-        $categories = Category::all();
-        $product = Product::paginate(10);
+{
+    $categories = Category::all();
 
-        return view('client.index', compact('categories', 'product'));
-    }
+    // Phần trên: sản phẩm trending (bán chạy)
+    $trendingProducts = Product::orderByDesc('buyer_count')->take(10)->get();
+
+    // Phần dưới: danh sách sản phẩm phân trang
+    $product = Product::with('variants')->paginate(8);
+
+
+    return view('client.index', compact('categories', 'trendingProducts', 'product'));
+}
+
     
 
 }

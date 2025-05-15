@@ -337,7 +337,9 @@ function refreshCallbacks() {
                     var statusText = (new DOMParser).parseFromString(e._values.status, "text/html").body.firstElementChild.innerHTML;
                     statusVal.setChoiceByValue(statusText);
                     // Xử lý role
-                    roleVal.setChoiceByValue(e._values.role || "user"); // Sử dụng instance roleVal đã khởi tạo
+                    const roleElement = (new DOMParser).parseFromString(e._values.role, "text/html");
+const actualRole = roleElement.body.firstElementChild.innerHTML.toLowerCase();
+roleVal.setChoiceByValue(actualRole || "user");
                     // Xử lý date
                     flatpickr("#date-field", {
                         enableTime: true,

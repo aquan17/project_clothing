@@ -111,6 +111,9 @@
                                                 <input type="radio" name="size" value="{{ $size }}" id="size-{{ $size }}">
                                                 <label class="avatar-xs btn btn-soft-primary p-0 d-flex align-items-center justify-content-center rounded-circle" for="size-{{ $size }}">{{ $size }}</label>
                                             </li>
+                                            {{-- @php
+                                            dd($size);
+                                            @endphp --}}
                                         @endforeach
                                     </ul>
                                 </div>

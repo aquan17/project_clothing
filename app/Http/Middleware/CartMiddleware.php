@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Category;
 use App\Models\Order;
+use App\Models\Product;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,8 +64,20 @@ class CartMiddleware
         // Đảm bảo $cartItems luôn là Collection
         // Log::info('Cart Items', ['cartItems' => $cartItems->toArray()]);
         // Log::info('Cart Total', ['cartTotal' => $cartTotal]);
+     $query = Product::query();
+
+    if ($request->has('category')) {
+        $categorySlug = $request->input('category');
+        $query->whereHas('category', fn($q) => $q->where('slug', $categorySlug));
+    }
+
+    $products = $query->paginate(12);
+
+    $categoriesGrouped = Category::withCount('products')->get()->groupBy('group');
+
     
         // Chia sẻ ra tất cả view
+        View::share('categoriesGrouped', $categoriesGrouped); // Danh sách danh mục
         View::share('cartItems', $cartItems);           // Tất cả sản phẩm
         View::share('cartMiniItems', $cartMiniItems);   // 2 sản phẩm hiển thị
         View::share('cartTotal', $cartTotal);           // Tổng giá trị giỏ hàng

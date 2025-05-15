@@ -15,11 +15,14 @@ class IfUserController extends Controller
     {
         $user = Auth::user();
         $customer = $user->customer;
-        $orders = $customer->orders()->with(['items.productVariant.product.category', 'shippingAddress'])->where('status', 'Confirmed')->get();
+        $orders = $customer->orders()->with(['items.productVariant.product.category', 'shippingAddress'])->get();
         $wishlists = $customer->wishlists()->with(['product.category'])->get();
         $shippingAddresses = $customer->shippingAddresses;
-
-        return view('client.profile.info', compact('user', 'customer', 'orders', 'wishlists', 'shippingAddresses'));
+        $processingOrders = $orders->where('status', 'processing');
+        $shippingOrders = $orders->where('status', 'shipping');
+        $completedOrders = $orders->where('status', 'completed');
+        $cancelledOrders = $orders->where('status', 'cancelled');
+        return view('client.profile.info', compact('user', 'customer', 'orders', 'wishlists', 'shippingAddresses', 'processingOrders', 'shippingOrders', 'completedOrders', 'cancelledOrders'));
     }
 
     public function getInvoiceDetails($orderId)
@@ -53,7 +56,7 @@ class IfUserController extends Controller
             $subtotal = $order->items->sum(function ($item) {
                 return ($item->price ?? 0) * $item->quantity;
             });
-// dd($subtotal);
+            // dd($subtotal);
             // Lấy giá trị discount (voucher_discount), shipping và tính total`
             $discount = (float) ($order->voucher_discount ?? 0);
             $shipping = (float) ($order->shipping_fee ?? 0);
@@ -69,12 +72,25 @@ class IfUserController extends Controller
                 'shipping' => $shipping,
                 'total' => $total,
             ]);
-            
         } catch (\Exception $e) {
             return back()->with('error', 'Không thể tải chi tiết đơn hàng');
         }
     }
+    public function cancelled($id)
+    {
+        $order = Order::findOrFail($id);
 
-    
+        // Chỉ cho phép hủy đơn hàng nếu trạng thái là pending
+        if ($order->status == 'pending') {
+            $order->status = 'cancelled';
+            $order->save();
 
+            // Thực hiện các hành động cần thiết như hoàn tiền, nếu có
+            // Ví dụ: $this->refund($order);
+
+            return redirect()->route('client.profile')->with('status', 'Your order has been cancelled.');
+        }
+
+        return redirect()->route('orders.index')->with('error', 'You can only cancel orders that are pending.');
+    }
 }
