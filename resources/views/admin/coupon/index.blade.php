@@ -1,4 +1,4 @@
-@extends('admin.layout.adminlayout')
+@extends('admin.layout.Aminlayout')
 @section('title', 'Coupon Management')
 
 @section('content')

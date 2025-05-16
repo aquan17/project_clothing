@@ -1,4 +1,4 @@
-@extends('client.layout.clientlayout')
+@extends('client.layout.ClientLayout')
 @section('title', 'Profile')
 @section('content')
     <section class="page-wrapper bg-primary">

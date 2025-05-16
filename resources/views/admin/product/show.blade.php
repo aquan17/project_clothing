@@ -1,4 +1,4 @@
-@extends('admin.layout.adminlayout')
+@extends('admin.layout.Aminlayout')
 @section('title', 'Product Details')
 @section('css')
     <link href="{{ asset('admin/assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />

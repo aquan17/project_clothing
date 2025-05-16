@@ -1,4 +1,4 @@
-@extends('admin.layout.adminlayout')
+@extends('admin.layout.Aminlayout')
 @section('title', 'Edit Product')
 @section('css')
     <link href="{{ asset('admin/assets/libs/dropzone/dropzone.css') }}" rel="stylesheet" type="text/css" />
