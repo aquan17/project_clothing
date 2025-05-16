@@ -9,11 +9,11 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center">
-                        <h1 class="text-white mb-0">Product Details</h1>
+                        <h1 class="text-white mb-0">Chi tiết sản phẩm</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-light justify-content-center mt-4">
-                                <li class="breadcrumb-item"><a href="#">Product</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Product Details</li>
+                                <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Chi tiết sản phẩm</li>
                             </ol>
                         </nav>
                     </div>
@@ -70,7 +70,7 @@
                             <div class="col-md-10">
                                 <div class="bg-light rounded-2 position-relative ribbon-box overflow-hidden">
                                     <div class="ribbon ribbon-danger ribbon-shape trending-ribbon">
-                                        <span class="trending-ribbon-text">Trending</span> <i
+                                        <span class="trending-ribbon-text">Xu hướng</span> <i
                                             class="ri-flashlight-fill text-white align-bottom float-end ms-1"></i>
                                     </div>
                                     <div class="swiper productSwiper2">
@@ -106,10 +106,10 @@
                                     <div class="hstack gap-2">
                                         <button type="submit" id="add-to-cart" disabled
                                             class="btn btn-success btn-hover w-100">
-                                            <i class="bi bi-basket2 me-2"></i> Add To Cart
+                                            <i class="bi bi-basket2 me-2"></i> Thêm vào giỏ hàng
                                         </button>
                                         <button type="button" class="btn btn-primary btn-hover w-100">
-                                            <i class="bi bi-cart2 me-2"></i> Buy Now
+                                            <i class="bi bi-cart2 me-2"></i> Mua ngay
                                         </button>
                                         <button class="btn btn-soft-danger custom-toggle btn-hover" data-bs-toggle="button"
                                             aria-pressed="true"> <span class="icon-on"><i class="ri-heart-line"></i></span>
@@ -138,21 +138,19 @@
                                 </div>
                                 <h4 class="lh-base mb-1">{{ $product->name }}</h4>
                                 <p class="text-muted mb-4">{{ $product->description }} <a href="javascript:void(0);"
-                                        class="link-info">Read More</a></p>
+                                        class="link-info">Đọc thêm</a></p>
                                 <h5 class="fs-24 mb-4">${{ number_format($product->price, 2) }}</h5>
                                 <ul class="list-unstyled vstack gap-2">
                                     <li class=""><i
-                                            class="bi bi-check2-circle me-2 align-middle text-success"></i>In stock</li>
+                                            class="bi bi-check2-circle me-2 align-middle text-success"></i>Còn hàng</li>
                                     <li class=""><i
-                                            class="bi bi-check2-circle me-2 align-middle text-success"></i>Free delivery
-                                        available</li>
+                                            class="bi bi-check2-circle me-2 align-middle text-success"></i>Giao hàng miễn phícó sẵn</li>
                                     <li class=""><i
-                                            class="bi bi-check2-circle me-2 align-middle text-success"></i>Sales 10% Off
-                                        Use Code: <b>FASHION10</b></li>
+                                            class="bi bi-check2-circle me-2 align-middle text-success"></i>Giảm giá 10% Sử dụng mã: <b>distinctio</b></li>
                                 </ul>
                             </div>
                             <div class="d-flex align-items-center mb-4">
-                                <h5 class="fs-15 mb-0">Quantity:</h5>
+                                <h5 class="fs-15 mb-0">Số lượng:</h5>
                                 <div class="input-step ms-2">
                                     <button type="button" class="minus">–</button>
                                     <input type="number" class="product-quantity1" name="quantity" value="1"
@@ -164,7 +162,7 @@
                             <div class="row gy-3">
                                 <div class="col-md-6">
                                     <div id="size-container">
-                                        <h6 class="fs-14 fw-medium text-muted">Sizes:</h6>
+                                        <h6 class="fs-14 fw-medium text-muted">Kích cỡ:</h6>
                                         <ul class="clothe-size list-unstyled hstack gap-2 mb-0 flex-wrap">
                                             @foreach ($product->variants->pluck('size')->unique() as $size)
                                                 <li>
@@ -180,7 +178,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div id="color-container">
-                                        <h6 class="fs-14 fw-medium text-muted">Colors: </h6>
+                                        <h6 class="fs-14 fw-medium text-muted">Màu: </h6>
                                         <ul class="clothe-colors list-unstyled hstack gap-1 mb-0 flex-wrap ms-2">
                                             @foreach ($product->variants->pluck('color')->unique() as $color)
                                                 <li>
@@ -210,12 +208,12 @@
                     <ul class="nav nav-tabs nav-tabs-custom mb-3" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#home1" role="tab">
-                                Description
+                                Mô tả
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#profile1" role="tab">
-                                Ratings & Reviews
+                               Xếp hạng & Đánh giá
                             </a>
                         </li>
                     </ul>
@@ -225,15 +223,15 @@
                         <div class="tab-pane active" id="home1" role="tabpanel">
                             <table class="table table-sm table-borderless align-middle">
                                 <tr>
-                                    <th>Category</th>
+                                    <th>Danh Mục</th>
                                     <td>{{ $product->category->name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Status</th>
+                                    <th>Trạng Thái</th>
                                     <td>{{ ucfirst($product->status) }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Price</th>
+                                    <th>Giá</th>
                                     <td>${{ number_format($product->price, 2) }}</td>
                                 </tr>
                             </table>
@@ -244,13 +242,13 @@
                             <div>
                                 <div class="d-flex flex-wrap gap-4 justify-content-between align-items-center mt-4">
                                     <div class="flex-shrink-0">
-                                        <h5 class="fs-15 mb-3 fw-medium">Total Rating's</h5>
+                                        <h5 class="fs-15 mb-3 fw-medium">Tổng đánh giá</h5>
                                         <h2 class="fw-bold mb-3">{{ $reviewCount }}</h2>
-                                        <p class="text-muted mb-0">Growth in reviews on this year</p>
+                                        <p class="text-muted mb-0">Tăng trưởng trong các đánh giá trong năm nay</p>
                                     </div>
                                     <hr class="vr">
                                     <div class="flex-shrink-0">
-                                        <h5 class="fs-15 mb-3 fw-medium">Average Rating</h5>
+                                        <h5 class="fs-15 mb-3 fw-medium">Đánh giá trung bình</h5>
                                         <h2 class="fw-bold mb-3">{{ number_format($averageRating, 1) }} <span
                                                 class="fs-16 align-middle text-warning ms-2">
                                                 @for ($i = 1; $i <= 5; $i++)
@@ -263,7 +261,7 @@
                                                     @endif
                                                 @endfor
                                             </span></h2>
-                                        <p class="text-muted mb-0">Average rating on this year</p>
+                                        <p class="text-muted mb-0">Đánh giá trung bình trong năm nay</p>
                                     </div>
                                     <hr class="vr">
                                     <div class="flex-shrink-0 w-xl">
@@ -335,20 +333,20 @@
                                     @endforeach
                                 </div>
                                 <div class="pt-3">
-                                    <h5 class="fs-18">Add a Review</h5>
+                                    <h5 class="fs-18">Thêm đánh giá</h5>
                                     <div>
                                         <form action="{{ route('client.products.review', $product->id) }}" method="POST"
                                             class="form">
                                             @csrf
                                             <div class="d-flex align-items-center mb-3">
-                                                <span class="fs-14">Your rating:</span>
+                                                <span class="fs-14">Đánh giá của bạn:</span>
                                                 <div class="ms-3">
                                                     <select name="rating" class="form-select">
-                                                        <option value="5">5 Stars</option>
-                                                        <option value="4">4 Stars</option>
-                                                        <option value="3">3 Stars</option>
-                                                        <option value="2">2 Stars</option>
-                                                        <option value="1">1 Star</option>
+                                                        <option value="5">5 sao</option>
+                                                        <option value="4">4 sao</option>
+                                                        <option value="3">3 sao</option>
+                                                        <option value="2">2 sao</option>
+                                                        <option value="1">1 sao</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -361,7 +359,7 @@
                                             </div>
 
                                             <div class="text-end">
-                                                <button class="btn btn-primary btn-hover" type="submit">Send Review <i
+                                                <button class="btn btn-primary btn-hover" type="submit">Gửi đánh giá <i
                                                         class="ri-send-plane-2-line align-bottom ms-1"></i></button>
                                             </div>
                                         </form>
@@ -381,7 +379,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h4 class="mb-4">You might be interested in</h4>
+                    <h4 class="mb-4">Bạn có thể quan tâm đến</h4>
                 </div><!--end col-->
             </div><!--end row-->
             <div class="row gy-3">
@@ -394,11 +392,11 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="card-body h-100 d-flex flex-column">
-                                    <h6 class="fs-16">Women's T-shirts</h6>
-                                    <p class="card-text text-muted">Min. 50% off</p>
+                                    <h6 class="fs-16">Áo phông nữ</h6>
+                                    <p class="card-text text-muted">Giảm giá tối thiểu 50%</p>
 
                                     <div class="mt-auto">
-                                        <div class="btn btn-soft-secondary btn-sm">Shop Now</div>
+                                        <div class="btn btn-soft-secondary btn-sm">Mua ngay</div>
                                     </div>
                                 </div>
                             </div>
@@ -414,11 +412,11 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="card-body h-100 d-flex flex-column">
-                                    <h4 class="fs-16">Men's Fashion</h4>
-                                    <p class="card-text text-muted">Min. 20% off</p>
+                                    <h4 class="fs-16">Thời trang nam</h4>
+                                    <p class="card-text text-muted">Giảm giá tối thiểu 20%</p>
 
                                     <div class="mt-auto">
-                                        <div class="btn btn-soft-primary btn-sm">Shop Now</div>
+                                        <div class="btn btn-soft-primary btn-sm">Mua ngay</div>
                                     </div>
                                 </div>
                             </div>
@@ -434,11 +432,11 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="card-body h-100 d-flex flex-column">
-                                    <h4 class="card-title">Women Footwear</h4>
-                                    <p class="card-text text-muted">Up to 40-50% off</p>
+                                    <h4 class="card-title">Giày nữ</h4>
+                                    <p class="card-text text-muted">Giảm giá lên đến 40-50%</p>
 
                                     <div class="mt-auto">
-                                        <div class="btn btn-soft-info btn-sm">Shop Now</div>
+                                        <div class="btn btn-soft-info btn-sm">Mua ngay</div>
                                     </div>
                                 </div>
                             </div>
@@ -453,9 +451,9 @@
             <div class="row justify-content-center">
                 <div class="col-lg-12">
                     <div class="d-flex align-items-center justify-content-between mb-4 pb-1">
-                        <h4 class="flex-grow-1 mb-0">Similar Products</h4>
+                        <h4 class="flex-grow-1 mb-0">Sản phẩm tương tự</h4>
                         <div class="flex-shrink-0">
-                            <a href="{{ route('client.products') }}" class="link-effect link-secondary">All Products <i
+                            <a href="{{ route('client.products') }}" class="link-effect link-secondary">Tất cả sản phẩm<i
                                     class="ri-arrow-right-line ms-1 align-bottom"></i></a>
                         </div>
                     </div>
@@ -489,7 +487,7 @@
                                 </div>
                                 <div class="mt-3">
                                     <a href="#" class="btn btn-primary w-100 add-btn"><i
-                                            class="mdi mdi-cart me-1"></i> Add To Cart</a>
+                                            class="mdi mdi-cart me-1"></i>  Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>

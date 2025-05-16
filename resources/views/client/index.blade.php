@@ -1,12 +1,15 @@
 @extends('client.layout.index')
 @section('title', 'Home')
 @section('product')
+
+{{-- 
+  <pre>{{ print_r(session()->all(), true) }}</pre> --}}
     <section class="section">
         <div class="container-fluid container-custom">
             <div class="row align-items-center">
                 <div class="col-lg-2">
-                    <h2 class="title text-capitalize fw-medium lh-base mb-3"><b>Best selling </b>products</h2>
-                    <a href="{{ route('client.products') }}" class="btn btn-outline-warning btn-hover">View All <i
+                    <h2 class="title text-capitalize fw-medium lh-base mb-3"><b>Sản Phẩm bán </b>chạy nhất</h2>
+                    <a href="{{ route('client.products') }}" class="btn btn-outline-warning btn-hover">Xem tất cả <i
                             class="bi bi-arrow-right"></i></a>
                 </div>
                 <div class="col-lg-10">

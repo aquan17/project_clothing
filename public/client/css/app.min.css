@@ -530,6 +530,10 @@
     position: relative;
     padding: 132px 0 35px
 }
+.auth{
+    padding: 0 15px;
+    margin-top: 70px
+}
 
 .page-title-box {
     padding: 0 0 20px

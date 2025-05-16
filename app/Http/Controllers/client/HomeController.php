@@ -17,7 +17,7 @@ class HomeController extends Controller
     $trendingProducts = Product::orderByDesc('buyer_count')->take(10)->get();
 
     // Phần dưới: danh sách sản phẩm phân trang
-    $product = Product::with('variants')->paginate(8);
+    $product = Product::with('variants')->paginate(10);
 
 
     return view('client.index', compact('categories', 'trendingProducts', 'product'));

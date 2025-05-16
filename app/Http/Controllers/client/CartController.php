@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -18,22 +19,21 @@ class CartController extends Controller
 {
     public function index()
     {
-      
 
-return view('client.cart');
 
+        return view('client.cart');
     }
     // Thêm sản phẩm vào giỏ hàng
     public function add(Request $request)
     {
         // Kiểm tra nếu chưa đăng nhập
-         // Kiểm tra nếu người dùng chưa đăng nhập
-    if (!Auth::check()) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!'
-        ], 401); // Trả về lỗi 401 (Unauthorized)
-    }
+        // Kiểm tra nếu người dùng chưa đăng nhập
+        if (!Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!'
+            ], 401); // Trả về lỗi 401 (Unauthorized)
+        }
         do {
             $order_code = '#' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
         } while (Order::where('order_code', $order_code)->exists());
@@ -47,16 +47,16 @@ return view('client.cart');
         // dd($request->all());
 
         $data = $request->only(['product_id', 'size', 'color', 'quantity']);
-
         // Tìm đơn hàng pending của người dùng
         $order = Order::where('customer_id', Auth::id())
-            ->where('status', 'pending')
-            ->first();
+        ->where('status', 'pending')
+        ->first();
+        $customer = Customer::where('user_id', Auth::id())->first();
 
         if (!$order) {
             // Tạo đơn hàng mới nếu chưa có
             $order = Order::create([
-                'customer_id' => Auth::id(),
+                'customer_id' => $customer->id,
                 'status' => 'pending',
                 'order_code' => $order_code,
                 'total_price' => 0, // Đúng: Dùng total_price
@@ -81,7 +81,7 @@ return view('client.cart');
                 'message' => 'Số lượng trong kho không đủ!'
             ]);
         }
-        
+
         // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
         $cartItem = OrderItem::where('order_id', $order->id)
             ->where('product_variant_id', $productVariant->id)

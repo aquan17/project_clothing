@@ -28,12 +28,16 @@ use App\Http\Controllers\client\VoucherController;
 
 Route::get('/', [HomeController::class, 'index'])->name('client.home');
 
+
 Route::middleware('web')->group(function () {
     Route::resource('products', ProductController::class)->only(['index', 'show'])->names([
         'index' => 'client.products',
         'show' => 'client.products.show',
     ]);
-
+// Route::get('/test-flash', function () {
+//     session()->flash('success', 'Thông báo test flash thành công!');
+//     return view('client.index'); // Hoặc view bạn dùng
+// });
     Route::get('/search', [ProductController::class, 'search'])->name('client.products.search');
     Route::get('/category/{id}', [ProductController::class, 'filterByCategory'])->name('client.category');
     Route::post('/products/{id}/review', [ProductController::class, 'submitReview'])->name('client.products.review');
@@ -54,7 +58,7 @@ Route::middleware('web')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::post('/cart/add', [CartController::class, 'add'])->name('client.cart.add');
-Route::middleware(['auth', 'preventDirectAccess'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     // 🛒 Cart
     Route::get('/cart', [CartController::class, 'index'])->name('client.cart.index');
     Route::patch('/cart/update/{id}', [CartController::class, 'update'])->name('client.cart.update');

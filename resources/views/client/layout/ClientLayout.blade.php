@@ -5,9 +5,20 @@
 
 <body>
     @include('client.layout.component.top')
+
     <!-- start header -->
     @include('client.layout.component.header')
     <!-- end header -->
+   
+@if(session()->has('user_name'))
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" style="font-weight: 500; font-size: 1.1rem;">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        Chào người đẹp <strong>{{ session('user_name') }}</strong>!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+
     <!-- start section -->
     @yield('content')
     <!-- end section -->
@@ -34,6 +45,71 @@
 
     {{-- @include('client.layout.component.script') --}}
     <!-- end javascript libraries -->
+    <style>
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    min-width: 300px;
+    border: none;
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease-out;
+    background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+    color: white;
+    font-weight: 500;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+.alert-success {
+    background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+    border: none;
+}
+.alert i {
+    color: white;
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+.alert strong {
+    color: white;
+    font-weight: 600;
+}
+.btn-close {
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.btn-close:hover {
+    opacity: 1;
+}
+</style>
+
+<script>
+// Tự động ẩn alert sau 3 giây
+document.addEventListener('DOMContentLoaded', function() {
+    const alert = document.querySelector('.alert');
+    if(alert) {
+        setTimeout(function() {
+            alert.classList.remove('show');
+            setTimeout(function() {
+                alert.remove();
+            }, 300);
+        }, 3000);
+    }
+});
+</script>
 </body>
 
 </html>

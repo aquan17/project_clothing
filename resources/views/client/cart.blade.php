@@ -28,17 +28,11 @@
         <div class="container">
             <form action="{{ route('client.checkout.index') }}" method="GET" id="checkout-form">
                 @csrf
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="alert alert-danger text-center text-capitalize mb-4 fs-14">
-                            Save up to <b>30%</b> to <b>40%</b> off OMG! Just look at the <b>great deals</b>!
-                        </div>
-                    </div>
-                </div>
+               
                 <div class="row product-list justify-content-center">
-                    <div class="empty-cart-message text-center fs-16" style="display: none;">
+                    {{-- <div class="empty-cart-message text-center fs-16" style="display: none;">
                         Giỏ hàng của bạn đang trống!
-                    </div>
+                    </div> --}}
                     <div class="col-lg-8">
                         <div class="d-flex align-items-center mb-4">
                             <h5 class="mb-0 flex-grow-1 fw-medium">
@@ -131,6 +125,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                         @endforeach
                     @endif
                       </div>

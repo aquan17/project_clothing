@@ -137,7 +137,7 @@ class ProductController extends Controller
         $variants = $product->variants;
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id) // Loại trừ sản phẩm hiện tại
-            ->take(5)
+            ->take(4)
             ->get();
 
         return view('client.show', compact('product', 'variants', 'averageRating', 'reviewCount', 'relatedProducts', 'ratingPercentages'));

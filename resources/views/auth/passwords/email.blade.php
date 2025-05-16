@@ -1,6 +1,7 @@
-@extends('layouts.app')
-
+@extends('client.layout.clientlayout')
+@section('title', 'Đăng Ký')
 @section('content')
+    <section class="section auth">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -44,4 +45,5 @@
         </div>
     </div>
 </div>
+    </section>
 @endsection
