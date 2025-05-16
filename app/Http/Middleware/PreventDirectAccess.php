@@ -12,28 +12,25 @@ use Symfony\Component\HttpFoundation\Response;
 class PreventDirectAccess
 {
     /**
-     * Handle an incoming request.
+     * The trusted proxies for this application.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @var array<int, string>|string|null
      */
-    public function handle(Request $request, Closure $next): Response
-    {
-        
-        // 🛒 Chặn truy cập checkout nếu chưa có đơn hàng ở trạng thái cart
-       // ❌ Không lưu nếu là request AJAX hoặc phương thức POST
-        if (!$request->ajax() && $request->method() === 'GET') {
+    // Đặt $proxies là '*' để tin tưởng tất cả các proxy.
+    // Điều này thường an toàn trên các nền tảng PaaS như Railway.
+    protected $proxies = '*';
 
-            // ❌ Không lưu nếu là route login/logout/register
-            $excludedRoutes = [
-                'client.login', 'client.login.submit',
-                'client.register', 'client.logout'
-            ];
-
-            if (!in_array(Route::currentRouteName(), $excludedRoutes)) {
-                session(['url.intended' => $request->fullUrl()]);
-            }
-        }
-
-        return $next($request);
-    }
+    /**
+     * The headers that should be used to detect proxies.
+     *
+     * @var int
+     */
+    // Đảm bảo bạn có ít nhất HEADER_X_FORWARDED_PROTO
+    // Bạn có thể copy nguyên khối này.
+    protected $headers =
+        Request::HEADER_X_FORWARDED_FOR |
+        Request::HEADER_X_FORWARDED_HOST |
+        Request::HEADER_X_FORWARDED_PORT |
+        Request::HEADER_X_FORWARDED_PROTO | // Header này báo cho Laravel biết schema gốc là HTTPS
+        Request::HEADER_X_FORWARDED_AWS_ELB; // Có thể hữu ích nếu Railway dùng AWS ELB (Amazon Web Services Elastic Load Balancer)
 }

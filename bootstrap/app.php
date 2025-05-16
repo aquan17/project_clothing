@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
        $middleware->alias([
         'admin' => CheckRole::class,
         'cart' => CartMiddleware::class,
-        // 'preventDirectAccess' => PreventDirectAccess::class,
+        'preventDirectAccess' => PreventDirectAccess::class,
     ]);
 
     // Áp dụng CartMiddleware cho nhóm web
