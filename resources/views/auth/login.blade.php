@@ -1,4 +1,4 @@
-@extends('client.layout.clientlayout')
+@extends('client.layout.ClientLayout')
 @section('title', 'Đang nhập')
 @section('content')
     <section class="section auth">

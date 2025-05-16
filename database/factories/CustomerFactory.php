@@ -20,7 +20,7 @@ class CustomerFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
-            'address' => $this->faker->address(),
+            'user_id' => $this->faker->randomElement([1, 3]), // Assuming user IDs 1 and 2 exist
         ];
     }
 }
