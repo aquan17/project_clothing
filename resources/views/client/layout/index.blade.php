@@ -1,4 +1,4 @@
-@extends('client.layout.clientLayout')
+@extends('client.layout.clientlayout')
 
 @section('content')
     @include('client.layout.component.banner')
