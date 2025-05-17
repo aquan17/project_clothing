@@ -5,66 +5,53 @@ Website: https://Themesbrand.com/
 Contact: Themesbrand@gmail.com
 File: product Details init js
 */
-isData();
 function isData() {
-  var plus = document.getElementsByClassName('plus');
-  var minus = document.getElementsByClassName('minus');
-  var product = document.getElementsByClassName("product");
+  const plusButtons = document.getElementsByClassName('plus');
+  const minusButtons = document.getElementsByClassName('minus');
 
-  if (plus) {
-    Array.from(plus).forEach(function (e) {
-      e.addEventListener('click', function (event) {
-        if (event.target.previousElementSibling.value)
-          if (parseInt(e.previousElementSibling.value) < event.target.previousElementSibling.getAttribute('max')) {
-            event.target.previousElementSibling.value++;
-            if (product) {
-              Array.from(product).forEach(function (x) {
-                updateQuantity(event.target);
-              })
-            }
-          }
+  // Hàm xử lý tăng/giảm số lượng
+  function handleQuantityChange(button, isIncrement) {
+    const input = isIncrement ? button.previousElementSibling : button.nextElementSibling;
+    const currentValue = parseInt(input.value);
+    const max = parseInt(input.getAttribute('max'));
+    const min = parseInt(input.getAttribute('min'));
+
+    if (isIncrement && currentValue < max) {
+      input.value = currentValue + 1;
+    } else if (!isIncrement && currentValue > min) {
+      input.value = currentValue - 1;
+    }
+  }
+
+  // Gắn sự kiện cho nút plus
+  if (plusButtons) {
+    Array.from(plusButtons).forEach(button => {
+      button.addEventListener('click', event => {
+        handleQuantityChange(event.target, true);
+      });
+      button.addEventListener('touchstart', event => {
+        event.preventDefault(); // Ngăn hành vi mặc định
+        handleQuantityChange(event.target, true);
       });
     });
   }
 
-  if (minus) {
-    Array.from(minus).forEach(function (e) {
-      e.addEventListener('click', function (event) {
-        if (parseInt(e.nextElementSibling.value) > event.target.nextElementSibling.getAttribute('min')) {
-          event.target.nextElementSibling.value--;
-          if (product) {
-            Array.from(product).forEach(function (x) {
-              updateQuantity(event.target);
-            })
-          }
-        }
+  // Gắn sự kiện cho nút minus
+  if (minusButtons) {
+    Array.from(minusButtons).forEach(button => {
+      button.addEventListener('click', event => {
+        handleQuantityChange(event.target, false);
+      });
+      button.addEventListener('touchstart', event => {
+        event.preventDefault(); // Ngăn hành vi mặc định
+        handleQuantityChange(event.target, false);
       });
     });
   }
 }
-function updateQuantity(quantityInput) {
-            if(quantityInput.closest('.product')){
-                var productRow = quantityInput.closest('.product');
-            var productList = quantityInput.closest('.product-list');
-            var price;
-            if (productRow || productRow.getElementsByClassName('product-price'))
-                Array.from(productRow.getElementsByClassName('product-price')).forEach(function (e) {
-                    price = parseFloat(e.innerHTML);
-                });
 
-            if (quantityInput.previousElementSibling && quantityInput.previousElementSibling.classList.contains("product-quantity")) {
-                var quantity = quantityInput.previousElementSibling.value;
-            } else if (quantityInput.nextElementSibling && quantityInput.nextElementSibling.classList.contains("product-quantity")) {
-                var quantity = quantityInput.nextElementSibling.value;
-            }
-            var linePrice = price * quantity;
-            /* Update line price display and recalc cart totals */
-            Array.from(productRow.getElementsByClassName('product-line-price')).forEach(function (e) {
-                e.innerHTML = linePrice.toFixed(2);
-                recalculateCart(productList);
-            });
-            }
-        }
+// Gọi hàm
+isData();
 function showToast(message, type = 'success') {
   const toast = document.getElementById('toast-message');
   toast.textContent = message;
