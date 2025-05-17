@@ -13,42 +13,58 @@ function isData() {
 
   if (plus) {
     Array.from(plus).forEach(function (e) {
-  e.addEventListener('click', function (event) {
-    const input = event.currentTarget.previousElementSibling;
-    const max = parseInt(input.getAttribute('max'));
-
-    if (parseInt(input.value) < max) {
-      input.value = parseInt(input.value) + 1;
-      if (product) {
-        Array.from(product).forEach(function (x) {
-          updateQuantity(event.currentTarget);
-        });
-      }
-    }
-  });
-});
-
+      e.addEventListener('click', function (event) {
+        if (event.target.previousElementSibling.value)
+          if (parseInt(e.previousElementSibling.value) < event.target.previousElementSibling.getAttribute('max')) {
+            event.target.previousElementSibling.value++;
+            if (product) {
+              Array.from(product).forEach(function (x) {
+                updateQuantity(event.target);
+              })
+            }
+          }
+      });
+    });
   }
 
   if (minus) {
     Array.from(minus).forEach(function (e) {
-  e.addEventListener('click', function (event) {
-    const input = event.currentTarget.nextElementSibling;
-    const min = parseInt(input.getAttribute('min'));
-
-    if (parseInt(input.value) > min) {
-      input.value = parseInt(input.value) - 1;
-      if (product) {
-        Array.from(product).forEach(function (x) {
-          updateQuantity(event.currentTarget);
-        });
-      }
-    }
-  });
-});
-
+      e.addEventListener('click', function (event) {
+        if (parseInt(e.nextElementSibling.value) > event.target.nextElementSibling.getAttribute('min')) {
+          event.target.nextElementSibling.value--;
+          if (product) {
+            Array.from(product).forEach(function (x) {
+              updateQuantity(event.target);
+            })
+          }
+        }
+      });
+    });
   }
 }
+function updateQuantity(quantityInput) {
+            if(quantityInput.closest('.product')){
+                var productRow = quantityInput.closest('.product');
+            var productList = quantityInput.closest('.product-list');
+            var price;
+            if (productRow || productRow.getElementsByClassName('product-price'))
+                Array.from(productRow.getElementsByClassName('product-price')).forEach(function (e) {
+                    price = parseFloat(e.innerHTML);
+                });
+
+            if (quantityInput.previousElementSibling && quantityInput.previousElementSibling.classList.contains("product-quantity")) {
+                var quantity = quantityInput.previousElementSibling.value;
+            } else if (quantityInput.nextElementSibling && quantityInput.nextElementSibling.classList.contains("product-quantity")) {
+                var quantity = quantityInput.nextElementSibling.value;
+            }
+            var linePrice = price * quantity;
+            /* Update line price display and recalc cart totals */
+            Array.from(productRow.getElementsByClassName('product-line-price')).forEach(function (e) {
+                e.innerHTML = linePrice.toFixed(2);
+                recalculateCart(productList);
+            });
+            }
+        }
 function showToast(message, type = 'success') {
   const toast = document.getElementById('toast-message');
   toast.textContent = message;
