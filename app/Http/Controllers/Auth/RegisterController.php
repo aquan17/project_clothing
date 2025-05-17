@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -68,7 +69,6 @@ class RegisterController extends Controller
     $user = User::create([
         'name' => $data['name'],
         'email' => $data['email'],
-        'phone' => $data['phone'],  // Lưu phone vào bảng users
         'password' => Hash::make($data['password']),
     ]);
 
@@ -78,7 +78,7 @@ class RegisterController extends Controller
         'name' => $data['name'],  // Lưu name vào bảng customers
         'email' => $data['email'],  // Lưu email vào bảng customers
     ]);
-
+ session()->flash('user_name', $user->name);
     return $user;
 }
 }

@@ -15,11 +15,14 @@ class IfUserController extends Controller
     {
         $user = Auth::user();
         $customer = $user->customer;
-        $orders = $customer->orders()->with(['items.productVariant.product.category', 'shippingAddress'])->get();
         $wishlists = $customer->wishlists()->with(['product.category'])->get();
         $shippingAddresses = $customer->shippingAddresses;
-        $processingOrders = $orders->where('status', 'processing');
-        $shippingOrders = $orders->where('status', 'shipping');
+        $orders = $customer->orders()
+            ->with(['items.productVariant.product.category', 'shippingAddress'])
+            ->where('status', '!=', 'cart')  // Lọc luôn trong query
+            ->get();
+        $processingOrders = $orders->where('status', 'pending');
+        $shippingOrders = $orders->where('status', 'confirmed');
         $completedOrders = $orders->where('status', 'completed');
         $cancelledOrders = $orders->where('status', 'cancelled');
         return view('client.profile.info', compact('user', 'customer', 'orders', 'wishlists', 'shippingAddresses', 'processingOrders', 'shippingOrders', 'completedOrders', 'cancelledOrders'));

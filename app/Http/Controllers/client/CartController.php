@@ -45,19 +45,19 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
         // dd($request->all());
-
+ $customer = Customer::where('user_id', Auth::id())->first();
         $data = $request->only(['product_id', 'size', 'color', 'quantity']);
         // Tìm đơn hàng pending của người dùng
-        $order = Order::where('customer_id', Auth::id())
-        ->where('status', 'pending')
+        $order = Order::where('customer_id', $customer->id)
+        ->where('status', 'cart')
         ->first();
-        $customer = Customer::where('user_id', Auth::id())->first();
+       
 
         if (!$order) {
             // Tạo đơn hàng mới nếu chưa có
             $order = Order::create([
                 'customer_id' => $customer->id,
-                'status' => 'pending',
+                'status' => 'cart',
                 'order_code' => $order_code,
                 'total_price' => 0, // Đúng: Dùng total_price
             ]);

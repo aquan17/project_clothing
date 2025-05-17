@@ -247,7 +247,7 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" data-bs-toggle="tab" href="#shipping-orders">
-                                                Đang Giao Hàng
+                                                Đã xác nhận
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -514,4 +514,5 @@
             animation: fadeIn 0.3s ease-in-out;
         }
     </style>
+    
 @endsection

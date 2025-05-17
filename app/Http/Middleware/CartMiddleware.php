@@ -37,7 +37,7 @@ class CartMiddleware
                 // Lấy đơn hàng với tất cả items
                 $order = Order::with(['items.productVariant.product'])
                     ->where('customer_id', $customer->id)
-                    ->where('status', 'pending') // Giả sử giỏ hàng là 'pending'
+                    ->where('status', 'cart') // Giả sử giỏ hàng là 'pending'
                     ->latest()
                     ->first();
                 // dd($customer);

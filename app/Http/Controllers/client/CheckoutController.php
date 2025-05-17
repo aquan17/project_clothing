@@ -40,7 +40,7 @@ class CheckoutController extends Controller
         ->whereIn('id', $selectedItemIds)
         ->whereHas('order', function ($query) use ($customer) {
             $query->where('customer_id', $customer->id)
-                ->where('status', 'pending');
+                ->where('status', 'cart');
         })
         ->get();
 

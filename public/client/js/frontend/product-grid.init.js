@@ -171,7 +171,7 @@ function loadProductList(datas, page) {
                 var num = 1;
                 if (datas[i].color && Array.isArray(datas[i].color)) {
                     var colorElem = '<ul class="clothe-colors list-unstyled hstack gap-1 mb-3 flex-wrap">';
-                    
+
                     // Giới hạn chỉ lấy 3 màu đầu tiên
                     datas[i].color.slice(0, 3).forEach(function (color, index) {
                         var inputId = 'product-color-' + datas[i].id + '-' + index;
@@ -185,10 +185,10 @@ function loadProductList(datas, page) {
                                 </label>
                             </li>`;
                     });
-                
+
                     colorElem += '</ul>';
                 }
-                 else if (datas[i].size) {
+                else if (datas[i].size) {
                     var colorElem = '<ul class="clothe-size list-unstyled hstack gap-2 mb-3 flex-wrap">';
                     Array.from(datas[i].size).forEach(function (elem) {
                         num++;
@@ -220,10 +220,11 @@ function loadProductList(datas, page) {
                     var afterDiscountElem = '<h5 class="text-secondary mb-0">$' + datas[i].price + '</h5>'
                 }
 
+                // Thay thế phần layout definition cũ
                 if (document.getElementById("col-3-layout")) {
-                    var layout = '<div class="col-xxl-3 col-lg-4 col-md-6">'
+                    var layout = '<div class="col-xxl-3 col-lg-4 col-md-6 col-6">' // Thêm col-6 cho mobile
                 } else {
-                    var layout = '<div class="col-xxl-4 col-lg-4 col-md-6">'
+                    var layout = '<div class="col-xxl-4 col-lg-4 col-md-6 col-6">' // Thêm col-6 cho mobile
                 }
 
                 document.getElementById("product-grid").innerHTML += layout + '\
@@ -260,7 +261,7 @@ function loadProductList(datas, page) {
         }
     }
 
-    if(document.getElementById("product-grid-right")){
+    if (document.getElementById("product-grid-right")) {
         document.getElementById("product-grid-right").innerHTML = "";
         for (var i = (page - 1) * itemsPerPage; i < (page * itemsPerPage) && i < datas.length; i++) {
             if (datas[i]) {
@@ -319,7 +320,7 @@ function loadProductList(datas, page) {
                             <div class="gallery-product">\
                                 <img src="'+ datas[i].productImg + '" alt="" style="max-height: 215px;max-width: 100%;" class="mx-auto d-block">\
                             </div>\
-                            '+productLabel+'\
+                            '+ productLabel + '\
                             <div class="gallery-product-actions">\
                                 <div class="mb-2">\
                                     <button type="button" class="btn btn-danger btn-sm custom-toggle '+ checkinput + '" data-bs-toggle="button">\
@@ -464,7 +465,7 @@ searchProductList.addEventListener("keyup", function () {
 
 // price range slider
 var slider = document.getElementById('product-price-range');
-if(slider){
+if (slider) {
     noUiSlider.create(slider, {
         start: [0, 2000], // Handle start position
         step: 10, // Slider moves in increments of '10'
@@ -609,7 +610,7 @@ document.querySelectorAll("#color-filter li").forEach(function (item) {
 // size-filter
 document.querySelectorAll("#size-filter li").forEach(function (item) {
     var input = item.querySelector("input[type='radio']");
-    
+
     input.addEventListener("change", function () {
         // Lấy giá trị khi event xảy ra
         var inputVal = this.value.toLowerCase();
@@ -618,7 +619,7 @@ document.querySelectorAll("#size-filter li").forEach(function (item) {
         var filterData = productListData.filter(function (product) {
             // Kiểm tra dữ liệu size
             console.log("Product:", product.name, "Sizes:", product.size); // Debug log
-            
+
             // Kiểm tra nhiều định dạng size có thể có
             if (product.size) {
                 // Nếu là mảng
@@ -729,7 +730,7 @@ function sortElementsById() {
 // no sidebar page
 
 var hidingTooltipSlider = document.getElementById('slider-hide');
-if (hidingTooltipSlider){
+if (hidingTooltipSlider) {
     noUiSlider.create(hidingTooltipSlider, {
         range: {
             min: 0,
@@ -751,8 +752,8 @@ if (hidingTooltipSlider){
 
     var filterDataAll = '';
 
-        // When the slider value changes, update the input and span
-        hidingTooltipSlider.noUiSlider.on('update', function (values, handle) {
+    // When the slider value changes, update the input and span
+    hidingTooltipSlider.noUiSlider.on('update', function (values, handle) {
         var productListupdatedAll = productListData;
 
         if (handle) {
@@ -774,7 +775,7 @@ if (hidingTooltipSlider){
 }
 
 // choices category input
-if(document.getElementById('select-category')){
+if (document.getElementById('select-category')) {
     var productCategoryInput = new Choices(document.getElementById('select-category'), {
         searchEnabled: false,
     });
@@ -783,7 +784,7 @@ if(document.getElementById('select-category')){
         var productCategoryValue = event.detail.value
         if (event.detail.value) {
             var filterData = productListData.filter(productlist => productlist.category === productCategoryValue);
-        }else {
+        } else {
             var filterData = productListData;
         }
         searchResult(filterData);
@@ -792,7 +793,7 @@ if(document.getElementById('select-category')){
 }
 
 // select-rating
-if(document.getElementById('select-rating')){
+if (document.getElementById('select-rating')) {
     var productRatingInput = new Choices(document.getElementById('select-rating'), {
         searchEnabled: false,
         allowHTML: true,
@@ -804,7 +805,7 @@ if(document.getElementById('select-rating')){
 
     productRatingInput.passedElement.element.addEventListener('change', function (event) {
         var productRatingInputValue = productRatingInput.getValue(true);
-        if(event.detail.value == 1){
+        if (event.detail.value == 1) {
             filterDataAll = productListData.filter(function (product) {
                 if (product.rating) {
                     var listArray = product.rating;
@@ -822,14 +823,14 @@ if(document.getElementById('select-rating')){
         } else {
             filterDataAll = productListData;
         }
-        
+
         searchResult(filterDataAll);
         loadProductList(filterDataAll, currentPage);
     }, false);
 }
 
 // select-discount
-if(document.getElementById('select-discount')){
+if (document.getElementById('select-discount')) {
     var productDiscountInput = new Choices(document.getElementById('select-discount'), {
         searchEnabled: false,
         allowHTML: true,
@@ -842,7 +843,7 @@ if(document.getElementById('select-discount')){
     productDiscountInput.passedElement.element.addEventListener('change', function (event) {
         var productDiscountInputValue = productDiscountInput.getValue(true);
         var filterproductdata = productListData;
-        if(event.detail.value == 0){
+        if (event.detail.value == 0) {
             filterDataAll = productListData.filter(function (product) {
                 if (product.discount) {
                     var listArray = product.discount.split("%");
@@ -924,7 +925,7 @@ function getStarRating(rating) {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5;
     const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-    
+
     let stars = '';
     for (let i = 0; i < fullStars; i++) {
         stars += '<i class="bi bi-star-fill"></i>';
@@ -938,14 +939,14 @@ function getStarRating(rating) {
     return stars;
 }
 // Load products when page loads
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Get current page from URL or default to 1
     const urlParams = new URLSearchParams(window.location.search);
     const currentPage = parseInt(urlParams.get('page')) || 1;
-    
+
     // Get sort value if exists
     const sortValue = urlParams.get('sort') || '';
-    
+
     // Fetch products from API
     fetch(`/api/products?page=${currentPage}&sort=${sortValue}`)
         .then(response => response.json())
@@ -961,7 +962,7 @@ function updatePagination(data) {
     const paginationElement = document.getElementById('pagination-element');
     const currentPage = data.current_page;
     const lastPage = data.last_page;
-    
+
     let paginationHTML = `
         <div class="col-lg-12">
             <div class="pagination-block pagination pagination-separated justify-content-center justify-content-sm-end mb-sm-0">
@@ -969,7 +970,7 @@ function updatePagination(data) {
                     <a href="?page=${currentPage - 1}" class="page-link" id="page-prev">Previous</a>
                 </div>
     `;
-    
+
     for (let i = 1; i <= lastPage; i++) {
         paginationHTML += `
             <div class="page-item ${i === currentPage ? 'active' : ''}">
@@ -977,7 +978,7 @@ function updatePagination(data) {
             </div>
         `;
     }
-    
+
     paginationHTML += `
                 <div class="page-item ${currentPage === lastPage ? 'disabled' : ''}">
                     <a href="?page=${currentPage + 1}" class="page-link" id="page-next">Next</a>
@@ -985,12 +986,12 @@ function updatePagination(data) {
             </div>
         </div>
     `;
-    
+
     paginationElement.innerHTML = paginationHTML;
 }
 
 // Handle sort change
-document.getElementById('sort-elem').addEventListener('change', function(e) {
+document.getElementById('sort-elem').addEventListener('change', function (e) {
     const sortValue = e.target.value;
     window.location.href = `?sort=${sortValue}`;
 });

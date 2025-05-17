@@ -43,7 +43,7 @@ class VoucherController extends Controller
 
         // Lấy giỏ hàng
         $cart = Order::where('customer_id', Auth::user()->customer->id)
-            ->where('status', 'pending')
+            ->where('status', 'cart')
             ->with('items.productVariant.product')
             ->first();
 

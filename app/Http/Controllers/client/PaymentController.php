@@ -80,7 +80,7 @@ class PaymentController extends Controller
                 'voucher_discount' => $voucherDiscount,
                 'coupon_id' => $couponId,
                 'shipping_fee' => $shippingFee,
-                'status' => 'confirmed',
+                'status' => 'pending',
                 'payment_method' => $paymentMethod,
                 'payment_status' => 'unpaid',
                 'notes' => $notes,
@@ -139,7 +139,10 @@ class PaymentController extends Controller
             session()->forget('order_info');
             Log::info('Redirecting to confirmation page...');
             // Xóa các sản phẩm trong giỏ hàng sau khi đặt hàng thành công
-            OrderItem::whereIn('id', $order['selectedItemIds'])->delete();
+            $selectedCartItemIds = collect($order['selectedItems'])->pluck('id')->toArray();
+
+            OrderItem::whereIn('id', $selectedCartItemIds)->delete();
+
             return redirect()->route('client.confirmation', ['orderCode' => $orderCode]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -156,7 +159,7 @@ class PaymentController extends Controller
             'items.productVariant.product',
             'shippingAddress'
         ])->where('order_code', $orderCode)
-            ->where('status', 'confirmed')
+            ->where('status', 'pending')
             ->firstOrFail();
         // dd($order);
         return view('client.confirmation', compact('order'));
