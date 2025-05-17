@@ -80,7 +80,8 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="d-flex mb-4">
-                                                <h6 class="fs-16 text-decoration-underline flex-grow-1 mb-0">Thông tin cá nhân
+                                                <h6 class="fs-16 text-decoration-underline flex-grow-1 mb-0">Thông tin cá
+                                                    nhân
                                                 </h6>
                                                 <div class="flex-shrink-0">
                                                     <a href="#!" class="badge bg-dark-subtle text-dark">Sửa</a>
@@ -104,7 +105,7 @@
                                                             <td>Địa chỉ email</td>
                                                             <td class="fw-medium">{{ Auth::user()->email }}</td>
                                                         </tr>
-                                                        
+
                                                         <tr>
                                                             <td>Since Member</td>
                                                             <td class="fw-medium">
@@ -116,24 +117,28 @@
                                             </div>
 
                                             <div class="mt-4">
-                                                <h6 class="fs-16 text-decoration-underline">Địa chỉ thanh toán và giao hàng</h6>
+                                                <h6 class="fs-16 text-decoration-underline flex-grow-1 mb-0">Địa chỉ giao
+                                                    hàng
+                                                </h6>
+                                                
                                             </div>
+
                                             <div class="row mt-4">
                                                 @foreach ($shippingAddresses as $address)
                                                     <div class="col-md-6">
                                                         <div class="card mb-md-0">
                                                             <div class="card-body">
                                                                 <div class="float-end clearfix">
-                                                                    <a href="#"
+                                                                    <a href="{{ route('address.index') }}"
                                                                         class="badge bg-primary-subtle text-primary">
                                                                         <i class="ri-pencil-fill align-bottom me-1"></i>
                                                                         Sửa
                                                                     </a>
                                                                 </div>
                                                                 <div>
-                                                                    <p
-                                                                        class="mb-3 fw-semibold fs-12 d-block text-muted text-uppercase">
-                                                                        Địa chỉ giao hàng</p>
+                                                                    <span class="mb-3 text-uppercase fw-semibold d-block">
+                                                                        {{ $address->is_default ? 'Địa Chỉ Mặc Định' : 'Địa Chỉ Giao Hàng' }}
+                                                                    </span>
                                                                     <h6 class="fs-14 mb-2 d-block">{{ $address->name }}
                                                                     </h6>
                                                                     <span
@@ -141,7 +146,7 @@
                                                                         {{ $address->ward }}, {{ $address->district }},
                                                                         {{ $address->province }}, {{ $address->country }}
                                                                     </span>
-                                                                    <span class="text-muted fw-normal d-block">Mo.
+                                                                    <span class="text-muted fw-normal d-block">
                                                                         {{ $address->phone }}</span>
                                                                 </div>
                                                             </div>
@@ -179,7 +184,7 @@
                                                                         <div class="avatar-sm flex-shrink-0">
                                                                             <div
                                                                                 class="avatar-title bg-dark-subtle rounded">
-                                                                                <img src="{{ asset('client/images/fashion/product/'.$wishlist->product->image) }}"
+                                                                                <img src="{{ asset('client/images/fashion/product/' . $wishlist->product->image) }}"
                                                                                     alt="" class="avatar-xs">
                                                                             </div>
                                                                         </div>
@@ -332,7 +337,7 @@
                                                                 name="phone" value="{{ $customer->phone }}">
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
                                                 <div class="text-sm-end">
                                                     <button type="submit"
@@ -350,22 +355,24 @@
                                                     <div class="row g-2">
                                                         <div class="col-lg-4">
                                                             <div>
-                                                                <label for="current_password" class="form-label">Mật Khẩu Cũ*</label>
+                                                                <label for="current_password" class="form-label">Mật Khẩu
+                                                                    Cũ*</label>
                                                                 <input type="password" class="form-control"
                                                                     id="current_password" name="current_password">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div>
-                                                                <label for="password" class="form-label">Mật Khẩu Mới*</label>
+                                                                <label for="password" class="form-label">Mật Khẩu
+                                                                    Mới*</label>
                                                                 <input type="password" class="form-control"
                                                                     id="password" name="password">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div>
-                                                                <label for="password_confirmation"
-                                                                    class="form-label">Xác Nhận Mật Khẩu*</label>
+                                                                <label for="password_confirmation" class="form-label">Xác
+                                                                    Nhận Mật Khẩu*</label>
                                                                 <input type="password" class="form-control"
                                                                     id="password_confirmation"
                                                                     name="password_confirmation">
@@ -373,7 +380,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="text-sm-end mt-3">
-                                                        <button type="submit" class="btn btn-primary">Thay Đổi Mật Khẩu</button>
+                                                        <button type="submit" class="btn btn-primary">Thay Đổi Mật
+                                                            Khẩu</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -514,5 +522,5 @@
             animation: fadeIn 0.3s ease-in-out;
         }
     </style>
-    
+
 @endsection

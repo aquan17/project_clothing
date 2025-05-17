@@ -8,11 +8,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center d-flex align-items-center justify-content-between">
-                        <h4 class="text-white mb-0">Shipping Address</h4>
+                        <h4 class="text-white mb-0">Địa chỉ giao hàng</h4>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-light justify-content-center mb-0 fs-15">
-                                <li class="breadcrumb-item"><a href="#!">Shop</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Address</li>
+                                <li class="breadcrumb-item"><a href="#!">Cửa hàng</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Địa chỉ</li>
                             </ol>
                         </nav>
                     </div>
@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-xl-8">
                     <div>
-                        <h4 class="fs-18 mb-4">Select or add an address</h4>
+                        <h4 class="fs-18 mb-4">Chọn hoặc thêm địa chỉ</h4>
                         <div class="row g-4" id="address-list"> </div>
                         <div id="view-all-container" class="text-center mt-3" style="display: none;">
                             <button id="view-all-btn" class="btn btn-primary">Xem tất cả</button>
@@ -45,10 +45,10 @@
                                             <i class="bi bi-house-add"></i>
                                         </div>
                                     </div>
-                                    <h5 class="fs-16 mb-3">Add New Address</h5>
+                                    <h5 class="fs-16 mb-3">Thêm địa chỉ mới</h5>
                                     <button type="button"
                                         class="btn btn-success btn-sm w-xs stretched-link addAddress-modal"
-                                        data-bs-toggle="modal" data-bs-target="#addAddressModal">Add</button>
+                                        data-bs-toggle="modal" data-bs-target="#addAddressModal">Thêm</button>
                                 </div>
                             </div>
                         </div>
@@ -60,60 +60,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4">
-                    <div class="sticky-side-div mt-4 mt-xl-0">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <h6 class="mb-3 fs-15">Have a <span class="fw-semibold">promo</span> code ?</h6>
-                                </div>
-                                <div class="hstack gap-3 px-3 mx-n3">
-                                    <input class="form-control me-auto" type="text" placeholder="Enter coupon code"
-                                        value="Toner15" aria-label="Add Promo Code here...">
-                                    <button type="button" class="btn btn-primary w-xs">Apply</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card overflow-hidden">
-                            <div class="card-header border-bottom-dashed">
-                                <h5 class="card-title mb-0 fs-15">Order Summary</h5>
-                            </div>
-                            <div class="card-body pt-4">
-                                <div class="table-responsive table-card">
-                                    <table class="table table-borderless mb-0 fs-15">
-                                        <tbody>
-                                            <tr>
-                                                <td>Sub total :</td>
-                                                <td class="text-end cart-subtotal">$0.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Discount <span class="text-muted">(Toner15)</span>:</td>
-                                                <td class="text-end cart-discount">-$0.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Shipping charge :</td>
-                                                <td class="text-end cart-shipping">$0.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Estimated Tax (12.5%) : </td>
-                                                <td class="text-end cart-tax">$0.00</td>
-                                            </tr>
-                                            <tr class="table-active">
-                                                <th>Total (USD) :</th>
-                                                <td class="text-end">
-                                                    <span class="fw-semibold cart-total">$0.00</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- end table-responsive -->
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- end sticky -->
-                </div>
+            
                 <!-- end col -->
             </div>
             <!--end row-->
@@ -126,7 +73,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addAddressModalLabel">Add New Address</h1>
+                    <h1 class="modal-title fs-5" id="addAddressModalLabel">Thêm địa chỉ mới</h1>
                     <button type="button" id="addAddress-close" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
@@ -136,25 +83,25 @@
 
                         <div>
                             <div class="mb-3">
-                                <label for="addaddress-name" class="form-label">Name</label>
+                                <label for="addaddress-name" class="form-label">Tên</label>
                                 <input type="text" name="name" class="form-control" id="addaddress-name"
-                                    placeholder="Enter name" required value="{{ old('name') }}">
+                                    placeholder="Nhập tên" required value="{{ old('name') }}">
                                 @error('name')
                                     <span class="text-red">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="addaddress-phone" class="form-label">Phone</label>
+                                <label for="addaddress-phone" class="form-label">Số điện thoại</label>
                                 <input type="text" name="phone" class="form-control" id="addaddress-phone"
-                                    placeholder="Enter phone no." required value="{{ old('phone') }}">
+                                    placeholder="Nhập số điện thoại" required value="{{ old('phone') }}">
                                 @error('phone')
                                     <span class="text-red">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="country" class="form-label">Country</label>
+                                <label for="country" class="form-label">Khu Vực</label>
                                 <input type="text" name="country" class="form-control" id="country"
                                     placeholder="Enter country" required value="Việt Nam" readonly>
                                 @error('country')
@@ -163,7 +110,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="province" class="form-label">Province</label>
+                                <label for="province" class="form-label">Tỉnh</label>
                                 <select name="province" id="province" class="form-control" required>
                                     <option value="">Chọn tỉnh/thành</option>
                                 </select>
@@ -173,7 +120,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="addaddress-district" class="form-label">District</label>
+                                <label for="addaddress-district" class="form-label">Huyện</label>
                                 <select name="district" id="district" class="form-control" required>
                                     <option value="">Chọn quận/huyện</option>
                                 </select>
@@ -183,7 +130,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="addaddress-ward" class="form-label">Ward</label>
+                                <label for="addaddress-ward" class="form-label">Phường</label>
                                 <select name="ward" id="ward" class="form-control">
                                     <option value="">Chọn xã/phường</option>
                                 </select>
@@ -193,8 +140,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="addaddress-notes" class="form-label">Notes</label>
-                                <textarea name="notes" class="form-control" id="addaddress-notes" placeholder="Enter any additional notes"
+                                <label for="addaddress-notes" class="form-label">Ghi chú</label>
+                                <textarea name="notes" class="form-control" id="addaddress-notes" placeholder="Nhập bất kỳ ghi chú bổ sung"
                                     rows="2" value="{{ old('notes') }}"></textarea>
                                 @error('notes')
                                     <span class="text-red">{{ $message }}</span>
@@ -202,12 +149,11 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="addaddress-is_default" class="form-label">Set as Default</label>
+                                <label for="addaddress-is_default" class="form-label">Đặt làm mặc định</label>
                                 <div class="form-check">
                                     <input type="checkbox" name="is_default" class="form-check-input" id="toggleAddress"
                                         value="1" {{ old('is_default') ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="addaddress-is_default">Yes, set this as default
-                                        address</label>
+                                    <label class="form-check-label" for="addaddress-is_default">Có, đặt đây là địa chỉ mặc định</label>
                                     <span class="slider"></span>
                                     @error('is_default')
                                         <span class="text-red">{{ $message }}</span>
@@ -217,8 +163,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end gap-2 mt-4">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" id="addNewAddress" class="btn btn-primary">Add</button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" id="addNewAddress" class="btn btn-primary">Thêm</button>
                         </div>
                     </form>
 

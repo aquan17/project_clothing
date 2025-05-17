@@ -6,42 +6,49 @@ Contact: Themesbrand@gmail.com
 File: product Details init js
 */
 isData();
-        function isData() {
-            var plus = document.getElementsByClassName('plus');
-            var minus = document.getElementsByClassName('minus');
-            var product = document.getElementsByClassName("product");
+function isData() {
+  var plus = document.getElementsByClassName('plus');
+  var minus = document.getElementsByClassName('minus');
+  var product = document.getElementsByClassName("product");
 
-            if (plus) {
-                Array.from(plus).forEach(function (e) {
-                    e.addEventListener('click', function (event) {
-                        // if(event.target.previousElementSibling.value )
-                        if (parseInt(e.previousElementSibling.value) < event.target.previousElementSibling.getAttribute('max')) {
-                            event.target.previousElementSibling.value++;
-                            if (product) {
-                                Array.from(product).forEach(function (x) {
-                                    updateQuantity(event.target);
-                                })
-                            }
-                        }
-                    });
-                });
-            }
+  if (plus) {
+    Array.from(plus).forEach(function (e) {
+  e.addEventListener('click', function (event) {
+    const input = event.currentTarget.previousElementSibling;
+    const max = parseInt(input.getAttribute('max'));
 
-            if (minus) {
-                Array.from(minus).forEach(function (e) {
-                    e.addEventListener('click', function (event) {
-                        if (parseInt(e.nextElementSibling.value) > event.target.nextElementSibling.getAttribute('min')) {
-                            event.target.nextElementSibling.value--;
-                            if (product) {
-                                Array.from(product).forEach(function (x) {
-                                    updateQuantity(event.target);
-                                })
-                            }
-                        }
-                    });
-                });
-            }
-        }
+    if (parseInt(input.value) < max) {
+      input.value = parseInt(input.value) + 1;
+      if (product) {
+        Array.from(product).forEach(function (x) {
+          updateQuantity(event.currentTarget);
+        });
+      }
+    }
+  });
+});
+
+  }
+
+  if (minus) {
+    Array.from(minus).forEach(function (e) {
+  e.addEventListener('click', function (event) {
+    const input = event.currentTarget.nextElementSibling;
+    const min = parseInt(input.getAttribute('min'));
+
+    if (parseInt(input.value) > min) {
+      input.value = parseInt(input.value) - 1;
+      if (product) {
+        Array.from(product).forEach(function (x) {
+          updateQuantity(event.currentTarget);
+        });
+      }
+    }
+  });
+});
+
+  }
+}
 function showToast(message, type = 'success') {
   const toast = document.getElementById('toast-message');
   toast.textContent = message;
@@ -68,7 +75,7 @@ document.querySelector('#add-to-cart-form').addEventListener('submit', function 
     .then(data => {
       if (data && data.success) {
         showToast(data.message, 'success');
-        
+
       } else {
         showToast(data?.message || 'Có lỗi xảy ra!', 'error');
       }
