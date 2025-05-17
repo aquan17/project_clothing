@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('voucher_discount', 10)->default(0);
             $table->unsignedBigInteger('coupon_id')->nullable()->index('orders_coupon_id_foreign');
             $table->decimal('shipping_fee', 10)->default(0);
-            $table->enum('status', ['pending', 'confirmed', 'completed', 'cancelled'])->default('pending')->index('idx_orders_status');
+            $table->enum('status', ['pending', 'confirmed', 'completed', 'cancelled','cart'])->default('pending')->index('idx_orders_status');
             $table->string('payment_method')->nullable();
             $table->string('payment_status')->default('unpaid')->index('idx_payment_status');
             $table->text('notes')->nullable();
