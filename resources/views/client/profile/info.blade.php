@@ -1,6 +1,12 @@
 @extends('client.layout.ClientLayout')
 @section('title', 'Profile')
 @section('content')
+@if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
+
     <section class="position-relative">
         <div class="profile-basic position-relative"
             style="background-image: url('{{ asset('client/images/profile-bg.jpg') }}');background-size: cover;background-position: center; height: 300px;">

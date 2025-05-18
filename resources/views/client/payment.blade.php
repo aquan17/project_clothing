@@ -52,8 +52,7 @@
                 <div class="row product-list">
                     <div class="col-xl-8">
                         <h5 class="mb-0 flex-grow-1">Chọn Phương Thức Thanh Toán</h5>
-                        <input type="hidden" name="payment_method" id="payment_method" value="cod">
-                        <input type="hidden" name="payment_method" id="payment_method" value="momo">
+                        <input type="hidden" name="payment_method" id="payment_method" value="cash">
                         <ul class="nav nav-pills arrow-navtabs nav-success bg-light mb-3 mt-4 nav-justified custom-nav"
                             role="tablist">
                             <li class="nav-item">
@@ -293,3 +292,14 @@
         <!--end container-->
     </section>
 @endsection
+<script>
+document.querySelectorAll('.nav-link').forEach(tab => {
+    tab.addEventListener('click', function (e) {
+        e.preventDefault();
+        selectedMethod = tab.getAttribute('data-method');
+        document.getElementById('payment_method').value = selectedMethod;
+        console.log('Selected method:', selectedMethod);
+    });
+});
+
+</script>

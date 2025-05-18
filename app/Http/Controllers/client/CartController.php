@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 
@@ -19,14 +20,15 @@ class CartController extends Controller
 {
     public function index()
     {
-
+ Session::forget('voucher');
+//  dd(Session::get('voucher')); // phải là null
 
         return view('client.cart');
     }
     // Thêm sản phẩm vào giỏ hàng
     public function add(Request $request)
     {
-        // Kiểm tra nếu chưa đăng nhập
+
         // Kiểm tra nếu người dùng chưa đăng nhập
         if (!Auth::check()) {
             return response()->json([

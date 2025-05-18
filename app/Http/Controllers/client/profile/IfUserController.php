@@ -91,7 +91,7 @@ class IfUserController extends Controller
             // Thực hiện các hành động cần thiết như hoàn tiền, nếu có
             // Ví dụ: $this->refund($order);
 
-            return redirect()->route('client.profile')->with('status', 'Your order has been cancelled.');
+            return redirect()->route('client.profile')->with('status', 'Bạn đã hủy đơn hàng thành công.');
         }
 
         return redirect()->route('orders.index')->with('error', 'You can only cancel orders that are pending.');

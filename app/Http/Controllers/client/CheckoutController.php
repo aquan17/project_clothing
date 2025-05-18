@@ -92,7 +92,7 @@ class CheckoutController extends Controller
         }
     }
 
-    $shippingFee = ($subtotal > 0 && $subtotal < 500) ? 30 : 0;
+    $shippingFee = ($subtotal > 0 && $subtotal < 500) ? 0 : 0;
     $finalTotal = max(0, $subtotal - $discount + $shippingFee);
 
     $defaultAddress = ShippingAddress::where('customer_id', $customer->id)

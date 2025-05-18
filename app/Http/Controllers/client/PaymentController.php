@@ -7,13 +7,10 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ProductVariant;
-use App\Models\ShippingAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\FacadesDB;
-use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
@@ -71,9 +68,9 @@ class PaymentController extends Controller
             return redirect()->route('client.cart.index')->with('error', 'Không tìm thấy thông tin đơn hàng.');
         }
         Log::info('🔍 SESSION order_info:', session()->all());
-
+        // dd($order);
         $paymentMethod = $request->input('payment_method');
-
+        // dd($paymentMethod);
         if (!$paymentMethod) {
             return redirect()->route('client.payment.showPaymentPage')->with('error', 'Vui lòng chọn phương thức thanh toán.');
         }
@@ -104,6 +101,7 @@ class PaymentController extends Controller
                     'notes' => $notes,
                     'user_id' => Auth::id(),
                 ]);
+                // dd($orderModel);
 
                 // Thêm chi tiết đơn hàng & cập nhật tồn kho
                 foreach ($order['selectedItems'] as $item) {
@@ -143,8 +141,11 @@ class PaymentController extends Controller
                 ]);
 
                 DB::commit();
-
                 // Xóa giỏ hàng
+                Log::info('Before forget:', ['order_info' => session('order_info')]);
+                session()->forget(['order_info','voucher']);
+                Log::info('After forget:', ['order_info' => session('order_info')]);
+
                 $selectedCartItemIds = collect($order['selectedItems'])->pluck('id')->toArray();
                 OrderItem::whereIn('id', $selectedCartItemIds)->delete();
 
@@ -156,17 +157,17 @@ class PaymentController extends Controller
                 return back()->with('error', 'Đã có lỗi xảy ra khi xử lý đơn hàng: ' . $e->getMessage());
             }
         }
+
         // end MOMO
         try {
             DB::beginTransaction();
-
-            $finalTotal = $order['finalTotal'];
-            if ($paymentMethod == 'cod') {
-                $finalTotal += 10000;
+            $shippingFee = 0;
+            if ($paymentMethod == 'cash') {
+                $shippingFee = 30;
             }
-
+            $finalTotal = $order['finalTotal'] + $shippingFee;
             $voucherDiscount = $order['discount'] ?? 0;
-            $shippingFee = $order['shippingFee'] ?? 0;
+            // $shippingFee = $order['shippingFee'] ?? 0;
             $couponId = $order['coupon_id'] ?? null;
             $notes = $order['notes'] ?? '';
 
@@ -187,7 +188,7 @@ class PaymentController extends Controller
                 'notes' => $notes,
                 'user_id' => Auth::id(),
             ]);
-
+            // dd($orderModel);
             // 2. Thêm chi tiết đơn hàng & cập nhật tồn kho
             foreach ($order['selectedItems'] as $item) {
                 $productVariant = ProductVariant::find($item->product_variant_id);
@@ -223,9 +224,12 @@ class PaymentController extends Controller
 
             // 4. Ghi nhận sử dụng coupon (nếu có)
             if ($couponId) {
-                $couponId = Coupon::find($couponId);
-                $couponId->increment('used_count');
+                $coupon = Coupon::find($couponId);
+                if ($coupon) {
+                    $coupon->increment('used_count');
+                }
             }
+
 
             // 5. Tạo thông báo
             $orderModel->notifications()->create([
@@ -236,8 +240,10 @@ class PaymentController extends Controller
             ]);
 
             DB::commit();
-            session()->forget('order_info');
-            Log::info('Redirecting to confirmation page...');
+            Log::info('Before forget:', ['order_info' => session('order_info')]);
+            session()->forget(['order_info','voucher']);
+            Log::info('After forget:', ['order_info' => session('order_info')]);
+
             // Xóa các sản phẩm trong giỏ hàng sau khi đặt hàng thành công
             $selectedCartItemIds = collect($order['selectedItems'])->pluck('id')->toArray();
 
@@ -281,7 +287,7 @@ class PaymentController extends Controller
         // dd($amount);
 
         if ($amount < 10000) {
-            return redirect()->route('payment.cod', ['orderCode' => $orderModel->order_code])
+            return redirect()->route('payment.cash', ['orderCode' => $orderModel->order_code])
                 ->with('error', 'Số tiền thanh toán tối thiểu qua MoMo là 10.000 VND.');
         }
 
