@@ -1,7 +1,8 @@
-@extends('admin.layout.Aminlayout')
-@section('title', 'User')
+@extends('admin.layout.Adminlayout')
+@section('title', 'Người dùng')
 @section('css')
     <link href="{{ asset('admin/assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('admin/assets/css/user.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
 
@@ -12,12 +13,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
-                        <h4 class="mb-sm-0">Customers</h4>
+                        <h4 class="mb-sm-0">Khách hàng</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                                <li class="breadcrumb-item active">Customers</li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Thương mại điện tử</a></li>
+                                <li class="breadcrumb-item active">Khách hàng</li>
                             </ol>
                         </div>
 
@@ -34,7 +35,7 @@
                             <div class="row g-4 align-items-center">
                                 <div class="col-sm">
                                     <div>
-                                        <h5 class="card-title mb-0">Customer List</h5>
+                                        <h5 class="card-title mb-0">Danh sách khách hàng</h5>
                                     </div>
                                 </div>
                                 <div class="col-sm-auto">
@@ -43,9 +44,9 @@
                                             onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
                                         <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
                                             id="create-btn" data-bs-target="#showModal"><i
-                                                class="ri-add-line align-bottom me-1"></i> Add Customer</button>
+                                                class="ri-add-line align-bottom me-1"></i> Thêm khách hàng</button>
                                         <button type="button" class="btn btn-info"><i
-                                                class="ri-file-download-line align-bottom me-1"></i> Import</button>
+                                                class="ri-file-download-line align-bottom me-1"></i> Nhập dữ liệu</button>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +57,7 @@
                                     <div class="col-xl-6">
                                         <div class="search-box">
                                             <input type="text" class="form-control search"
-                                                placeholder="Search for customer, email, phone, status or something...">
+                                                placeholder="Tìm kiếm khách hàng, email, số điện thoại, trạng thái hoặc nội dung khác...">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
@@ -67,7 +68,7 @@
                                                 <div class="">
                                                     <input type="text" class="form-control" id="datepicker-range"
                                                         data-provider="flatpickr" data-date-format="d M, Y"
-                                                        data-range-date="true" placeholder="Select date">
+                                                        data-range-date="true" placeholder="Chọn ngày">
                                                 </div>
                                             </div>
                                             <!--end col-->
@@ -76,10 +77,10 @@
                                                     <select class="form-control" data-plugin="choices" data-choices
                                                         data-choices-search-false name="choices-single-default"
                                                         id="idStatus">
-                                                        <option value="">Status</option>
-                                                        <option value="all" selected>All</option>
-                                                        <option value="Active">Active</option>
-                                                        <option value="Block">Block</option>
+                                                        <option value="">Trạng thái</option>
+                                                        <option value="all" selected>Tất cả</option>
+                                                        <option value="Active">Hoạt động</option>
+                                                        <option value="Block">Khóa</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -89,7 +90,7 @@
                                                 <div>
                                                     <button type="button" class="btn btn-primary w-100"
                                                         onclick="SearchData();"> <i
-                                                            class="ri-equalizer-fill me-2 align-bottom"></i>Filters</button>
+                                                            class="ri-equalizer-fill me-2 align-bottom"></i>Bộ lọc</button>
                                                 </div>
                                             </div>
                                             <!--end col-->
@@ -99,6 +100,8 @@
                                 <!--end row-->
                             </form>
                         </div>
+                       
+
                         <div class="card-body">
                             <div>
                                 <div class="table-responsive table-card mb-1">
@@ -111,15 +114,14 @@
                                                             value="option">
                                                     </div>
                                                 </th>
-
-                                                <th class="sort" data-sort="customer_name">Customer</th>
+                                                <th class="sort" data-sort="customer_name">Khách hàng</th>
                                                 <th class="sort" data-sort="email">Email</th>
-                                                <th class="sort" data-sort="phone">Phone</th>
-                                                <th class="sort" data-sort="password">Password</th>
-                                                <th class="sort" data-sort="date">Joining Date</th>
-                                                <th class="sort" data-sort="status">Status</th>
-                                                <th class="sort" data-sort="role">Role</th>
-                                                <th class="sort" data-sort="action">Action</th>
+                                                <th class="sort" data-sort="phone">Số điện thoại</th>
+                                                <th class="sort" data-sort="password">Mật khẩu</th>
+                                                <th class="sort" data-sort="date">Ngày tham gia</th>
+                                                <th class="sort" data-sort="status">Trạng thái</th>
+                                                <th class="sort" data-sort="role">Vai trò</th>
+                                                <th class="sort" data-sort="action">Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody class="list form-check-all">
@@ -132,20 +134,21 @@
                                                 </th>
                                                 <td class="id" style="display:none;"><a href="javascript:void(0);"
                                                         class="fw-medium link-primary">#VZ2101</a></td>
-                                                <td class="customer_name">Mary Cousar</td>
-                                                <td class="email">marycousar@velzon.com</td>
-                                                <td class="phone">580-464-4694</td>
-                                                <td class="password">123456</td>
-                                                <td class="date">06 Apr, 2021</td>
-                                                <td class="status"><span
-                                                    class="badge bg-success-subtle text-success text-uppercase">active</span>
+                                                <td class="customer_name" data-label="Khách hàng">Mary Cousar</td>
+                                                <td class="email" data-label="Email">marycousar@velzon.com</td>
+                                                <td class="phone" data-label="Số điện thoại">580-464-4694</td>
+                                                <td class="password" data-label="Mật khẩu">123456</td>
+                                                <td class="date" data-label="Ngày tham gia">06 Apr, 2021</td>
+                                                <td class="status" data-label="Trạng thái">
+                                                    <span class="badge bg-success-subtle text-success text-uppercase">Hoạt
+                                                        động</span>
                                                 </td>
-                                                <td class="role">Admin</td>
-                                                <td>
+                                                <td class="role" data-label="Vai trò">Quản trị viên</td>
+                                                <td data-label="Hành động">
                                                     <ul class="list-inline hstack gap-2 mb-0">
                                                         <li class="list-inline-item edit" data-bs-toggle="tooltip"
                                                             data-bs-trigger="hover" data-bs-placement="top"
-                                                            title="Edit">
+                                                            title="Chỉnh sửa">
                                                             <a href="#showModal" data-bs-toggle="modal"
                                                                 class="text-primary d-inline-block edit-item-btn">
                                                                 <i class="ri-pencil-fill fs-16"></i>
@@ -153,7 +156,7 @@
                                                         </li>
                                                         <li class="list-inline-item" data-bs-toggle="tooltip"
                                                             data-bs-trigger="hover" data-bs-placement="top"
-                                                            title="Remove">
+                                                            title="Xóa">
                                                             <a class="text-danger d-inline-block remove-item-btn"
                                                                 data-bs-toggle="modal" href="#deleteRecordModal">
                                                                 <i class="ri-delete-bin-5-fill fs-16"></i>
@@ -169,20 +172,21 @@
                                             <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
                                                 colors="primary:#121331,secondary:#08a88a"
                                                 style="width:75px;height:75px"></lord-icon>
-                                            <h5 class="mt-2">Sorry! No Result Found</h5>
-                                            <p class="text-muted mb-0">We've searched more than 150+ customer We did not
-                                                find any customer for you search.</p>
+                                            <h5 class="mt-2">Xin lỗi! Không tìm thấy kết quả</h5>
+                                            <p class="text-muted mb-0">Chúng tôi đã tìm kiếm hơn 150+ khách hàng nhưng
+                                                không
+                                                tìm thấy khách hàng nào theo yêu cầu của bạn.</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <div class="pagination-wrap hstack gap-2">
                                         <a class="page-item pagination-prev disabled" href="#">
-                                            Previous
+                                            Trước
                                         </a>
                                         <ul class="pagination listjs-pagination mb-0"></ul>
                                         <a class="page-item pagination-next" href="#">
-                                            Next
+                                            Tiếp
                                         </a>
                                     </div>
                                 </div>
@@ -206,67 +210,67 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="customername-field" class="form-label">Customer
-                                                        Name</label>
+                                                    <label for="customername-field" class="form-label">Tên khách
+                                                        hàng</label>
                                                     <input type="text" id="customername-field" class="form-control"
-                                                        placeholder="Enter name" required />
-                                                    <div class="invalid-feedback">Please enter a customer name.</div>
+                                                        placeholder="Nhập tên" required />
+                                                    <div class="invalid-feedback">Vui lòng nhập tên khách hàng.</div>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="email-field" class="form-label">Email</label>
                                                     <input type="email" id="email-field" class="form-control"
-                                                        placeholder="Enter email" required />
-                                                    <div class="invalid-feedback">Please enter an email.</div>
+                                                        placeholder="Nhập email" required />
+                                                    <div class="invalid-feedback">Vui lòng nhập email.</div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="password-field" class="form-label">Password</label>
+                                                    <label for="password-field" class="form-label">Mật khẩu</label>
                                                     <input type="password" id="password-field" class="form-control"
-                                                        placeholder="Enter password" required />
-                                                    <div class="invalid-feedback">Please enter a password.</div>
+                                                        placeholder="Nhập mật khẩu" required />
+                                                    <div class="invalid-feedback">Vui lòng nhập mật khẩu.</div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="phone-field" class="form-label">Phone</label>
+                                                    <label for="phone-field" class="form-label">Số điện thoại</label>
                                                     <input type="text" id="phone-field" class="form-control"
-                                                        placeholder="Enter phone no." required />
-                                                    <div class="invalid-feedback">Please enter a phone.</div>
+                                                        placeholder="Nhập số điện thoại" required />
+                                                    <div class="invalid-feedback">Vui lòng nhập số điện thoại.</div>
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="date-field" class="form-label">Joining Date</label>
+                                                    <label for="date-field" class="form-label">Ngày tham gia</label>
                                                     <input type="date" id="date-field" class="form-control"
                                                         data-provider="flatpickr" data-date-format="d M, Y" required
-                                                        placeholder="Select date" />
-                                                    <div class="invalid-feedback">Please select a date.</div>
+                                                        placeholder="Chọn ngày" />
+                                                    <div class="invalid-feedback">Vui lòng chọn ngày.</div>
                                                 </div>
 
                                                 <div>
-                                                    <label for="status-field" class="form-label">Status</label>
+                                                    <label for="status-field" class="form-label">Trạng thái</label>
                                                     <select class="form-control" data-choices data-choices-search-false
                                                         name="status-field" id="status-field" required>
-                                                        <option value="">Status</option>
-                                                        <option value="active">Active</option>
-                                                        <option value="locked">Locked</option>
-                                                        <option value="banned">Banned</option>
+                                                        <option value="">Trạng thái</option>
+                                                        <option value="active">Hoạt động</option>
+                                                        <option value="locked">Khóa</option>
+                                                        <option value="banned">Cấm</option>
                                                     </select>
                                                 </div>
                                                 <div>
-                                                    <label for="role-field" class="form-label">Role</label>
+                                                    <label for="role-field" class="form-label">Vai trò</label>
                                                     <select class="form-control" data-choices data-choices-search-false
                                                         name="role-field" id="role-field" required>
-                                                        <option value="">Role</option>
-                                                        <option value="admin">Admin</option>
-                                                        <option value="user">User</option>
+                                                        <option value="">Vai trò</option>
+                                                        <option value="admin">Quản trị viên</option>
+                                                        <option value="user">Người dùng</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <div class="hstack gap-2 justify-content-end">
                                                     <button type="button" class="btn btn-light"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-success" id="add-btn">Add
-                                                        Customer</button>
-                                                    <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                                                        data-bs-dismiss="modal">Đóng</button>
+                                                    <button type="submit" class="btn btn-success" id="add-btn">Thêm
+                                                        khách hàng</button>
+                                                    <!-- <button type="button" class="btn btn-success" id="edit-btn">Cập nhật</button> -->
                                                 </div>
                                             </div>
                                         </form>
@@ -288,16 +292,16 @@
                                                     colors="primary:#f7b84b,secondary:#f06548"
                                                     style="width:100px;height:100px"></lord-icon>
                                                 <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                                                    <h4>Are you sure ?</h4>
-                                                    <p class="text-muted mx-4 mb-0">Are you sure you want to remove this
-                                                        record ?</p>
+                                                    <h4>Bạn có chắc không?</h4>
+                                                    <p class="text-muted mx-4 mb-0">Bạn có chắc muốn xóa bản ghi này không?
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
                                                 <button type="button" class="btn w-sm btn-light"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn w-sm btn-danger"
-                                                    id="delete-record">Yes, Delete It!</button>
+                                                    data-bs-dismiss="modal">Đóng</button>
+                                                <button type="button" class="btn w-sm btn-danger" id="delete-record">Có,
+                                                    xóa nó!</button>
                                             </div>
                                         </div>
                                     </div>
@@ -315,8 +319,6 @@
         </div>
         <!-- container-fluid -->
     </div>
-
-
 
 @endsection
 @push('scripts')

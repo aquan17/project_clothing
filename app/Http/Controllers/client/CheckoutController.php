@@ -56,6 +56,7 @@ class CheckoutController extends Controller
     $discount = 0;
     $voucherCode = null;
     $voucherData = Session::get('voucher');
+    // dd($voucherData);
 
     // Kiểm tra xem có voucher trong session không
     if ($voucherData && is_array($voucherData) && isset($voucherData['code'], $voucherData['discount_type'], $voucherData['discount_value'])) {

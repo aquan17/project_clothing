@@ -85,7 +85,7 @@ class AdminUserController extends Controller
         'email'         => 'required|email|unique:users,email,' . $id,
         'phone'         => 'nullable|string|max:20',
         'password'      => 'nullable|string|min:6',
-        'status'        => 'required|in:active,inactive', // tuỳ cách bạn định nghĩa status
+        'status'        => 'required|in:active,banned,locked', // tuỳ cách bạn định nghĩa status
         'role'          => 'required|in:user,admin',      // tuỳ vai trò bạn hỗ trợ
     ]);
 

@@ -1,10 +1,9 @@
 @extends('admin.layout.Adminlayout')
-@section('title', 'Dashboard')
+@section('title', 'Bảng điều khiển')
 @section('css')
     @include('admin.layout.component.head')
 @endsection
 @section('content')
-
 
     <div class="page-content">
         <div class="container-fluid">
@@ -17,8 +16,8 @@
                             <div class="col-12">
                                 <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                                     <div class="flex-grow-1">
-                                        <h4 class="fs-16 mb-1">Good Morning, {{ Auth::user()->name }}!</h4>
-                                        <p class="text-muted mb-0">Here's what's happening with your store today.</p>
+                                        <h4 class="fs-16 mb-1">Chào buổi sáng, {{ Auth::user()->name }}!</h4>
+                                        <p class="text-muted mb-0">Đây là những gì đang diễn ra với cửa hàng của bạn hôm nay.</p>
                                     </div>
                                     <div class="mt-3 mt-lg-0">
                                         <form action="javascript:void(0);">
@@ -39,8 +38,7 @@
                                                 <div class="col-auto">
                                                     <button type="button"
                                                         class="btn btn-soft-success material-shadow-none"><i
-                                                            class="ri-add-circle-line align-middle me-1"></i> Add
-                                                        Product</button>
+                                                            class="ri-add-circle-line align-middle me-1"></i> Thêm sản phẩm</button>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-auto">
@@ -66,8 +64,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 overflow-hidden">
-                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Total
-                                                    Earnings</p>
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng doanh thu</p>
                                             </div>
                                             <div class="flex-shrink-0">
                                                 <h5 class="text-success fs-14 mb-0">
@@ -79,7 +76,7 @@
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value"
                                                         data-target="totalEarnings">0</span>k </h4>
-                                                <a href="#" class="text-decoration-underline">View net earnings</a>
+                                                <a href="#" class="text-decoration-underline">Xem doanh thu ròng</a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-success-subtle rounded fs-3">
@@ -97,7 +94,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 overflow-hidden">
-                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Orders</p>
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn hàng</p>
                                             </div>
                                             <div class="flex-shrink-0">
                                                 <h5 class="text-danger fs-14 mb-0">
@@ -109,7 +106,7 @@
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
                                                         data-target="totalOrders">0</span></h4>
-                                                <a href="#" class="text-decoration-underline">View all orders</a>
+                                                <a href="#" class="text-decoration-underline">Xem tất cả đơn hàng</a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-info-subtle rounded fs-3">
@@ -127,8 +124,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 overflow-hidden">
-                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Customers
-                                                </p>
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Khách hàng</p>
                                             </div>
                                             <div class="flex-shrink-0">
                                                 <h5 class="text-success fs-14 mb-0">
@@ -140,7 +136,7 @@
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
                                                         data-target="totalCustomers">0</span>M </h4>
-                                                <a href="#" class="text-decoration-underline">See details</a>
+                                                <a href="#" class="text-decoration-underline">Xem chi tiết</a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -158,8 +154,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 overflow-hidden">
-                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> My
-                                                    Balance</p>
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Số dư của tôi</p>
                                             </div>
                                             <div class="flex-shrink-0">
                                                 <h5 class="text-muted fs-14 mb-0">
@@ -171,7 +166,7 @@
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value"
                                                         data-target="totalBalance">0</span>k </h4>
-                                                <a href="#" class="text-decoration-underline">Withdraw money</a>
+                                                <a href="#" class="text-decoration-underline">Rút tiền</a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-primary-subtle rounded fs-3">
@@ -185,16 +180,15 @@
                         </div> <!-- end row-->
 
                         <div class="row">
-
                             <div class="col-xl-8">
                                 <div class="card">
                                     <div class="card-header border-0 align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Revenue</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Doanh thu</h4>
                                         <div class="d-flex align-items-center gap-3">
                                             <!-- Input Date Range -->
                                             <div class="input-group input-group-sm">
                                                 <input type="date" class="form-control" id="startDate">
-                                                <span class="input-group-text">to</span>
+                                                <span class="input-group-text">đến</span>
                                                 <input type="date" class="form-control" id="endDate">
                                                 <button class="btn btn-primary btn-sm" id="filterDate" type="button">
                                                     <i class="ri-filter-2-fill"></i>
@@ -204,13 +198,13 @@
                                             <!-- Quick Filter Buttons -->
                                             <div class="btn-group btn-group-sm">
                                                 <button type="button" data-filter="all"
-                                                    class="btn btn-soft-primary active">ALL</button>
+                                                    class="btn btn-soft-primary active">TẤT CẢ</button>
                                                 <button type="button" data-filter="month"
-                                                    class="btn btn-soft-primary">1M</button>
+                                                    class="btn btn-soft-primary">1 THÁNG</button>
                                                 <button type="button" data-filter="halfYear"
-                                                    class="btn btn-soft-primary">6M</button>
+                                                    class="btn btn-soft-primary">6 THÁNG</button>
                                                 <button type="button" data-filter="year"
-                                                    class="btn btn-soft-primary">1Y</button>
+                                                    class="btn btn-soft-primary">1 NĂM</button>
                                             </div>
                                         </div>
                                     </div>
@@ -236,28 +230,28 @@
                                                 <div class="p-3 border border-dashed border-start-0">
                                                     <h5 class="mb-1"><span id="header-orders" class="counter-value"
                                                             data-target="0">0</span></h5>
-                                                    <p class="text-muted mb-0">Orders</p>
+                                                    <p class="text-muted mb-0">Đơn hàng</p>
                                                 </div>
                                             </div>
                                             <div class="col-6 col-sm-3">
                                                 <div class="p-3 border border-dashed border-start-0">
                                                     <h5 class="mb-1"><span id="header-earnings" class="counter-value"
                                                             data-target="0">0</span>k</h5>
-                                                    <p class="text-muted mb-0">Earnings</p>
+                                                    <p class="text-muted mb-0">Doanh thu</p>
                                                 </div>
                                             </div>
                                             <div class="col-6 col-sm-3">
                                                 <div class="p-3 border border-dashed border-start-0">
                                                     <h5 class="mb-1"><span id="header-canceled" class="counter-value"
                                                             data-target="0">0</span></h5>
-                                                    <p class="text-muted mb-0">Canceled Orders</p>
+                                                    <p class="text-muted mb-0">Đơn hàng bị hủy</p>
                                                 </div>
                                             </div>
                                             <div class="col-6 col-sm-3">
                                                 <div class="p-3 border border-dashed border-start-0 border-end-0">
                                                     <h5 class="mb-1 text-success"><span id="header-conversion"
                                                             class="counter-value" data-target="0">0</span>%</h5>
-                                                    <p class="text-muted mb-0">Conversation Ratio</p>
+                                                    <p class="text-muted mb-0">Tỷ lệ chuyển đổi</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -265,26 +259,6 @@
 
                                     <div class="card-body p-0 pb-2">
                                         <div class="w-100">
-                                            {{-- <div id="customer_impression_charts" 
-                                                data-colors='["--vz-primary", "--vz-success", "--vz-danger"]'
-                                                data-colors-minimal='["--vz-light", "--vz-primary", "--vz-info"]'
-                                                data-colors-saas='["--vz-success", "--vz-info", "--vz-danger"]'
-                                                data-colors-modern='["--vz-warning", "--vz-primary", "--vz-success"]'
-                                                data-colors-interactive='["--vz-info", "--vz-primary", "--vz-danger"]'
-                                                data-colors-creative='["--vz-warning", "--vz-primary", "--vz-danger"]'
-                                                data-colors-corporate='["--vz-light", "--vz-primary", "--vz-secondary"]'
-                                                data-colors-galaxy='["--vz-secondary", "--vz-primary", "--vz-primary-rgb, 0.50"]'
-                                                data-colors-classic='["--vz-light", "--vz-primary", "--vz-secondary"]'
-                                                data-colors-vintage='["--vz-success", "--vz-primary", "--vz-secondary"]'
-                                                class="apex-charts" dir="ltr"></div> --}}
-
-                                            {{-- <div class="summary-stats" style="display: flex; justify-content: space-around; margin-bottom: 20px; text-align: center;">
-    <div><h5 id="totalOrders">... Orders</h5></div>
-    <div><h5 id="totalEarnings">... Earnings</h5></div>
-    <div><h5 id="totalCancelled">... Refunds</h5></div>
-    <div><h5 id="conversionRate">... Conversion Ratio</h5></div>
-</div> --}}
-
                                             <div id="customer_impression_charts" class="apex-charts" dir="ltr">
                                             </div>
                                         </div>
@@ -292,16 +266,15 @@
                                 </div><!-- end card -->
                             </div><!-- end col -->
 
-
                             <div class="col-xl-4">
                                 <!-- card -->
                                 <div class="card card-height-100">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Sales by Locations</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Doanh số theo khu vực</h4>
                                         <div class="flex-shrink-0">
                                             <button type="button"
                                                 class="btn btn-soft-primary material-shadow-none btn-sm">
-                                                Export Report
+                                                Xuất báo cáo
                                             </button>
                                         </div>
                                     </div><!-- end card header -->
@@ -330,7 +303,7 @@
                                                     aria-valuemin="0" aria-valuemax="47"></div>
                                             </div>
 
-                                            <p class="mt-3 mb-1">Russia <span class="float-end">82%</span></p>
+                                            <p class="mt-3 mb-1">Nga <span class="float-end">82%</span></p>
                                             <div class="progress mt-2" style="height: 6px;">
                                                 <div class="progress-bar progress-bar-striped bg-primary"
                                                     role="progressbar" style="width: 82%" aria-valuenow="82"
@@ -349,22 +322,22 @@
                             <div class="col-xl-6">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Best Selling Products</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Sản phẩm bán chạy nhất</h4>
                                         <div class="flex-shrink-0">
                                             <div class="dropdown card-header-dropdown">
                                                 <a class="text-reset dropdown-btn" href="#"
                                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <span class="fw-semibold text-uppercase fs-12">Sort by:
-                                                    </span><span class="text-muted">Today<i
+                                                    <span class="fw-semibold text-uppercase fs-12">Sắp xếp theo:
+                                                    </span><span class="text-muted">Hôm nay<i
                                                             class="mdi mdi-chevron-down ms-1"></i></span>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Today</a>
-                                                    <a class="dropdown-item" href="#">Yesterday</a>
-                                                    <a class="dropdown-item" href="#">Last 7 Days</a>
-                                                    <a class="dropdown-item" href="#">Last 30 Days</a>
-                                                    <a class="dropdown-item" href="#">This Month</a>
-                                                    <a class="dropdown-item" href="#">Last Month</a>
+                                                    <a class="dropdown-item" href="#">Hôm nay</a>
+                                                    <a class="dropdown-item" href="#">Hôm qua</a>
+                                                    <a class="dropdown-item" href="#">7 ngày qua</a>
+                                                    <a class="dropdown-item" href="#">30 ngày qua</a>
+                                                    <a class="dropdown-item" href="#">Tháng này</a>
+                                                    <a class="dropdown-item" href="#">Tháng trước</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -374,50 +347,46 @@
                                         <div class="table-responsive table-card">
                                             <table class="table table-hover table-centered align-middle table-nowrap mb-0">
                                                 <tbody>
-                                                  @forelse($topProducts as $product)
-    <tr>
-        <td>
-            <div class="d-flex align-items-center">
-                <div class="avatar-sm bg-light rounded p-1 me-2">
-                    <img src="{{ asset('client/images/fashion/product/' . $product['image']) }}"
-                        alt="{{ $product['name'] }}"
-                        class="img-fluid d-block" />
-                </div>
-                <div>
-                    <h5 class="fs-14 my-1">
-                        <a href="{{ $product['url'] }}" class="text-reset">{{ $product['name'] }}</a>
-                    </h5>
-                    <span class="text-muted">{{ $product['created_at'] }}</span>
-                </div>
-            </div>
-        </td>
-        <td>
-            <h5 class="fs-14 my-1 fw-normal">
-                ${{$product['price'] }}
-            </h5>
-            <span class="text-muted">Price</span>
-        </td>
-        <td>
-            <h5 class="fs-14 my-1 fw-normal">{{ $product['buyer_count'] }}</h5>
-            <span class="text-muted">Buyers</span>
-        </td>
-        <td>
-            <h5 class="fs-14 my-1 fw-normal">{{ $product['total_stock'] }}</h5>
-            <span class="text-muted">Stock</span>
-        </td>
-        <td>
-            <h5 class="fs-14 my-1 fw-normal">
-              ${{ number_format($product['revenue'], 2) }}</h5>
-            <span class="text-muted">Amount</span>
-        </td>
-    </tr>
-@empty
-    <tr>
-        <td colspan="5" class="text-center">No best-selling products found</td>
-    </tr>
-@endforelse
-
-
+                                                    @forelse($topProducts as $product)
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="avatar-sm bg-light rounded p-1 me-2">
+                                                                        <img src="{{ asset('client/images/fashion/product/' . $product['image']) }}"
+                                                                            alt="{{ $product['name'] }}"
+                                                                            class="img-fluid d-block" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <h5 class="fs-14 my-1">
+                                                                            <a href="{{ $product['url'] }}"
+                                                                                class="text-reset">{{ $product['name'] }}</a>
+                                                                        </h5>
+                                                                        <span class="text-muted">{{ $product['created_at'] }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="fs-14 my-1 fw-normal">${{ $product['price'] }}</h5>
+                                                                <span class="text-muted">Giá</span>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="fs-14 my-1 fw-normal">{{ $product['buyer_count'] }}</h5>
+                                                                <span class="text-muted">Người mua</span>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="fs-14 my-1 fw-normal">{{ $product['total_stock'] }}</h5>
+                                                                <span class="text-muted">Tồn kho</span>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="fs-14 my-1 fw-normal">${{ number_format($product['revenue'], 2) }}</h5>
+                                                                <span class="text-muted">Doanh thu</span>
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="5" class="text-center">Không tìm thấy sản phẩm bán chạy</td>
+                                                        </tr>
+                                                    @endforelse
                                                 </tbody>
                                             </table>
                                         </div>
@@ -426,11 +395,11 @@
                                             class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
                                             <div class="col-sm">
                                                 <div class="text-muted">
-                                                    Showing <span class="fw-semibold">5</span> of <span
-                                                        class="fw-semibold">25</span> Results
+                                                    Hiển thị <span class="fw-semibold">5</span> trong số <span
+                                                        class="fw-semibold">25</span> kết quả
                                                 </div>
                                             </div>
-                                            <div class="col-sm-auto  mt-3 mt-sm-0">
+                                            <div class="col-sm-auto mt-3 mt-sm-0">
                                                 <ul
                                                     class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
                                                     <li class="page-item disabled">
@@ -459,18 +428,18 @@
                             <div class="col-xl-6">
                                 <div class="card card-height-100">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Top Sellers</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Người bán hàng đầu</h4>
                                         <div class="flex-shrink-0">
                                             <div class="dropdown card-header-dropdown">
                                                 <a class="text-reset dropdown-btn" href="#"
                                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <span class="text-muted">Report<i
+                                                    <span class="text-muted">Báo cáo<i
                                                             class="mdi mdi-chevron-down ms-1"></i></span>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Download Report</a>
-                                                    <a class="dropdown-item" href="#">Export</a>
-                                                    <a class="dropdown-item" href="#">Import</a>
+                                                    <a class="dropdown-item" href="#">Tải báo cáo</a>
+                                                    <a class="dropdown-item" href="#">Xuất</a>
+                                                    <a class="dropdown-item" href="#">Nhập</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -497,11 +466,11 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <span class="text-muted">Bags and Wallets</span>
+                                                            <span class="text-muted">Túi và Ví</span>
                                                         </td>
                                                         <td>
                                                             <p class="mb-0">8547</p>
-                                                            <span class="text-muted">Stock</span>
+                                                            <span class="text-muted">Tồn kho</span>
                                                         </td>
                                                         <td>
                                                             <span class="text-muted">$541200</span>
@@ -528,11 +497,11 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <span class="text-muted">Watches</span>
+                                                            <span class="text-muted">Đồng hồ</span>
                                                         </td>
                                                         <td>
                                                             <p class="mb-0">895</p>
-                                                            <span class="text-muted">Stock</span>
+                                                            <span class="text-muted">Tồn kho</span>
                                                         </td>
                                                         <td>
                                                             <span class="text-muted">$75030</span>
@@ -559,11 +528,11 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <span class="text-muted">Bike Accessories</span>
+                                                            <span class="text-muted">Phụ kiện xe đạp</span>
                                                         </td>
                                                         <td>
                                                             <p class="mb-0">3470</p>
-                                                            <span class="text-muted">Stock</span>
+                                                            <span class="text-muted">Tồn kho</span>
                                                         </td>
                                                         <td>
                                                             <span class="text-muted">$45600</span>
@@ -590,11 +559,11 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <span class="text-muted">Clothes</span>
+                                                            <span class="text-muted">Quần áo</span>
                                                         </td>
                                                         <td>
                                                             <p class="mb-0">5488</p>
-                                                            <span class="text-muted">Stock</span>
+                                                            <span class="text-muted">Tồn kho</span>
                                                         </td>
                                                         <td>
                                                             <span class="text-muted">$29456</span>
@@ -622,11 +591,11 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <span class="text-muted">Furniture</span>
+                                                            <span class="text-muted">Nội thất</span>
                                                         </td>
                                                         <td>
                                                             <p class="mb-0">4100</p>
-                                                            <span class="text-muted">Stock</span>
+                                                            <span class="text-muted">Tồn kho</span>
                                                         </td>
                                                         <td>
                                                             <span class="text-muted">$11260</span>
@@ -645,11 +614,11 @@
                                             class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
                                             <div class="col-sm">
                                                 <div class="text-muted">
-                                                    Showing <span class="fw-semibold">5</span> of <span
-                                                        class="fw-semibold">25</span> Results
+                                                    Hiển thị <span class="fw-semibold">5</span> trong số <span
+                                                        class="fw-semibold">25</span> kết quả
                                                 </div>
                                             </div>
-                                            <div class="col-sm-auto  mt-3 mt-sm-0">
+                                            <div class="col-sm-auto mt-3 mt-sm-0">
                                                 <ul
                                                     class="pagination pagination-separated pagination-sm mb-0 justify-content-center">
                                                     <li class="page-item disabled">
@@ -680,18 +649,18 @@
                             <div class="col-xl-4">
                                 <div class="card card-height-100">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Store Visits by Source</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Lượt truy cập cửa hàng theo nguồn</h4>
                                         <div class="flex-shrink-0">
                                             <div class="dropdown card-header-dropdown">
                                                 <a class="text-reset dropdown-btn" href="#"
                                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <span class="text-muted">Report<i
+                                                    <span class="text-muted">Báo cáo<i
                                                             class="mdi mdi-chevron-down ms-1"></i></span>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Download Report</a>
-                                                    <a class="dropdown-item" href="#">Export</a>
-                                                    <a class="dropdown-item" href="#">Import</a>
+                                                    <a class="dropdown-item" href="#">Tải báo cáo</a>
+                                                    <a class="dropdown-item" href="#">Xuất</a>
+                                                    <a class="dropdown-item" href="#">Nhập</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -711,10 +680,10 @@
                             <div class="col-xl-8">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Recent Orders</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Đơn hàng gần đây</h4>
                                         <div class="flex-shrink-0">
                                             <button type="button" class="btn btn-soft-info btn-sm material-shadow-none">
-                                                <i class="ri-file-list-3-line align-middle"></i> Generate Report
+                                                <i class="ri-file-list-3-line align-middle"></i> Tạo báo cáo
                                             </button>
                                         </div>
                                     </div><!-- end card header -->
@@ -725,13 +694,12 @@
                                                 class="table table-borderless table-centered align-middle table-nowrap mb-0">
                                                 <thead class="text-muted table-light">
                                                     <tr>
-                                                        <th scope="col">Order ID</th>
-                                                        <th scope="col">Customer</th>
-                                                        <th scope="col">Product</th>
-                                                        <th scope="col">Amount</th>
-                                                        {{-- <th scope="col">Vendor</th> --}}
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col">Rating</th>
+                                                        <th scope="col">Mã đơn hàng</th>
+                                                        <th scope="col">Khách hàng</th>
+                                                        <th scope="col">Sản phẩm</th>
+                                                        <th scope="col">Số tiền</th>
+                                                        <th scope="col">Trạng thái</th>
+                                                        <th scope="col">Đánh giá</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -802,7 +770,7 @@
                         <div class="card h-100 rounded-0">
                             <div class="card-body p-0">
                                 <div class="p-3">
-                                    <h6 class="text-muted mb-0 text-uppercase fw-semibold">Recent Activity</h6>
+                                    <h6 class="text-muted mb-0 text-uppercase fw-semibold">Hoạt động gần đây</h6>
                                 </div>
                                 <div data-simplebar style="max-height: 410px;" class="p-3 pt-0">
                                     <div class="acitivity-timeline acitivity-main">
@@ -814,9 +782,9 @@
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1 lh-base">Purchase by James Price</h6>
-                                                <p class="text-muted mb-1">Product noise evolve smartwatch </p>
-                                                <small class="mb-0 text-muted">02:14 PM Today</small>
+                                                <h6 class="mb-1 lh-base">Mua hàng bởi James Price</h6>
+                                                <p class="text-muted mb-1">Sản phẩm đồng hồ thông minh noise evolve</p>
+                                                <small class="mb-0 text-muted">02:14 CH Hôm nay</small>
                                             </div>
                                         </div>
                                         <div class="acitivity-item py-3 d-flex">
@@ -827,9 +795,9 @@
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1 lh-base">Added new <span class="fw-semibold">style
-                                                        collection</span></h6>
-                                                <p class="text-muted mb-1">By Nesta Technologies</p>
+                                                <h6 class="mb-1 lh-base">Thêm mới <span class="fw-semibold">bộ sưu tập
+                                                        phong cách</span></h6>
+                                                <p class="text-muted mb-1">Bởi Nesta Technologies</p>
                                                 <div class="d-inline-flex gap-2 border border-dashed p-2 mb-2">
                                                     <a href="apps-ecommerce-product-details.html"
                                                         class="bg-light rounded p-1">
@@ -847,7 +815,7 @@
                                                             alt="" class="img-fluid d-block" />
                                                     </a>
                                                 </div>
-                                                <p class="mb-0 text-muted"><small>9:47 PM Yesterday</small></p>
+                                                <p class="mb-0 text-muted"><small>9:47 Tối Hôm qua</small></p>
                                             </div>
                                         </div>
                                         <div class="acitivity-item py-3 d-flex">
@@ -857,10 +825,9 @@
                                                     class="avatar-xs rounded-circle acitivity-avatar material-shadow">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1 lh-base">Natasha Carey have liked the products</h6>
-                                                <p class="text-muted mb-1">Allow users to like products in your WooCommerce
-                                                    store.</p>
-                                                <small class="mb-0 text-muted">25 Dec, 2021</small>
+                                                <h6 class="mb-1 lh-base">Natasha Carey đã thích sản phẩm</h6>
+                                                <p class="text-muted mb-1">Cho phép người dùng thích sản phẩm trong cửa hàng WooCommerce của bạn.</p>
+                                                <small class="mb-0 text-muted">25 Th12, 2021</small>
                                             </div>
                                         </div>
                                         <div class="acitivity-item py-3 d-flex">
@@ -872,12 +839,11 @@
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1 lh-base">Today offers by <a
+                                                <h6 class="mb-1 lh-base">Ưu đãi hôm nay bởi <a
                                                         href="apps-ecommerce-seller-details.html"
                                                         class="link-secondary">Digitech Galaxy</a></h6>
-                                                <p class="text-muted mb-2">Offer is valid on orders of Rs.500 Or above for
-                                                    selected products only.</p>
-                                                <small class="mb-0 text-muted">12 Dec, 2021</small>
+                                                <p class="text-muted mb-2">Ưu đãi áp dụng cho đơn hàng từ 500.000 VNĐ trở lên đối với các sản phẩm được chọn.</p>
+                                                <small class="mb-0 text-muted">12 Th12, 2021</small>
                                             </div>
                                         </div>
                                         <div class="acitivity-item py-3 d-flex">
@@ -890,9 +856,9 @@
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1 lh-base">Favorite Product</h6>
-                                                <p class="text-muted mb-2">Esther James have Favorite product.</p>
-                                                <small class="mb-0 text-muted">25 Nov, 2021</small>
+                                                <h6 class="mb-1 lh-base">Sản phẩm yêu thích</h6>
+                                                <p class="text-muted mb-2">Esther James đã thêm sản phẩm vào yêu thích.</p>
+                                                <small class="mb-0 text-muted">25 Th11, 2021</small>
                                             </div>
                                         </div>
                                         <div class="acitivity-item py-3 d-flex">
@@ -904,11 +870,11 @@
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1 lh-base">Flash sale starting <span
-                                                        class="text-primary">Tomorrow.</span></h6>
-                                                <p class="text-muted mb-0">Flash sale by <a href="javascript:void(0);"
+                                                <h6 class="mb-1 lh-base">Flash sale bắt đầu <span
+                                                        class="text-primary">Ngày mai.</span></h6>
+                                                <p class="text-muted mb-0">Flash sale bởi <a href="javascript:void(0);"
                                                         class="link-secondary fw-medium">Zoetic Fashion</a></p>
-                                                <small class="mb-0 text-muted">22 Oct, 2021</small>
+                                                <small class="mb-0 text-muted">22 Th10, 2021</small>
                                             </div>
                                         </div>
                                         <div class="acitivity-item py-3 d-flex">
@@ -921,13 +887,13 @@
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1 lh-base">Monthly sales report</h6>
-                                                <p class="text-muted mb-2"><span class="text-danger">2 days left</span>
-                                                    notification to submit the monthly sales report. <a
+                                                <h6 class="mb-1 lh-base">Báo cáo doanh số hàng tháng</h6>
+                                                <p class="text-muted mb-2"><span class="text-danger">Còn 2 ngày</span>
+                                                    để nộp báo cáo doanh số hàng tháng. <a
                                                         href="javascript:void(0);"
-                                                        class="link-warning text-decoration-underline">Reports Builder</a>
+                                                        class="link-warning text-decoration-underline">Trình tạo báo cáo</a>
                                                 </p>
-                                                <small class="mb-0 text-muted">15 Oct</small>
+                                                <small class="mb-0 text-muted">15 Th10</small>
                                             </div>
                                         </div>
                                         <div class="acitivity-item d-flex">
@@ -937,68 +903,67 @@
                                                     class="avatar-xs rounded-circle acitivity-avatar material-shadow" />
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1 lh-base">Frank Hook Commented</h6>
-                                                <p class="text-muted mb-2 fst-italic">" A product that has reviews is more
-                                                    likable to be sold than a product. "</p>
-                                                <small class="mb-0 text-muted">26 Aug, 2021</small>
+                                                <h6 class="mb-1 lh-base">Frank Hook đã bình luận</h6>
+                                                <p class="text-muted mb-2 fst-italic">" Sản phẩm có đánh giá sẽ dễ bán hơn sản phẩm không có đánh giá. "</p>
+                                                <small class="mb-0 text-muted">26 Th8, 2021</small>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="p-3 mt-2">
-                                    <h6 class="text-muted mb-3 text-uppercase fw-semibold">Top 10 Categories
+                                    <h6 class="text-muted mb-3 text-uppercase fw-semibold">Top 10 danh mục
                                     </h6>
 
                                     <ol class="ps-3 text-muted">
                                         <li class="py-1">
-                                            <a href="#" class="text-muted">Mobile & Accessories <span
+                                            <a href="#" class="text-muted">Điện thoại & Phụ kiện <span
                                                     class="float-end">(10,294)</span></a>
                                         </li>
                                         <li class="py-1">
-                                            <a href="#" class="text-muted">Desktop <span
+                                            <a href="#" class="text-muted">Máy tính để bàn <span
                                                     class="float-end">(6,256)</span></a>
                                         </li>
                                         <li class="py-1">
-                                            <a href="#" class="text-muted">Electronics <span
+                                            <a href="#" class="text-muted">Điện tử <span
                                                     class="float-end">(3,479)</span></a>
                                         </li>
                                         <li class="py-1">
-                                            <a href="#" class="text-muted">Home & Furniture <span
+                                            <a href="#" class="text-muted">Nhà cửa & Nội thất <span
                                                     class="float-end">(2,275)</span></a>
                                         </li>
                                         <li class="py-1">
-                                            <a href="#" class="text-muted">Grocery <span
+                                            <a href="#" class="text-muted">Tạp hóa <span
                                                     class="float-end">(1,950)</span></a>
                                         </li>
                                         <li class="py-1">
-                                            <a href="#" class="text-muted">Fashion <span
+                                            <a href="#" class="text-muted">Thời trang <span
                                                     class="float-end">(1,582)</span></a>
                                         </li>
                                         <li class="py-1">
-                                            <a href="#" class="text-muted">Appliances <span
+                                            <a href="#" class="text-muted">Đồ gia dụng <span
                                                     class="float-end">(1,037)</span></a>
                                         </li>
                                         <li class="py-1">
-                                            <a href="#" class="text-muted">Beauty, Toys & More <span
+                                            <a href="#" class="text-muted">Làm đẹp, Đồ chơi & Khác <span
                                                     class="float-end">(924)</span></a>
                                         </li>
                                         <li class="py-1">
-                                            <a href="#" class="text-muted">Food & Drinks <span
+                                            <a href="#" class="text-muted">Thực phẩm & Đồ uống <span
                                                     class="float-end">(701)</span></a>
                                         </li>
                                         <li class="py-1">
-                                            <a href="#" class="text-muted">Toys & Games <span
+                                            <a href="#" class="text-muted">Đồ chơi & Trò chơi <span
                                                     class="float-end">(239)</span></a>
                                         </li>
                                     </ol>
                                     <div class="mt-3 text-center">
-                                        <a href="javascript:void(0);" class="text-muted text-decoration-underline">View
-                                            all Categories</a>
+                                        <a href="javascript:void(0);" class="text-muted text-decoration-underline">Xem
+                                            tất cả danh mục</a>
                                     </div>
                                 </div>
                                 <div class="p-3">
-                                    <h6 class="text-muted mb-3 text-uppercase fw-semibold">Products Reviews</h6>
+                                    <h6 class="text-muted mb-3 text-uppercase fw-semibold">Đánh giá sản phẩm</h6>
                                     <!-- Swiper -->
                                     <div class="swiper vertical-swiper" style="height: 250px;">
                                         <div class="swiper-wrapper">
@@ -1016,7 +981,7 @@
                                                                 <div>
                                                                     <p
                                                                         class="text-muted mb-1 fst-italic text-truncate-two-lines">
-                                                                        " Great product and looks great, lots of features. "
+                                                                        " Sản phẩm tuyệt vời và trông rất đẹp, nhiều tính năng. "
                                                                     </p>
                                                                     <div class="fs-11 align-middle text-warning">
                                                                         <i class="ri-star-fill"></i>
@@ -1027,7 +992,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="text-end mb-0 text-muted">
-                                                                    - by <cite title="Source Title">Force Medicines</cite>
+                                                                    - bởi <cite title="Source Title">Force Medicines</cite>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1047,8 +1012,7 @@
                                                                 <div>
                                                                     <p
                                                                         class="text-muted mb-1 fst-italic text-truncate-two-lines">
-                                                                        " Amazing template, very easy to understand and
-                                                                        manipulate. "</p>
+                                                                        " Mẫu tuyệt vời, rất dễ hiểu và tùy chỉnh. "</p>
                                                                     <div class="fs-11 align-middle text-warning">
                                                                         <i class="ri-star-fill"></i>
                                                                         <i class="ri-star-fill"></i>
@@ -1058,7 +1022,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="text-end mb-0 text-muted">
-                                                                    - by <cite title="Source Title">Henry Baird</cite>
+                                                                    - bởi <cite title="Source Title">Henry Baird</cite>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1079,8 +1043,7 @@
                                                                 <div>
                                                                     <p
                                                                         class="text-muted mb-1 fst-italic text-truncate-two-lines">
-                                                                        "Very beautiful product and Very helpful customer
-                                                                        service."</p>
+                                                                        "Sản phẩm rất đẹp và dịch vụ khách hàng rất hữu ích."</p>
                                                                     <div class="fs-11 align-middle text-warning">
                                                                         <i class="ri-star-fill"></i>
                                                                         <i class="ri-star-fill"></i>
@@ -1090,7 +1053,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="text-end mb-0 text-muted">
-                                                                    - by <cite title="Source Title">Zoetic Fashion</cite>
+                                                                    - bởi <cite title="Source Title">Zoetic Fashion</cite>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1110,7 +1073,7 @@
                                                                 <div>
                                                                     <p
                                                                         class="text-muted mb-1 fst-italic text-truncate-two-lines">
-                                                                        " The product is very beautiful. I like it. "</p>
+                                                                        " Sản phẩm rất đẹp. Tôi thích nó. "</p>
                                                                     <div class="fs-11 align-middle text-warning">
                                                                         <i class="ri-star-fill"></i>
                                                                         <i class="ri-star-fill"></i>
@@ -1120,7 +1083,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="text-end mb-0 text-muted">
-                                                                    - by <cite title="Source Title">Nancy Martino</cite>
+                                                                    - bởi <cite title="Source Title">Nancy Martino</cite>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1132,7 +1095,7 @@
                                 </div>
 
                                 <div class="p-3">
-                                    <h6 class="text-muted mb-3 text-uppercase fw-semibold">Customer Reviews</h6>
+                                    <h6 class="text-muted mb-3 text-uppercase fw-semibold">Đánh giá khách hàng</h6>
                                     <div class="bg-light px-3 py-2 rounded-2 mb-2">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1">
@@ -1145,19 +1108,19 @@
                                                 </div>
                                             </div>
                                             <div class="flex-shrink-0">
-                                                <h6 class="mb-0">4.5 out of 5</h6>
+                                                <h6 class="mb-0">4.5 trên 5</h6>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <div class="text-muted">Total <span class="fw-medium">5.50k</span> reviews</div>
+                                        <div class="text-muted">Tổng cộng <span class="fw-medium">5.50k</span> đánh giá</div>
                                     </div>
 
                                     <div class="mt-3">
                                         <div class="row align-items-center g-2">
                                             <div class="col-auto">
                                                 <div class="p-1">
-                                                    <h6 class="mb-0">5 star</h6>
+                                                    <h6 class="mb-0">5 sao</h6>
                                                 </div>
                                             </div>
                                             <div class="col">
@@ -1180,7 +1143,7 @@
                                         <div class="row align-items-center g-2">
                                             <div class="col-auto">
                                                 <div class="p-1">
-                                                    <h6 class="mb-0">4 star</h6>
+                                                    <h6 class="mb-0">4 sao</h6>
                                                 </div>
                                             </div>
                                             <div class="col">
@@ -1203,7 +1166,7 @@
                                         <div class="row align-items-center g-2">
                                             <div class="col-auto">
                                                 <div class="p-1">
-                                                    <h6 class="mb-0">3 star</h6>
+                                                    <h6 class="mb-0">3 sao</h6>
                                                 </div>
                                             </div>
                                             <div class="col">
@@ -1226,7 +1189,7 @@
                                         <div class="row align-items-center g-2">
                                             <div class="col-auto">
                                                 <div class="p-1">
-                                                    <h6 class="mb-0">2 star</h6>
+                                                    <h6 class="mb-0">2 sao</h6>
                                                 </div>
                                             </div>
                                             <div class="col">
@@ -1250,7 +1213,7 @@
                                         <div class="row align-items-center g-2">
                                             <div class="col-auto">
                                                 <div class="p-1">
-                                                    <h6 class="mb-0">1 star</h6>
+                                                    <h6 class="mb-0">1 sao</h6>
                                                 </div>
                                             </div>
                                             <div class="col">
@@ -1275,12 +1238,11 @@
                                     <div class="card-body">
                                         <img src="{{ asset('admin/assets/images/giftbox.png') }}" alt="">
                                         <div class="mt-4">
-                                            <h5>Invite New Seller</h5>
-                                            <p class="text-muted lh-base">Refer a new seller to us and earn $100 per refer.
-                                            </p>
+                                            <h5>Mời người bán mới</h5>
+                                            <p class="text-muted lh-base">Giới thiệu một người bán mới cho chúng tôi và nhận 100.000 VNĐ cho mỗi lượt giới thiệu.</p>
                                             <button type="button" class="btn btn-primary btn-label rounded-pill"><i
                                                     class="ri-mail-fill label-icon align-middle rounded-pill fs-16 me-2"></i>
-                                                Invite Now</button>
+                                                Mời ngay</button>
                                         </div>
                                     </div>
                                 </div>

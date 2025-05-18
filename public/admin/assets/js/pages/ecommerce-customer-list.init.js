@@ -427,10 +427,22 @@ function deleteUserFromDatabase(userId) {
     });
 }
 function clearFields() {
-    customerNameField.value = "",
-        emailField.value = "",
-        dateField.value = "",
-        phoneField.value = ""
+      customerNameField.value = "";
+    emailField.value = "";
+    dateField.value = "";
+    phoneField.value = "";
+    passwordField.value = ""; // Add this line to clear password
+    
+    // Reset status and role to default values
+    if (statusVal) {
+        statusVal.setChoiceByValue("active");
+    }
+    if (roleVal) {
+        roleVal.setChoiceByValue("user");
+    }
+    
+    // Reset editlist flag
+    editlist = false;
 }
 function deleteMultiple() {
     ids_array = [];

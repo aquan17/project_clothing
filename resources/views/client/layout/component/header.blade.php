@@ -504,7 +504,7 @@
 
 
 <!-- Remove the collapse class and add custom styling -->
-<div id="chat-box" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+{{-- <div id="chat-box" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
     <div class="card shadow-lg border-0 rounded mb-0">
         <div class="card-body p-0">
             <div id="users-chat-widget">
@@ -514,8 +514,8 @@
             </div>
         </div>
     </div>
-</div>
-<style>
+</div> --}}
+{{-- <style>
     df-messenger {
         --df-messenger-bot-message: #878a99;
         --df-messenger-button-titlebar-color: #405189;
@@ -526,6 +526,7 @@
     }
 
     #chat-box {
+        left: 500px;
         position: fixed;
         bottom: 20px;
         right: 20px;
@@ -559,4 +560,4 @@
 </style>
 <!-- Add custom styling -->
 
-<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script> --}}

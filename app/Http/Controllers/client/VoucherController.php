@@ -88,12 +88,12 @@ class VoucherController extends Controller
         $voucherDiscount = $discount > 0 ? $discount : 0;
 
         // Lưu voucher vào giỏ hàng
-        $cart->coupon()->associate($voucher);
-        $cart->voucher_discount = $voucherDiscount;
-        $cart->save();
+        // $cart->coupon()->associate($voucher);
+        // $cart->voucher_discount = $voucherDiscount;
+        // $cart->save();
 
         // Cập nhật số lần sử dụng voucher (mở lại dòng này nếu cần)
-        $voucher->increment('used_count');
+        // $voucher->increment('used_count');
 
         // Lưu vào session (có thể bỏ nếu không cần)
         session(['voucher' => [
@@ -147,42 +147,41 @@ private function applyFixedDiscount(Coupon $voucher)
 
     public function removeVoucher(Request $request)
     {
-        try {
-            // Kiểm tra xem giỏ hàng có voucher hay không
-            $cart = Order::where('customer_id', Auth::user()->customer->id)
-                ->where('status', 'pending') // Giả sử trạng thái giỏ hàng là 'cart'
-                ->with('items.productVariant.product')
-                ->first();
+         try {
+        // Get cart with status 'cart' instead of 'pending'
+        $cart = Order::where('customer_id', Auth::user()->customer->id)
+            ->where('status', 'cart') // Changed from 'pending' to 'cart'
+            ->with('items.productVariant.product')
+            ->first();
 
-            if (!$cart || !$cart->coupon) {
-                return response()->json([
-                    'message' => 'Không có voucher nào được áp dụng.',
-                ], 400);
-            }
+        // Clear session voucher data
+        $request->session()->forget('voucher'); // Use this instead of session(['voucher' => null])
 
-            // Gỡ bỏ voucher khỏi giỏ hàng
-            $cart->coupon()->dissociate(); // Loại bỏ voucher khỏi giỏ hàng
-            $cart->voucher_discount = 0; // Đặt lại giá trị giảm giá về 0
+        // If cart exists, update it
+        if ($cart) {
+            $cart->coupon()->dissociate();
+            $cart->voucher_discount = 0;
             $cart->save();
 
-            // Cập nhật thông tin giỏ hàng
-            $cart_total = 0;
-            foreach ($cart->items as $item) {
-                $cart_total += $item->productVariant->product->price * $item->quantity;
-            }
-
-            // Lưu lại thông tin giỏ hàng mới vào session
-            session(['voucher' => null]);
+            $cart_total = $cart->items->sum(function($item) {
+                return $item->productVariant->product->price * $item->quantity;
+            });
 
             return response()->json([
                 'message' => 'Voucher đã được loại bỏ.',
                 'cart_total' => $cart_total,
             ]);
-        } catch (\Exception $e) {
-            Log::error('Voucher remove error: ' . $e->getMessage());
-            return response()->json([
-                'message' => 'Đã có lỗi xảy ra khi loại bỏ voucher, vui lòng thử lại.',
-            ], 500);
         }
+
+        return response()->json([
+            'message' => 'Voucher đã được loại bỏ.',
+        ]);
+
+    } catch (\Exception $e) {
+        Log::error('Voucher remove error: ' . $e->getMessage());
+        return response()->json([
+            'message' => 'Đã có lỗi xảy ra khi loại bỏ voucher, vui lòng thử lại.',
+        ], 500);
+    }
     }
 }

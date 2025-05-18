@@ -1,6 +1,36 @@
 @extends('client.layout.ClientLayout')
 @section('title', 'Sản Phẩm')
+
 @section('content')
+<style>
+@media (max-width: 575.98px) {
+  .product-card {
+    padding: 0.5rem;
+  }
+
+  .product-card img {
+    max-height: 140px !important;
+  }
+
+  .product-card h6 {
+    font-size: 13px !important;
+  }
+
+  .product-card .btn {
+    font-size: 13px !important;
+    padding: 6px 8px;
+  }
+
+  .product-card .tn {
+    margin-top: 0.5rem !important;
+  }
+
+  .product-card .float-end,
+  .product-card span {
+    font-size: 12px !important;
+  }
+}
+</style>
 
     <section class="section pb-0 mt-4">
         <div class="container-fluid">

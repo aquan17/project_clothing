@@ -1,5 +1,5 @@
-@extends('admin.layout.Aminlayout')
-@section('title', 'Product Details')
+@extends('admin.layout.Adminlayout')
+@section('title', 'Chi tiết sản phẩm')
 @section('css')
     <link href="{{ asset('admin/assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
@@ -11,12 +11,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
-                    <h4 class="mb-sm-0">Product Details</h4>
+                    <h4 class="mb-sm-0">Chi tiết sản phẩm</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                            <li class="breadcrumb-item active">Product Details</li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Thương mại điện tử</a></li>
+                            <li class="breadcrumb-item active">Chi tiết sản phẩm</li>
                         </ol>
                     </div>
 
@@ -88,14 +88,14 @@
                                             <div class="hstack gap-3 flex-wrap">
                                                 {{-- <div><a href="#" class="text-primary d-block">{{ $product->brand->name }}</a></div> --}}
                                                 <div class="vr"></div>
-                                                <div class="text-muted">Seller : <span class="text-body fw-medium">{{ $product->category->name }}</span></div>
+                                                <div class="text-muted">Người bán : <span class="text-body fw-medium">{{ $product->category->name }}</span></div>
                                                 <div class="vr"></div>
-                                                <div class="text-muted">Published : <span class="text-body fw-medium">{{ $product->created_at->format('d M, Y') }}</span></div>
+                                                <div class="text-muted">Ngày đăng : <span class="text-body fw-medium">{{ $product->created_at->format('d M, Y') }}</span></div>
                                             </div>
                                         </div>
                                         <div class="flex-shrink-0">
                                             <div>
-                                                <a href="apps-ecommerce-add-product.html" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="ri-pencil-fill align-bottom"></i></a>
+                                                <a href="apps-ecommerce-add-product.html" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa"><i class="ri-pencil-fill align-bottom"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -107,10 +107,9 @@
                                             @endfor
                                         </div>
                                         <div class="text-muted">
-                                            ({{ number_format($reviewCount / 1000, 1) }}k Customer Reviews)
+                                            ({{ number_format($reviewCount / 1000, 1) }}k Đánh giá khách hàng)
                                         </div>
                                     </div>
-                                    
 
                                     <div class="row mt-4">
                                         <div class="col-lg-3 col-sm-6">
@@ -122,7 +121,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1">
-                                                        <p class="text-muted mb-1">Price :</p>
+                                                        <p class="text-muted mb-1">Giá :</p>
                                                         <h5 class="mb-0">${{ number_format($product->price, 2) }} </h5>
                                                     </div>
                                                 </div>
@@ -138,7 +137,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1">
-                                                        <p class="text-muted mb-1">No. of Orders :</p>
+                                                        <p class="text-muted mb-1">Số lượng đơn hàng :</p>
                                                         <h5 class="mb-0">{{ $product->order_count }}</h5>
                                                     </div>
                                                 </div>
@@ -154,7 +153,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1">
-                                                        <p class="text-muted mb-1"> Stocks :</p>
+                                                        <p class="text-muted mb-1">Số lượng tồn kho :</p>
                                                         <h5 class="mb-0">{{ $product->total_stock }}</h5>
                                                     </div>
                                                 </div>
@@ -170,7 +169,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1">
-                                                        <p class="text-muted mb-1">Total Revenue :</p>
+                                                        <p class="text-muted mb-1">Tổng doanh thu :</p>
                                                         <h5 class="mb-0">${{ number_format($product->total_revenue, 2) }}</h5>
                                                     </div>
                                                 </div>
@@ -182,7 +181,7 @@
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="mt-4">
-                                                <h5 class="fs-14">Sizes :</h5>
+                                                <h5 class="fs-14">Kích cỡ :</h5>
                                                 <div class="d-flex flex-wrap gap-2">
                                                     @foreach ($product->variants->pluck('size')->unique() as $index => $size)
                                                         @php
@@ -191,7 +190,7 @@
                                                         @endphp
                                                 
                                                         <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
-                                                            title="{{ $stock > 0 ? $stock . ' Items Available' : 'Out of Stock' }}">
+                                                            title="{{ $stock > 0 ? $stock . ' Sản phẩm có sẵn' : 'Hết hàng' }}">
                                                             <input type="radio" class="btn-check" name="productsize-radio" id="{{ $inputId }}" {{ $stock <= 0 ? 'disabled' : '' }}>
                                                             <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center"
                                                                 for="{{ $inputId }}">{{ $size }}</label>
@@ -205,7 +204,7 @@
 
                                         <div class="col-xl-6">
                                             <div class=" mt-4">
-                                                <h5 class="fs-14">Colors :</h5>
+                                                <h5 class="fs-14">Màu sắc :</h5>
                                                 <div class="d-flex flex-wrap gap-2">
                                                     @foreach ($product->variants->pluck('color')->unique() as $color)
                                                         @php
@@ -214,7 +213,7 @@
                                                         @endphp
                                                 
                                                         <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
-                                                            title="{{ $stock > 0 ? $stock . ' Items Available' : 'Out of Stock' }}">
+                                                            title="{{ $stock > 0 ? $stock . ' Sản phẩm có sẵn' : 'Hết hàng' }}">
                                                             <button type="button"
                                                                 class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border-0 rounded-circle fs-20"
                                                                 style="background-color: {{ strtolower($color) }}; 
@@ -234,43 +233,42 @@
                                     <!-- end row -->
 
                                     <div class="mt-4 text-muted">
-                                        <h5 class="fs-14">Description :</h5>
+                                        <h5 class="fs-14">Mô tả :</h5>
                                         <p>{{ $product->description }}</p>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="mt-3">
-                                                <h5 class="fs-14">Features :</h5>
+                                                <h5 class="fs-14">Tính năng :</h5>
                                                 <ul class="list-unstyled">
-                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Full Sleeve</li>
-                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Cotton</li>
-                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> All Sizes available</li>
-                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> 4 Different Color</li>
+                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Tay dài</li>
+                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Chất liệu cotton</li>
+                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Có đủ kích cỡ</li>
+                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> 4 màu khác nhau</li>
                                                 </ul>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="mt-3">
-                                                <h5 class="fs-14">Services :</h5>
+                                                <h5 class="fs-14">Dịch vụ :</h5>
                                                 <ul class="list-unstyled product-desc-list">
-                                                    <li class="py-1">10 Days Replacement</li>
-                                                    <li class="py-1">Cash on Delivery available</li>
+                                                    <li class="py-1">Đổi trả trong 10 ngày</li>
+                                                    <li class="py-1">Thanh toán khi nhận hàng</li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
 
-
                                     <div class="product-content mt-5">
-                                        <h5 class="fs-14 mb-3">Product Description :</h5>
+                                        <h5 class="fs-14 mb-3">Mô tả sản phẩm :</h5>
                                         <nav>
                                             <ul class="nav nav-tabs nav-tabs-custom nav-success" id="nav-tab" role="tablist">
                                                 <li class="nav-item">
-                                                    <a class="nav-link active" id="nav-speci-tab" data-bs-toggle="tab" href="#nav-speci" role="tab" aria-controls="nav-speci" aria-selected="true">Specification</a>
+                                                    <a class="nav-link active" id="nav-speci-tab" data-bs-toggle="tab" href="#nav-speci" role="tab" aria-controls="nav-speci" aria-selected="true">Thông số kỹ thuật</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" id="nav-detail-tab" data-bs-toggle="tab" href="#nav-detail" role="tab" aria-controls="nav-detail" aria-selected="false">Details</a>
+                                                    <a class="nav-link" id="nav-detail-tab" data-bs-toggle="tab" href="#nav-detail" role="tab" aria-controls="nav-detail" aria-selected="false">Chi tiết</a>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -280,23 +278,23 @@
                                                     <table class="table mb-0">
                                                         <tbody>
                                                             <tr>
-                                                                <th scope="row" style="width: 200px;">Category</th>
+                                                                <th scope="row" style="width: 200px;">Danh mục</th>
                                                                 <td>{{ $product->category->name }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th scope="row">Brand</th>
+                                                                <th scope="row">Thương hiệu</th>
                                                                 <td>Tommy Hilfiger</td>
                                                             </tr>
                                                             <tr>
-                                                                <th scope="row">Color</th>
+                                                                <th scope="row">Màu sắc</th>
                                                                 <td>{{ $product->variants->pluck('color')->unique()->implode(', ') }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th scope="row">Material</th>
+                                                                <th scope="row">Chất liệu</th>
                                                                 <td>Cotton</td>
                                                             </tr>
                                                             <tr>
-                                                                <th scope="row">Weight</th>
+                                                                <th scope="row">Khối lượng</th>
                                                                 <td>140 Gram</td>
                                                             </tr>
                                                         </tbody>
@@ -305,13 +303,13 @@
                                             </div>
                                             <div class="tab-pane fade" id="nav-detail" role="tabpanel" aria-labelledby="nav-detail-tab">
                                                 <div>
-                                                    <h5 class="font-size-16 mb-3">Tommy Hilfiger Sweatshirt for Men (Pink)</h5>
-                                                    <p>Tommy Hilfiger men striped pink sweatshirt. Crafted with cotton. Material composition is 100% organic cotton. This is one of the world’s leading designer lifestyle brands and is internationally recognized for celebrating the essence of classic American cool style, featuring preppy with a twist designs.</p>
+                                                    <h5 class="font-size-16 mb-3">Áo len Tommy Hilfiger cho nam (Hồng)</h5>
+                                                    <p>Áo len nam Tommy Hilfiger màu hồng sọc. Được làm từ chất liệu cotton. Thành phần chất liệu là 100% cotton hữu cơ. Đây là một trong những thương hiệu phong cách sống hàng đầu thế giới và được công nhận quốc tế vì tôn vinh phong cách cổ điển Mỹ, mang nét trẻ trung với thiết kế độc đáo.</p>
                                                     <div>
-                                                        <p class="mb-2"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Machine Wash</p>
-                                                        <p class="mb-2"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Fit Type: Regular</p>
+                                                        <p class="mb-2"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Giặt máy</p>
+                                                        <p class="mb-2"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Kiểu dáng: Thường</p>
                                                         <p class="mb-2"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> 100% Cotton</p>
-                                                        <p class="mb-0"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Long sleeve</p>
+                                                        <p class="mb-0"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Tay dài</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -321,7 +319,7 @@
 
                                     <div class="mt-5">
                                         <div>
-                                            <h5 class="fs-14 mb-3">Ratings & Reviews</h5>
+                                            <h5 class="fs-14 mb-3">Đánh giá & Nhận xét</h5>
                                         </div>
                                         <div class="row gy-4 gx-0">
                                             <div class="col-lg-4">
@@ -343,12 +341,12 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="flex-shrink-0">
-                                                                    <h6 class="mb-0">{{ number_format($averageRating, 1) }} out of 5</h6>
+                                                                    <h6 class="mb-0">{{ number_format($averageRating, 1) }} trên 5</h6>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="text-center">
-                                                            <div class="text-muted">Total <span class="fw-medium">{{ $reviewCount }} reviews</span></div>
+                                                            <div class="text-muted">Tổng cộng <span class="fw-medium">{{ $reviewCount }} đánh giá</span></div>
                                                         </div>
                                                     </div>
                                         
@@ -361,7 +359,7 @@
                                                         <div class="row align-items-center g-2">
                                                             <div class="col-auto">
                                                                 <div class="p-2">
-                                                                    <h6 class="mb-0">{{ $star }} star</h6>
+                                                                    <h6 class="mb-0">{{ $star }} sao</h6>
                                                                 </div>
                                                             </div>
                                                             <div class="col">
@@ -384,7 +382,7 @@
                                             <div class="col-lg-8">
                                                 <div class="ps-lg-4">
                                                     <div class="d-flex flex-wrap align-items-start gap-3">
-                                                        <h5 class="fs-14">Reviews: </h5>
+                                                        <h5 class="fs-14">Nhận xét: </h5>
                                                     </div>
                                         
                                                     <div class="me-lg-n3 pe-lg-4" data-simplebar style="max-height: 225px;">

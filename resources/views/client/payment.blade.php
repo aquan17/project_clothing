@@ -43,7 +43,7 @@
                                 const selectedMethod = tab.getAttribute('data-method');
                                 paymentMethodInput.value = selectedMethod; // Cập nhật giá trị cho hidden input
                                 console.log('Selected payment method:',
-                                selectedMethod); // Log giá trị để kiểm tra
+                                    selectedMethod); // Log giá trị để kiểm tra
                             });
                         });
 
@@ -53,6 +53,7 @@
                     <div class="col-xl-8">
                         <h5 class="mb-0 flex-grow-1">Chọn Phương Thức Thanh Toán</h5>
                         <input type="hidden" name="payment_method" id="payment_method" value="cod">
+                        <input type="hidden" name="payment_method" id="payment_method" value="momo">
                         <ul class="nav nav-pills arrow-navtabs nav-success bg-light mb-3 mt-4 nav-justified custom-nav"
                             role="tablist">
                             <li class="nav-item">
@@ -79,9 +80,20 @@
                                     <span class="d-block d-sm-none"><i
                                             class="ri-money-dollar-box-fill align-bottom"></i></span>
                                     <span class="d-none d-sm-block"> <i
-                                            class="ri-money-dollar-box-fill align-bottom pe-2"></i> Thanh Toán Khi Nhận Hàng</span>
+                                            class="ri-money-dollar-box-fill align-bottom pe-2"></i> Thanh Toán Khi Nhận
+                                        Hàng</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link py-3" data-bs-toggle="tab" href="#momo" role="tab"
+                                    data-method="momo">
+                                    <span class="d-block d-sm-none"><i class="ri-smartphone-fill align-bottom"></i></span>
+                                    <span class="d-none d-sm-block">
+                                        <i class="ri-smartphone-fill align-bottom pe-2"></i> Momo
+                                    </span>
+                                </a>
+                            </li>
+
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content text-muted">
@@ -130,13 +142,14 @@
 
                                         <div class="hstack gap-2 justify-content-end pt-4">
                                             <button type="button" class="btn btn-hover btn-primary"><i
-                                                    class="ri-paypal-fill align-bottom align-bottom pe-2"></i> Đăng nhập PayPal</button>
+                                                    class="ri-paypal-fill align-bottom align-bottom pe-2"></i> Đăng nhập
+                                                PayPal</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="tab-pane" id="credit" role="tabpanel">
+                            {{-- <div class="tab-pane" id="credit" role="tabpanel">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row gy-3">
@@ -172,7 +185,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="tab-pane" id="cash" role="tabpanel">
                                 <div class="card">
@@ -185,7 +198,8 @@
                                                 </div>
                                             </div>
                                             <h5 class="fs-16 mb-3">Thanh Toán Khi Nhận Hàng</h5>
-                                            <p class="text-muted mt-3 mb-0 w-75 mx-auto">Bạn chỉ cần thanh toán khi nhận được hàng. Đơn giản, tiện lợi và an toàn!</p>
+                                            <p class="text-muted mt-3 mb-0 w-75 mx-auto">Bạn chỉ cần thanh toán khi nhận
+                                                được hàng. Đơn giản, tiện lợi và an toàn!</p>
                                         </div>
                                         <div class="hstack gap-2 justify-content-end pt-3">
                                             <button type="submit" class="btn btn-hover w-md btn-primary">Tiếp Tục<i
@@ -194,6 +208,30 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="tab-pane" id="momo" role="tabpanel">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-center py-3">
+                                            <div class="avatar-md mx-auto mb-4">
+                                                <div class="avatar-title bg-pink text-white rounded-circle display-6">
+                                                    <i class="ri-smartphone-line"></i>
+                                                </div>
+                                            </div>
+                                            <h5 class="fs-16 mb-3">Thanh Toán Qua Ví Momo</h5>
+                                            <p class="text-muted mt-3 mb-0 w-75 mx-auto">
+                                                Sau khi nhấn "Thanh Toán", bạn sẽ được chuyển đến cổng Momo để hoàn tất giao
+                                                dịch.
+                                            </p>
+                                        </div>
+                                        <div class="hstack gap-2 justify-content-end pt-3">
+                                            <button type="submit" class="btn btn-hover w-md btn-pink">
+                                                Thanh Toán với Momo <i class="ri-external-link-line align-bottom ms-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>

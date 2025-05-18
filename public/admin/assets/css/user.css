@@ -1,0 +1,73 @@
+                            @media (max-width: 575.98px) {
+                                #customerTable thead {
+                                    display: none;
+                                }
+
+                                #customerTable,
+                                #customerTable tbody,
+                                #customerTable tr,
+                                #customerTable td {
+                                    display: block;
+                                    width: 100%;
+                                }
+
+                                #customerTable tr {
+                                    margin-bottom: 1rem;
+                                    border: 1px solid #ddd;
+                                    border-radius: 8px;
+                                    padding: 0.75rem;
+                                    background-color: #fff;
+                                }
+
+                                #customerTable td {
+                                    text-align: right;
+                                    position: relative;
+                                    padding-left: 50%;
+                                    white-space: normal;
+                                    border: none;
+                                    border-bottom: 1px solid #eee;
+                                }
+
+                                #customerTable td::before {
+                                    content: attr(data-label);
+                                    position: absolute;
+                                    left: 0.75rem;
+                                    width: 45%;
+                                    padding-right: 1rem;
+                                    white-space: nowrap;
+                                    text-align: left;
+                                    font-weight: 600;
+                                    color: #555;
+                                }
+
+                                #customerTable td:last-child {
+                                    border-bottom: none;
+                                }
+
+                                /* Optional: chỉnh kích thước icon hoặc nút nhỏ lại */
+                                .list-inline-item i {
+                                    font-size: 16px;
+                                }
+                            }
+                            /* Chỉ áp dụng thu gọn mật khẩu trên desktop */
+@media (min-width: 768px) {
+  .password {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+/* Trên mobile, cho mật khẩu hiển thị bình thường nhưng không để xuống hàng dài */
+@media (max-width: 767.98px) {
+  .password {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: auto;
+    text-overflow: unset;
+    display: inline-block;
+  }
+}

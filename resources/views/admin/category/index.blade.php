@@ -1,5 +1,5 @@
-@extends('admin.layout.Aminlayout')
-@section('title', 'Category Management')
+@extends('admin.layout.Adminlayout')
+@section('title', 'Quản lý danh mục')
 @section('css')
     {{-- <link href="{{ asset('admin/assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
 @endsection
@@ -9,12 +9,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
-                        <h4 class="mb-sm-0">Categories</h4>
+                        <h4 class="mb-sm-0">Danh mục</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                                <li class="breadcrumb-item active">Categories</li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Thương mại điện tử</a></li>
+                                <li class="breadcrumb-item active">Danh mục</li>
                             </ol>
                         </div>
 
@@ -29,7 +29,7 @@
                             <div class="row g-4 align-items-center">
                                 <div class="col-sm">
                                     <div>
-                                        <h5 class="card-title mb-0">Category List</h5>
+                                        <h5 class="card-title mb-0">Danh sách danh mục</h5>
                                     </div>
                                 </div>
                                 <div class="col-sm-auto">
@@ -39,7 +39,7 @@
                                         </button>
                                         <button type="button" class="btn btn-success add-category-btn" data-bs-toggle="modal"
                                             id="create-btn" data-bs-target="#showModal" data-store-url="{{ route('admin.categories.store') }}">
-                                            <i class="ri-add-line align-bottom me-1"></i> Add Category
+                                            <i class="ri-add-line align-bottom me-1"></i> Thêm danh mục
                                         </button>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                     <div class="col-xl-6">
                                         <div class="search-box">
                                             <input type="text" class="form-control search"
-                                                placeholder="Search for category...">
+                                                placeholder="Tìm kiếm danh mục...">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
@@ -70,9 +70,9 @@
                                                             value="option">
                                                     </div>
                                                 </th>
-                                                <th class="sort" data-sort="id">ID</th>
-                                                <th class="sort" data-sort="category_name">Category Name</th>
-                                                <th class="sort" data-sort="action">Actions</th>
+                                                <th class="sort" data-sort="id">Mã</th>
+                                                <th class="sort" data-sort="category_name">Tên danh mục</th>
+                                                <th class="sort" data-sort="action">Hành động</th>
                                             </tr>
                                         </thead>
 
@@ -93,13 +93,13 @@
                                                                 <button class="btn btn-sm btn-success edit-item-btn"
                                                                     data-id="{{ $category->id }}" data-bs-toggle="modal"
                                                                     data-bs-target="#showModal">
-                                                                    Edit
+                                                                    Chỉnh sửa
                                                                 </button>
                                                             </div>
                                                             <div class="remove">
                                                                 <button class="btn btn-sm btn-danger remove-item-btn"
                                                                     data-id="{{ $category->id }}">
-                                                                    Delete
+                                                                    Xóa
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -119,7 +119,7 @@
                                         <div class="modal-header bg-light p-3">
                                             <h5 class="modal-title" id="exampleModalLabel"></h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close" id="close-modal"></button>
+                                                aria-label="Đóng" id="close-modal"></button>
                                         </div>
                                         <form class="tablelist-form" autocomplete="off" method="POST" id="category-form"
                                             action="">
@@ -127,21 +127,20 @@
                                             <input type="hidden" id="id-field" name="id" />
                                             <div class="modal-body">
                                                 <div class="mb-3">
-                                                    <label for="category-name-field" class="form-label">Category
-                                                        Name</label>
+                                                    <label for="category-name-field" class="form-label">Tên danh mục</label>
                                                     <input type="text" id="category-name-field" class="form-control"
-                                                        name="category_name" placeholder="Enter category name" required />
-                                                    <div class="invalid-feedback">Please enter category name.</div>
+                                                        name="category_name" placeholder="Nhập tên danh mục" required />
+                                                    <div class="invalid-feedback">Vui lòng nhập tên danh mục.</div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <div class="hstack gap-2 justify-content-end">
                                                     <button type="button" class="btn btn-light"
-                                                        data-bs-dismiss="modal">Close</button>
+                                                        data-bs-dismiss="modal">Đóng</button>
                                                     <button type="submit" class="btn btn-success"
-                                                        id="add-btn">Add</button>
+                                                        id="add-btn">Thêm</button>
                                                     <button type="submit" class="btn btn-success"
-                                                        id="edit-btn">Update</button>
+                                                        id="edit-btn">Cập nhật</button>
                                                 </div>
                                             </div>
                                         </form>
