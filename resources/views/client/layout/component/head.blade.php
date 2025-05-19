@@ -8,6 +8,7 @@
     <meta content="Themesbrand" name="author">
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('client/images/favicon.ico') }}">
+    
 <!--Start of Fchat.vn--><script type="text/javascript" src="https://cdn.fchat.vn/assets/embed/webchat.js?id=68296bd84c102cde9c026b90" async="async"></script><!--End of Fchat.vn-->
     <!--Swiper slider css-->
     <link href="{{ asset('client/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />

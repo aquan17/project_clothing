@@ -17,7 +17,7 @@
                 <div class="col-lg-12">
                     <div class="pt-3">
                         <div class="mt-n5 d-flex gap-3 flex-wrap align-items-end">
-                            <img src="{{ asset('client/images/users/avatar-1.jpg') }}" alt=""
+                            <img src="{{ asset('client/images/users/meomeo.jpg') }}" alt=""
                                 class="avatar-xl rounded p-1 bg-light mt-n3">
                             <div>
                                 <h5 class="fs-18">{{ $user->name }}</h5>

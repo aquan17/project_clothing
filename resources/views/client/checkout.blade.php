@@ -24,7 +24,7 @@
 
     <form action="{{ route('client.payment.showPaymentPage') }}" method="GET">
         @csrf
-       
+
         <!-- Danh sách sản phẩm đã chọn -->
         @foreach ($selectedItems as $item)
             <input type="hidden" name="selected_items[]" value="{{ $item->id }}">
@@ -192,7 +192,8 @@
                                                     <th>Tổng cộng:</th>
                                                     <td class="text-end">
                                                         <span
-                                                            class="fw-semibold">${{ number_format($finalTotal, 2) }}</span  </span>
+                                                            class="fw-semibold">${{ number_format($finalTotal, 2) }}>
+                                                            </span>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -201,8 +202,10 @@
                                 </div>
                             </div>
                             <div class="hstack gap-2 justify-content-end">
-                                <a href="{{ route('client.products') }}" class="btn btn-hover btn-danger">Tiếp Tục Mua Sắm</a>
-                                <button type="submit" class="btn btn-hover btn-success" id="checkout-button">
+                                <a href="{{ route('client.products') }}" class="btn btn-hover btn-danger">Tiếp Tục Mua
+                                    Sắm</a>
+                                <button type="submit" class="btn btn-hover btn-success" id="checkout-button"
+                                    {{ !$defaultAddress ? 'disabled' : '' }}>
                                     Thanh Toán <i class="ri-logout-box-r-line align-bottom ms-1"></i>
                                 </button>
                             </div>

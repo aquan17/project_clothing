@@ -73,7 +73,7 @@
                                 <div class="position-relative p-4 bg-light">
                                     <img src="{{ asset('client/images/fashion/product/' . $item->image) }}" alt=""
                                         class="img-fluid product-img-main">
-                                    <img src="{{ asset('client/images/fashion/product/img-15.png') }}" alt=""
+                                    <img src="{{ asset('client/images/fashion/product/'.$item->image) }}" alt=""
                                         class="img-fluid product-img-2">
                                     <ul class="product-menu list-unstyled">
                                         <li class="mb-2">
@@ -86,8 +86,8 @@
                                         </li>
                                     </ul>
                                     <div class="product-btn mx-auto">
-                                        <a href="shop-cart.html" class="btn btn-warning w-100"><i
-                                                class="bi bi-bag align-baseline me-1"></i> Buy Now</a>
+                                        <a href="{{ route('client.products.show', $item->id) }}" class="btn btn-warning w-100"><i
+                                                class="bi bi-bag align-baseline me-1"></i> Xem chi tiết</a>
                                     </div>
                                 </div>
                                 <div class="mt-3">

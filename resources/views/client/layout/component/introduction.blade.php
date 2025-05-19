@@ -46,13 +46,12 @@
                                         class="bi bi-eye align-middle"></i></a>
                             </li>
                         </ul>
-                        <img src="{{ asset('client/images/fashion/product/img-02.png') }}" alt=""
+                        <img src="{{ asset('client/images/fashion/product/img-02.jpg') }}" alt=""
                             class="img-fluid">
                     </div>
                     <div class="card-body bg-warning-subtle">
                         <h6>$154.67</h6>
-                        <h6 class="fs-17 fw-medium mb-0 text-truncate"><a href="#" class="text-warning">Váy A-line
-                                Màu Xanh Dương Dành Cho Phụ Nữ</a></h6>
+                        <h6 class="fs-17 fw-medium mb-0 text-truncate"><a href="#" class="text-warning">Áo phông GP unisex thể thao mỏng nhẹ 2025</a></h6>
                     </div>
                 </div>
             </div><!--end col-->
@@ -69,13 +68,12 @@
                                         class="bi bi-eye align-middle"></i></a>
                             </li>
                         </ul>
-                        <img src="{{ asset('client/images/fashion/product/img-05.png') }}" alt=""
+                        <img src="{{ asset('client/images/fashion/product/img-05.jpg') }}" alt=""
                             class="img-fluid">
                     </div>
                     <div class="card-body bg-danger-subtle">
                         <h6>$120.32 <small class="text-decoration-line-through fs-14 text-muted">$348.24</small></h6>
-                        <h6 class="fs-17 fw-medium mb-0 text-truncate"><a href="#" class="text-danger">Áo Khoác
-                                Full Sleeve Dành Cho Phụ Nữ Elanhood</a></h6>
+                        <h6 class="fs-17 fw-medium mb-0 text-truncate"><a href="#" class="text-danger">Áo phông in hoa tulip phong cách Mỹ 2025</a></h6>
                     </div>
                 </div>
             </div><!--end col-->
@@ -92,13 +90,12 @@
                                         class="bi bi-eye align-middle"></i></a>
                             </li>
                         </ul>
-                        <img src="{{ asset('client/images/fashion/product/img-14.png') }}" alt=""
+                        <img src="{{ asset('client/images/fashion/product/img-14.jpg') }}" alt=""
                             class="img-fluid">
                     </div>
                     <div class="card-body bg-info-subtle">
                         <h6>$59.99 <small class="text-decoration-line-through fs-14 text-muted">$249.99</small></h6>
-                        <h6 class="fs-17 fw-medium mb-0 text-truncate"><a href="#" class="text-info">Set Áo Và
-                                Quần Phụ Nữ Nhập Khẩu Tuyệt Vời</a></h6>
+                        <h6 class="fs-17 fw-medium mb-0 text-truncate"><a href="#" class="text-info">Quần thể thao đơn sắc ống rộng 2025</a></h6>
                     </div>
                 </div>
             </div><!--end col-->
@@ -115,13 +112,12 @@
                                         class="bi bi-eye align-middle"></i></a>
                             </li>
                         </ul>
-                        <img src="{{ asset('client/images/fashion/product/img-08.png') }}" alt=""
+                        <img src="{{ asset('client/images/fashion/product/img-08.jpg') }}" alt=""
                             class="img-fluid">
                     </div>
                     <div class="card-body bg-success-subtle">
                         <h6>$124.64</h6>
-                        <h6 class="fs-17 fw-medium mb-0 text-truncate"><a href="#" class="text-success">Quần
-                                Short In Họa Tiết Dành Cho Bé Gái</a></h6>
+                        <h6 class="fs-17 fw-medium mb-0 text-truncate"><a href="#" class="text-success">Áo phông GP unisex mới phong cách hoạt hình 2025</a></h6>
                     </div>
                 </div>
             </div><!--end col-->
@@ -138,13 +134,13 @@
                                         class="bi bi-eye align-middle"></i></a>
                             </li>
                         </ul>
-                        <img src="{{ asset('client/images/fashion/product/img-11.png') }}" alt=""
+                        <img src="{{ asset('client/images/fashion/product/img-11.jpg') }}" alt=""
                             class="img-fluid">
                     </div>
                     <div class="card-body bg-dark-subtle">
                         <h6>$249.99</h6>
                         <h6 class="fs-17 fw-medium mb-0 text-truncate"><a href="#" class="text-body">
-                                Áo thun tay dài cổ bẻ thời trang</a></h6>
+                                Quần thể thao xám cạp cao 2025</a></h6>
                     </div>
                 </div>
             </div><!--end col-->

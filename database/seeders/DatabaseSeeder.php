@@ -20,33 +20,11 @@ use App\Models\User;
 use Database\Factories\ProductVariantFactory;
 use Illuminate\Support\Str;
 use Faker\Factory as Faker;
+
 class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-       
-    
-        // $totalImages = 18;
-        // $index = 1;
-    
-        // // Lấy tất cả sản phẩm hiện có
-        // $products = Product::all();
-    
-        // foreach ($products as $product) {
-        //     // Tạo tên ảnh dạng img-01.png → img-18.png
-        //     $imageName = 'img-' . str_pad($index, 2, '0', STR_PAD_LEFT) . '.png';
-    
-        //     // Cập nhật cột ảnh
-        //     $product->update([
-        //         'image' =>  $imageName,
-        //     ]);
-    
-        //     // Tăng chỉ số ảnh, reset về 1 nếu > 18
-        //     $index++;
-        //     if ($index > $totalImages) {
-        //         $index = 1;
-        //     }
-        // }
         User::create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
@@ -57,126 +35,127 @@ class DatabaseSeeder extends Seeder
             'status' => 'active',
         ]);
         User::factory(2)->create();
+        // Tạo danh mục
         $danhmuc = [
-            'Áo thun',
-            'Áo sơ mi',
-            'Váy',
+            'Áo phông',
             'Quần',
-            'Quần jeans',
+            'Áo sơ mi',
             'Áo khoác',
-            'Đồ ngủ',
-            'Đồ thể thao',
-            'Đầm dạ hội',
-            'Đồ mùa đông',
+            'Áo croptop',
         ];
+
         foreach ($danhmuc as $dm) {
             Category::create([
                 'name' => $dm,
-                'slug' => str::slug($dm),
+                'slug' => Str::slug($dm),
             ]);
         }
 
-       
         $faker = Faker::create();
-            $productNames = [
-                // Áo thun & Áo kiểu
-                'Áo thun nữ cổ tròn cotton',
-                'Áo thun nữ oversize in họa tiết',
-                'Áo croptop nữ tay ngắn',
-                'Áo kiểu nữ tay bồng ren',
-                'Áo thun nữ cổ V basic',
-                'Áo ba lỗ nữ sát nách',
-                'Áo polo nữ phong cách thể thao',
-                'Áo thun nữ dài tay minimal',
-            
-                // Áo sơ mi
-                'Áo sơ mi nữ công sở trắng',
-                'Áo sơ mi nữ kẻ caro',
-                'Áo sơ mi nữ lụa tay dài',
-                'Áo sơ mi nữ cổ thắt nơ',
-                'Áo sơ mi nữ tay lửng thanh lịch',
-                'Áo sơ mi nữ họa tiết hoa nhí',
-            
-                // Váy
-                'Váy maxi hoa nhí bohemian',
-                'Váy chữ A nữ công sở',
-                'Váy bodycon nữ ôm dáng',
-                'Váy xếp ly nữ dài qua gối',
-                'Váy yếm nữ denim',
-                'Váy babydoll nữ tay phồng',
-                'Váy suông nữ họa tiết tropical',
-                'Váy đầm nữ cổ vuông',
-            
-                // Quần
-                'Quần culottes nữ cạp cao',
-                'Quần tây nữ ống suông',
-                'Quần short nữ vải linen',
-                'Quần palazzo nữ ống rộng',
-                'Quần jogger nữ phong cách năng động',
-                'Quần legging nữ tập gym',
-            
-                // Quần jeans
-                'Quần jeans nữ cạp cao skinny',
-                'Quần jeans nữ boyfriend rách gối',
-                'Quần jeans nữ ống loe vintage',
-                'Quần jeans nữ cạp lưng thun',
-                'Quần jeans short nữ xắn gấu',
-            
-                // Áo khoác
-                'Áo khoác blazer nữ công sở',
-                'Áo khoác cardigan nữ mỏng nhẹ',
-                'Áo khoác bomber nữ phong cách trẻ',
-                'Áo khoác trench coat nữ dài',
-                'Áo khoác hoodie nữ in logo',
-            
-                // Đồ thể thao
-                'Áo bra thể thao nữ năng động',
-                'Quần legging thể thao nữ co giãn',
-                'Áo tank top nữ tập gym',
-            
-                // Đầm dạ hội & Tiệc
-                'Đầm dạ hội nữ sequin lấp lánh',
-                'Đầm cocktail nữ xòe đuôi cá',
-                'Đầm dự tiệc nữ cổ chữ V',
-            
-                // Áo len & Đồ mùa đông
-                'Áo len nữ cổ lọ dáng dài',
-                'Áo len cardigan nữ oversized',
-                'Áo len gile nữ phối sơ mi',
-            
-                // Jumpsuits & Rompers
-                'Jumpsuit nữ ống rộng thanh lịch',
-                'Romper nữ tay ngắn họa tiết',
-           
+
+        $productNames = [
+            // Áo Phông
+            "Áo phông GP unisex họa tiết rộng 2025",
+            "Áo phông GP unisex thể thao mỏng nhẹ 2025",
+            "Áo phông cotton phối màu chữ in 2025",
+            "Áo phông cotton kẻ sọc phối màu rộng 2025",
+            "Áo phông in hoa tulip phong cách Mỹ 2025",
+            "Áo phông cotton in hoa lớn co giãn 2025",
+            "Áo phông unisex kiểu quốc dân 2025",
+            "Áo phông GP unisex mới phong cách hoạt hình 2025",
+            "Áo phông high street hiphop unisex 2025",
+            "Áo phông cỡ lớn kiểu street style 2023-2025",
+
+            // Quần
+            "Quần thể thao xám cạp cao 2025",
+            "Quần thể thao trắng xám ống rộng 2025",
+            "Quần vải micro ống rộng 2025",
+            "Quần thể thao đơn sắc ống rộng 2025",
+            "Quần thoáng mát mùa hè 2025",
+            "Quần thể thao chống nắng đen 2025",
+            "Quần chun cạo cao 2025",
+            "Quần thun cotton in hình nơ 2025",
+            "Quần loe đen nhẹ 2025",
+            "Quần thể thao xám nhạt ống loe 2025",
+
+            // Áo Sơ Mi
+            "Áo sơ mi hoa văn phong cách Hong Kong 2025",
+            "Áo sơ mi kẻ sọc Nhật Bản 2025",
+            "Áo sơ mi hoa văn vintage Nhật 2025",
+            "Áo sơ mi kẻ sọc vintage Nhật 2025",
+            "Áo sơ mi sọc phối màu 2025",
+            "Áo sơ mi loang màu in họa tiết 2025",
+            "Áo sơ mi kim loại thiết kế độc đáo 2025",
+            "Áo sơ mi in hình mùa hè 2024",
+            "Áo sơ mi lụa cổ Cuba 2025",
+            "Áo sơ mi trơn kiểu Nhật 2025",
+
+            // Áo Khoác
+            "Áo khoác jeans wash cũ nam 2025",
+            "Áo khoác da cổ đứng phong cách 2025",
+            "Áo khoác jeans xanh nhạt 2025",
+            "Áo khoác jeans wash phong cách hiphop 2025",
+            "Áo khoác da thêu họa tiết 2025",
+            "Áo khoác phối màu vintage 2025",
+            "Áo khoác jeans phối Polo giả 2 lớp 2025",
+
+            // Áo Croptop
+            "Áo croptop họa tiết chữ in 2025",
+            "Áo croptop dáng ôm 2023-2025",
+            "Áo croptop in sao trắng 2023-2025",
+            "Áo croptop in họa tiết hở eo 2023-2025",
+            "Áo croptop ôm vạt ngắn đen 2023-2025",
+            "Áo croptop thiết kế nhỏ gọn 2023-2025",
+            "Áo croptop in họa tiết độc đáo 2023-2025",
         ];
-        $images = [
-            'img-01.png',
-            'img-02.png',
-            'img-03.png',
-            'img-04.png',
-            'img-05.png',
-            'img-06.png',
-            'img-07.png',
-            'img-08.png',
-            'img-09.png',
-            'img-10.png',
-            'img-11.png',
-            'img-12.png',
-            'img-13.png',
-            'img-14.png',
-            'img-15.png',
-            'img-16.png',
+
+        $categoryMap = [
+            'Áo phông' => 'ao-phong',
+            'Quần' => 'quan',
+            'Áo sơ mi' => 'ao-so-mi',
+            'Áo khoác' => 'ao-khoac',
+            'Áo croptop' => 'ao-croptop',
         ];
+
+        $totalImages = 44;
+        $imageIndex = 1;
+        $skuIndex = 1;
+
         foreach ($productNames as $name) {
+            // Xác định danh mục phù hợp dựa trên tên sản phẩm
+            $categoryName = null;
+
+            if (Str::contains($name, 'Áo phông')) $categoryName = 'Áo phông';
+            elseif (Str::contains($name, 'Quần')) $categoryName = 'Quần';
+            elseif (Str::contains($name, 'Áo sơ mi')) $categoryName = 'Áo sơ mi';
+            elseif (Str::contains($name, 'Áo khoác')) $categoryName = 'Áo khoác';
+            elseif (Str::contains($name, 'Áo croptop')) $categoryName = 'Áo croptop';
+
+            $slug = $categoryMap[$categoryName] ?? null;
+            $category = Category::where('slug', $slug)->first();
+
+            if (!$category) continue;
+
+            $imageName = 'img-' . str_pad($imageIndex, 2, '0', STR_PAD_LEFT) . '.jpg';
+
             Product::create([
                 'name' => $name,
                 'slug' => Str::slug($name),
                 'description' => 'Sản phẩm ' . $name . ' chất lượng cao, phù hợp với phong cách hiện đại.',
-                'price' => rand(10, 1000) + (rand(0, 99) / 100), // Giá ngẫu nhiên từ 10.00 đến 1000.99
-                'image' => $images[array_rand($images)],
-               'status' => $faker->randomElement(['active', 'inactive']), 
-                'category_id' => Category::inRandomOrder()->first()->id,
+                'price' => rand(10, 1000) + (rand(0, 99) / 100),
+                'image' => $imageName,
+                'sku' => 'SP' . str_pad($skuIndex, 4, '0', STR_PAD_LEFT),
+                'total_stock' => rand(50, 200),
+                'buyer_count' => rand(0, 100),
+                'status' => $faker->randomElement(['active', 'inactive']),
+                'category_id' => $category->id,
             ]);
+
+            $imageIndex++;
+            if ($imageIndex > $totalImages) {
+                $imageIndex = 1;
+            }
+            $skuIndex++;
         }
 
         // // Seed product variants

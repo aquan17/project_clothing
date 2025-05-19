@@ -285,7 +285,7 @@
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <img class="rounded-circle header-profile-user"
-                            src="{{ asset('client/images/users/avatar-1.jpg') }}" alt="Ảnh đại diện">
+                            src="{{ asset('client/images/users/meomeo.jpg') }}" alt="Ảnh đại diện">
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
@@ -423,7 +423,7 @@
                                 Người dùng</h5>
                             <a href="javascript:void(0);" class="list-group-item dropdown-item notify-item">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ asset('client/images/users/avatar-1.jpg') }}" alt=""
+                                    <img src="{{ asset('client/images/users/meomeo.jpg') }}" alt=""
                                         class="avatar-xs rounded-circle flex-shrink-0 me-2">
                                     <div>
                                         <h6 class="mb-0">Ayaan Bowen</h6>

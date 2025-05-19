@@ -30,7 +30,7 @@
                     <div class="card shadow">
                         <div class="card-body p-4 p-md-5">
                             <div class="text-center">
-                                <img src="{{ asset('client/images/users/avatar-1.jpg') }}" alt="success"
+                                <img src="{{ asset('client/images/users/mimi.jpg') }}" alt="success"
                                     class="w-25 rounded-circle">
                             </div>
                             <div class="text-center mt-5 pt-1">
