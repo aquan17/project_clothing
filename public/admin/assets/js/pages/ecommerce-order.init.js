@@ -67,6 +67,7 @@ xhttp.onload = function() {
         orderList.sort("id", { order: "desc" });
     });
     refreshCallbacks();
+    orderList.remove("id", '<a href="apps-ecommerce-order-details.html" class="fw-medium link-primary">#VZ2101</a>')
 };
 xhttp.open("GET", "admin/orders/data");
 xhttp.send();

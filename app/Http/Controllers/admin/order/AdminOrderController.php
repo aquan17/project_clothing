@@ -39,7 +39,10 @@ class AdminOrderController extends Controller
     }
     public function getOrdersData()
     {
-        $orders = Order::with('customer', 'items.productVariant.product')->get();
+       $orders = Order::with('customer.user', 'items.productVariant.product')
+    ->where('status', '!=', 'cart')
+    ->get();
+
 
         // Giản lược dữ liệu cho frontend
         $ordersData = $orders->map(function ($order) {
@@ -56,9 +59,9 @@ class AdminOrderController extends Controller
             })->toArray();
 
             return [
-                'id' => $order->id,
+                'id' => $order->order_code,
                 'customer_id' => $order->customer_id, // Trả về ID khách hàng
-                'customer_name' => $order->customer->name ?? 'Không có thông tin', // Giữ tên để hiển thị
+               'customer_name' => $order->customer->user->name ?? 'Không có thông tin', // Lấy tên từ bảng users
                 'product_variant_ids' => $productVariantIds, // Mảng ID biến thể sản phẩm
                 'product_name' => $productNames, // Giữ tên để hiển thị
 

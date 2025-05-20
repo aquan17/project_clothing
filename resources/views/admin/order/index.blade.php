@@ -128,13 +128,13 @@
                                                 <input class="form-check-input" type="checkbox" id="checkAll" value="option">
                                             </div>
                                         </th>
-                                        <th class="sort" data-sort="id">Mã đơn hàng</th>
-                                        <th class="sort" data-sort="customer_name">Khách hàng</th>
-                                        <th class="sort" data-sort="product_names">Sản phẩm</th>
-                                        <th class="sort" data-sort="date">Ngày đặt hàng</th>
-                                        <th class="sort" data-sort="amount">Số tiền</th>
-                                        <th class="sort" data-sort="payment">Phương thức thanh toán</th>
-                                        <th class="sort" data-sort="status">Trạng thái giao hàng</th>
+                                        <th data-sort="id">Mã đơn hàng</th>
+                                        <th data-sort="customer_name">Khách hàng</th>
+                                        <th data-sort="product_names">Sản phẩm</th>
+                                        <th data-sort="date">Ngày đặt hàng</th>
+                                        <th data-sort="amount">Số tiền</th>
+                                        <th data-sort="payment">Phương thức thanh toán</th>
+                                        <th data-sort="status">Trạng thái giao hàng</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>

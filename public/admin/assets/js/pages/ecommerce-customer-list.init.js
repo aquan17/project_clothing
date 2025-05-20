@@ -52,9 +52,8 @@ xhttp.onload = function () {
     }
     ),
         customerList.remove("id", '<a href="javascript:void(0);" class="fw-medium link-primary">#VZ2101</a>')
-}
-    ,
-    xhttp.open("GET", "admin/users/data");
+},
+xhttp.open("GET", "admin/users/data");
 xhttp.send();
 var isValue = (isCount = (new DOMParser).parseFromString(customerList.items.slice(-1)[0]._values.id, "text/html")).body.firstElementChild.innerHTML
     , idField = document.getElementById("id-field")
