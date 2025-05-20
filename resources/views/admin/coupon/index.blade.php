@@ -2,6 +2,7 @@
 @section('title', 'Quản lý mã giảm giá')
 
 @section('content')
+
     <div class="page-content">
         <div class="container-fluid">
             <div class="row">
@@ -11,7 +12,16 @@
                     </div>
                 </div>
             </div>
-
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card" id="couponList">
@@ -24,7 +34,8 @@
                                 </div>
                                 <div class="col-sm-auto">
                                     <button type="button" class="btn btn-success add-coupon-btn" data-bs-toggle="modal"
-                                        id="create-btn" data-bs-target="#showModal" data-store-url="{{ route('admin.coupons.store') }}">
+                                        id="create-btn" data-bs-target="#showModal"
+                                        data-store-url="{{ route('admin.coupons.store') }}">
                                         <i class="ri-add-line align-bottom me-1"></i> Thêm mã giảm giá
                                     </button>
                                 </div>
@@ -49,7 +60,8 @@
                                                 </th>
                                                 <th class="sort" data-sort="start_date" style="width: 100px;">Bắt đầu</th>
                                                 <th class="sort" data-sort="end_date" style="width: 100px;">Kết thúc</th>
-                                                <th class="sort" data-sort="usage_limit" style="width: 80px;">Giới hạn</th>
+                                                <th class="sort" data-sort="usage_limit" style="width: 80px;">Giới hạn
+                                                </th>
                                                 <th class="sort" data-sort="used_count" style="width: 80px;">Đã dùng</th>
                                                 <th class="sort" data-sort="status" style="width: 80px;">Trạng thái</th>
                                                 <th style="width: 120px;">Hành động</th>
@@ -66,7 +78,7 @@
                                                     </td>
                                                     <td class="id">{{ $coupon->id }}</td>
                                                     <td class="code">{{ $coupon->code }}</td>
-                                                  <td class="discount_type">{{ $coupon->discount_type }}</td>
+                                                    <td class="discount_type">{{ $coupon->discount_type }}</td>
                                                     <td class="discount_value">
                                                         {{ $coupon->discount_type === 'percentage' ? $coupon->discount_value . '%' : $coupon->discount_value }}
                                                     </td>
@@ -75,15 +87,17 @@
                                                     <td class="usage_limit">{{ $coupon->usage_limit }}</td>
                                                     <td class="used_count">{{ $coupon->used_count }}</td>
                                                     <td class="status">
-    <span class="badge bg-{{ $coupon->status === 'active' ? 'info' : 'warning' }} text-uppercase">
-        {{ $coupon->status }}
-    </span>
-</td>
+                                                        <span
+                                                            class="badge bg-{{ $coupon->status === 'active' ? 'info' : 'warning' }} text-uppercase">
+                                                            {{ $coupon->status }}
+                                                        </span>
+                                                    </td>
                                                     <td>
                                                         <div class="d-flex gap-2">
                                                             <button class="btn btn-sm btn-success edit-item-btn"
                                                                 data-id="{{ $coupon->id }}" data-bs-toggle="modal"
-                                                                data-bs-target="#showModal" data-coupon="{{ json_encode($coupon->toArray()) }}">
+                                                                data-bs-target="#showModal"
+                                                                data-coupon="{{ json_encode($coupon->toArray()) }}">
                                                                 Chỉnh sửa
                                                             </button>
                                                             <div class="remove">
@@ -120,7 +134,8 @@
                                                         name="code" placeholder="Nhập mã giảm giá" required />
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="discount_type-field" class="form-label">Loại giảm giá</label>
+                                                    <label for="discount_type-field" class="form-label">Loại giảm
+                                                        giá</label>
                                                     <select id="discount_type-field" class="form-control"
                                                         name="discount_type" required>
                                                         <option value="percentage">Phần trăm</option>
@@ -128,7 +143,8 @@
                                                     </select>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="discount_value-field" class="form-label">Giá trị giảm giá</label>
+                                                    <label for="discount_value-field" class="form-label">Giá trị giảm
+                                                        giá</label>
                                                     <div class="input-group">
                                                         <input type="number" id="discount_value-field"
                                                             class="form-control" name="discount_value"
@@ -137,12 +153,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="usage_limit-field" class="form-label">Giới hạn sử dụng</label>
+                                                    <label for="usage_limit-field" class="form-label">Giới hạn sử
+                                                        dụng</label>
                                                     <input type="number" id="usage_limit-field" class="form-control"
                                                         name="usage_limit" placeholder="Nhập giới hạn sử dụng" required />
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="used_count-field" class="form-label">Số lần đã sử dụng</label>
+                                                    <label for="used_count-field" class="form-label">Số lần đã sử
+                                                        dụng</label>
                                                     <input type="number" id="used_count-field" class="form-control"
                                                         name="used_count" placeholder="Nhập số lần đã sử dụng" required />
                                                 </div>
@@ -156,8 +174,8 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="start_date-field" class="form-label">Ngày bắt đầu</label>
-                                                    <input type="datetime-local" id="start_date-field" class="form-control"
-                                                        name="start_date" required />
+                                                    <input type="datetime-local" id="start_date-field"
+                                                        class="form-control" name="start_date" required />
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="end_date-field" class="form-label">Ngày kết thúc</label>
@@ -171,8 +189,8 @@
                                                         data-bs-dismiss="modal">Đóng</button>
                                                     <button type="submit" class="btn btn-success"
                                                         id="add-btn">Thêm</button>
-                                                    <button type="submit" class="btn btn-success"
-                                                        id="edit-btn">Cập nhật</button>
+                                                    <button type="submit" class="btn btn-success" id="edit-btn">Cập
+                                                        nhật</button>
                                                 </div>
                                             </div>
                                         </form>

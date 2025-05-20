@@ -38,7 +38,7 @@ class AdminCouponController extends Controller
             'status' => $request->status
         ]);
 
-          return redirect()->back()->with('success', 'Coupon create successfully.');
+          return redirect()->back()->with('success', 'Thêm voucher thanh công.');
     }
 
     public function edit($id)
@@ -79,18 +79,20 @@ class AdminCouponController extends Controller
         ]);
 
         $coupon = Coupon::findOrFail($id);
-        $coupon->update([
-            'code' => $request->code,
-            'discount_type' => $request->discount_type,
-            'discount_value' => $request->discount_value,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'usage_limit' => $request->usage_limit,
-            'used_count' => $request->used_count,
-            'status' => $request->status
-        ]);
-
-        return redirect()->back()->with('success', 'Category updated successfully.');
+           if ($coupon->update([
+        'code' => $request->code,
+        'discount_type' => $request->discount_type,
+        'discount_value' => $request->discount_value,
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+        'usage_limit' => $request->usage_limit,
+        'used_count' => $request->used_count,
+        'status' => $request->status
+    ])) {
+        return redirect()->back()->with('success', 'Cập nhật voucher thành công.');
+    } else {
+        return redirect()->back()->with('error', 'Cập nhật voucher thất bại.');
+    }
     }
 
     public function destroy($id)

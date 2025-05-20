@@ -23,7 +23,9 @@
     </section>
 
     <section class="section">
-        <div id="toast-message" class="fixed top-5 right-5 z-50 hidden px-4 py-2 rounded text-white shadow-lg transition-all duration-300"></div>
+        <div id="toast-message"
+            class="fixed top-5 right-5 z-50 hidden px-4 py-2 rounded text-white shadow-lg transition-all duration-300">
+        </div>
         <div class="container">
             <form id="add-to-cart-form" action="{{ route('client.cart.add') }}" method="POST">
                 @csrf
@@ -108,9 +110,7 @@
                                             class="btn btn-success btn-hover w-100">
                                             <i class="bi bi-basket2 me-2"></i> Thêm vào giỏ hàng
                                         </button>
-                                        <button type="button" class="btn btn-primary btn-hover w-100">
-                                            <i class="bi bi-cart2 me-2"></i> Mua ngay
-                                        </button>
+
                                         <button class="btn btn-soft-danger custom-toggle btn-hover" data-bs-toggle="button"
                                             aria-pressed="true"> <span class="icon-on"><i class="ri-heart-line"></i></span>
                                             <span class="icon-off"><i class="ri-heart-fill"></i></span> </button>
@@ -144,9 +144,29 @@
                                     <li class=""><i
                                             class="bi bi-check2-circle me-2 align-middle text-success"></i>Còn hàng</li>
                                     <li class=""><i
-                                            class="bi bi-check2-circle me-2 align-middle text-success"></i>Giao hàng miễn phícó sẵn</li>
-                                    <li class=""><i
-                                            class="bi bi-check2-circle me-2 align-middle text-success"></i>Giảm giá 10% Sử dụng mã: <b>distinctio</b></li>
+                                            class="bi bi-check2-circle me-2 align-middle text-success"></i>Giao hàng miễn
+                                        phí có sẵn</li>
+                                    @if ($vouchers->isNotEmpty())
+                                        @php
+                                            $voucher = $vouchers->first();
+                                            $unit = $voucher->discount_type === 'percentage' ? '%' : '$'; // hoặc 'VNĐ' nếu dùng VND
+                                        @endphp
+                                        <li>
+                                            <i class="bi bi-check2-circle me-2 align-middle text-success"></i>
+                                            @php
+                                                $formattedValue = rtrim(
+                                                    rtrim(number_format($voucher->discount_value, 2, '.', ''), '0'),
+                                                    '.',
+                                                );
+                                            @endphp
+
+                                            Giảm giá {{ $formattedValue }}{{ $unit }} Sử dụng mã:
+
+                                            <b>{{ $voucher->code }}</b>
+                                        </li>
+                                    @endif
+
+
                                 </ul>
                             </div>
                             <div class="d-flex align-items-center mb-4">
@@ -213,7 +233,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#profile1" role="tab">
-                               Xếp hạng & Đánh giá
+                                Xếp hạng & Đánh giá
                             </a>
                         </li>
                     </ul>
@@ -487,7 +507,7 @@
                                 </div>
                                 <div class="mt-3">
                                     <a href="#" class="btn btn-primary w-100 add-btn"><i
-                                            class="mdi mdi-cart me-1"></i>  Thêm vào giỏ hàng</a>
+                                            class="mdi mdi-cart me-1"></i> Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>

@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\User;
 use App\Models\Wishlist;
+use Illuminate\Support\Facades\Hash;
 
 class IfUserController extends Controller
 {
@@ -95,5 +97,50 @@ class IfUserController extends Controller
         }
 
         return redirect()->route('orders.index')->with('error', 'You can only cancel orders that are pending.');
+    }
+    public function update(Request $request)
+    {
+        // Validate dữ liệu gửi lên
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:15',
+            'email' => 'required|email|unique:users,email,' . Auth::id(), // không trùng email người khác
+        ]);
+
+        // Lấy user hiện tại
+        $user = User::findOrFail(Auth::id());
+
+        // Cập nhật thông tin bằng Eloquent
+        $user->update($validated);
+
+        // Trả về với thông báo
+        return back()->with('status', 'Cập nhật thông tin thành công!');
+    }
+    public function changePassword(Request $request)
+    {
+        // Validate dữ liệu
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:8|confirmed', // kiểm tra password_confirmation
+        ],[
+            'current_password.required' => 'Mật khẩu hiện tại là bắt buộc',
+            'password.required' => 'Mật khẩu mới là bắt buộc',
+            'password.min' => 'Mật khẩu mới phải có ít nhất 8 ký tự',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp',
+        ]
+    );
+
+        $user = Auth::user();
+
+        // Kiểm tra mật khẩu cũ
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Mật khẩu cũ không đúng']);
+        }
+
+        // Cập nhật mật khẩu mới (Hash tự động)
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return back()->with('status', 'Đổi mật khẩu thành công!');
     }
 }

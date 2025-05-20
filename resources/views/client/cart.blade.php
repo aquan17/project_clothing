@@ -112,7 +112,7 @@
                                                                 </h5>
                                                                 <p class="text-muted mb-0">
                                                                     Tổng: $<span class="product-line-price fw-medium">
-                                                                        {{ number_format($item->price * $item->quantity, 2) }}
+                                                                     {{   $item->price * $item->quantity}}
                                                                     </span>
                                                                 </p>
                                                                 <div class="mt-3">
@@ -169,7 +169,7 @@
                             </div>
                             <div class="card overflow-hidden">
                                 <div class="card-header border-bottom-dashed">
-                                    <h5 class="card-title mb-0 fs-15">Tóm Tắt Đơn Hàng</h5>
+                                    <h5 class="card-title mb-0 fs-15">Đơn Hàng</h5>
                                 </div>
                                 <div class="card-body pt-4">
                                     <div class="table-responsive table-card">

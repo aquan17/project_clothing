@@ -7,6 +7,7 @@
     </div>
 @endif
 
+
     <section class="position-relative">
         <div class="profile-basic position-relative"
             style="background-image: url('{{ asset('client/images/profile-bg.jpg') }}');background-size: cover;background-position: center; height: 300px;">
@@ -44,15 +45,15 @@
                         <div class="card-body">
                             <ul class="nav nav-pills flex-column gap-3" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link fs-15 active" data-bs-toggle="tab" href="#custom-v-pills-profile"
+                                    <a class="nav-link fs-15" data-bs-toggle="tab" href="#custom-v-pills-profile"
                                         role="tab" aria-selected="true"><i
                                             class="bi bi-person-circle align-middle me-1"></i> Thông Tin Tài Khoản</a>
                                 </li>
-                                <li class="nav-item" role="presentation">
+                                {{-- <li class="nav-item" role="presentation">
                                     <a class="nav-link fs-15" data-bs-toggle="tab" href="#custom-v-pills-list"
                                         role="tab" aria-selected="false" tabindex="-1"><i
                                             class="bi bi-bookmark-check align-middle me-1"></i> Danh Sách Yêu Thích</a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link fs-15" data-bs-toggle="tab" href="#custom-v-pills-order"
                                         role="tab" aria-selected="false" tabindex="-1"><i
@@ -80,7 +81,7 @@
                 <div class="col-lg-9">
                     <div class="tab-content text-muted">
                         <!-- Account Info Tab -->
-                        <div class="tab-pane fade show active" id="custom-v-pills-profile" role="tabpanel">
+                        <div class="tab-pane fade " id="custom-v-pills-profile" role="tabpanel">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="card">
@@ -113,7 +114,7 @@
                                                         </tr>
 
                                                         <tr>
-                                                            <td>Since Member</td>
+                                                            <td>Kể từ khi thành viên</td>
                                                             <td class="fw-medium">
                                                                 {{ Auth::user()->created_at->format('d/m/Y H:i:s') }}
                                                             </td>
@@ -167,7 +168,7 @@
                         </div>
 
                         <!-- Wishlist Tab -->
-                        <div class="tab-pane fade" id="custom-v-pills-list" role="tabpanel">
+                        {{-- <div class="tab-pane fade" id="custom-v-pills-list" role="tabpanel">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="card overflow-hidden">
@@ -239,7 +240,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <!-- Orders Tab -->
                         <div class="tab-pane fade" id="custom-v-pills-order" role="tabpanel">
@@ -322,7 +323,7 @@
                                 <div class="col-lg-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <form action="" method="POST">
+                                            <form action="{{ route('client.profile.update') }}" method="POST">
                                                 @csrf
                                                 <div class="row">
                                                     <div class="col-lg-12">
@@ -333,14 +334,21 @@
                                                         <div class="mb-3">
                                                             <label for="name" class="form-label">Tên</label>
                                                             <input type="text" class="form-control" id="name"
-                                                                name="name" value="{{ $customer->name }}">
+                                                                name="name" value="{{ Auth::user()->name }}">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             <label for="phone" class="form-label">Số Điện Thoại</label>
                                                             <input type="text" class="form-control" id="phone"
-                                                                name="phone" value="{{ $customer->phone }}">
+                                                                name="phone" value="{{ Auth::user()->phone }}">
+                                                        </div>
+                                                    </div>
+                                                      <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="email" class="form-label">Email</label>
+                                                            <input type="email" class="form-control" id="email"
+                                                                name="email" value="{{ Auth::user()->email }}">
                                                         </div>
                                                     </div>
 
@@ -356,7 +364,7 @@
 
                                             <div class="mb-3" id="changePassword">
                                                 <h5 class="fs-16 text-decoration-underline mb-4">Thay đổi mật khẩu</h5>
-                                                <form action="" method="POST">
+                                                <form action="{{ route('password.change') }}" method="POST">
                                                     @csrf
                                                     <div class="row g-2">
                                                         <div class="col-lg-4">
@@ -365,6 +373,9 @@
                                                                     Cũ*</label>
                                                                 <input type="password" class="form-control"
                                                                     id="current_password" name="current_password">
+                                                                    @if ($errors->has('current_password'))
+                                                                    <span class="text-danger">{{ $errors->first('current_password') }}</span>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
@@ -373,6 +384,9 @@
                                                                     Mới*</label>
                                                                 <input type="password" class="form-control"
                                                                     id="password" name="password">
+                                                                @if ($errors->has('password'))
+                                                                    <span class="text-danger">{{ $errors->first('password') }}</span>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
@@ -530,3 +544,27 @@
     </style>
 
 @endsection
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabKey = "activeTab";
+
+        // Nếu đã lưu tab, active lại tab đó
+        const savedTab = localStorage.getItem(tabKey);
+        if (savedTab) {
+            const triggerEl = document.querySelector(`[data-bs-toggle="tab"][href="${savedTab}"]`);
+            if (triggerEl) {
+                const tab = new bootstrap.Tab(triggerEl);
+                tab.show();
+            }
+        }
+
+        // Bắt sự kiện khi tab được click
+        const tabLinks = document.querySelectorAll('[data-bs-toggle="tab"]');
+        tabLinks.forEach(function (tabLink) {
+            tabLink.addEventListener("shown.bs.tab", function (event) {
+                const target = event.target.getAttribute("href");
+                localStorage.setItem(tabKey, target);
+            });
+        });
+    });
+</script>

@@ -83,6 +83,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [IfUserController::class, 'profile'])->name('client.profile');
     Route::get('/order/invoice/{order}', [IfUserController::class, 'getInvoiceDetails'])->name('client.profile.invoice');
     Route::get('/profile/cancelled/{id}', [IfUserController::class, 'cancelled'])->name('client.profile.cancelled');
+    Route::post('/update', [IfUserController::class, 'update'])->name('client.profile.update');
+    Route::post('/change-password', [IfUserController::class, 'changePassword'])->name('password.change');
+
 });
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\client;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Rating;
@@ -88,7 +89,7 @@ class ProductController extends Controller
                 'size' => $sizes, // Mảng kích cỡ
             ];
         });
-// dd($sizes);
+        // dd($sizes);
         return view('client.shop', compact('products', 'categories', 'colors', 'sizes'));
     }
     public function filterByCategory($id)
@@ -96,12 +97,12 @@ class ProductController extends Controller
         $categories = Category::withCount('products')->get();
         $colors = ProductVariant::select('color')->distinct()->pluck('color')->filter();
         $sizes = ProductVariant::select('size')->distinct()->pluck('size')->filter();
-        
+
         $products = Product::with(['variants', 'category', 'ratings'])
             ->where('category_id', $id)
             ->orderBy('id', 'desc')
             ->paginate(16);
-        
+
         return view('client.shop', compact('categories', 'products', 'colors', 'sizes'));
     }
     public function show($id)
@@ -140,7 +141,8 @@ class ProductController extends Controller
             ->take(4)
             ->get();
 
-        return view('client.show', compact('product', 'variants', 'averageRating', 'reviewCount', 'relatedProducts', 'ratingPercentages'));
+        $vouchers = Coupon::where('status', 1)->orderBy('end_date', 'desc')->get(); // lấy các voucher còn hiệu lực
+        return view('client.show', compact('product', 'variants', 'averageRating', 'reviewCount', 'relatedProducts', 'ratingPercentages', 'vouchers'));
     }
     public function submitReview(Request $request, $id)
     {
@@ -178,7 +180,7 @@ class ProductController extends Controller
         $categories = Category::withCount('products')->get();
         $colors = ProductVariant::select('color')->distinct()->pluck('color')->filter();
         $sizes = ProductVariant::select('size')->distinct()->pluck('size')->filter();
-        
+
         $keyword = $request->q;
 
         $products = Product::with(['variants', 'category', 'ratings'])
@@ -190,18 +192,19 @@ class ProductController extends Controller
 
         return view('client.shop', compact('products', 'keyword', 'categories', 'colors', 'sizes'));
     }
-    public function header(Request $request){
-         $query = Product::query();
+    public function header(Request $request)
+    {
+        $query = Product::query();
 
-    if ($request->has('category')) {
-        $categorySlug = $request->input('category');
-        $query->whereHas('category', fn($q) => $q->where('slug', $categorySlug));
-    }
+        if ($request->has('category')) {
+            $categorySlug = $request->input('category');
+            $query->whereHas('category', fn($q) => $q->where('slug', $categorySlug));
+        }
 
-    $products = $query->paginate(12);
+        $products = $query->paginate(12);
 
-    $categoriesGrouped = Category::withCount('products')->get()->groupBy('group');
+        $categoriesGrouped = Category::withCount('products')->get()->groupBy('group');
 
-    return view('client.layout.component.header', compact( 'categoriesGrouped'));
+        return view('client.layout.component.header', compact('categoriesGrouped'));
     }
 }
