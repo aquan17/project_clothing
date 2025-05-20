@@ -16,9 +16,9 @@
                                                 class="text-danger">*</span></label>
                                         <input id="name" type="text"
                                             class="form-control @error('name') is-invalid @enderror" name="name"
-                                            value="{{ old('name') }}" placeholder="Nhập Tên" required autocomplete="name" autofocus>
+                                            value="{{ old('name') }}" placeholder="Nhập Tên" autocomplete="name" autofocus>
                                          @error('name')
-                                            <span class="invalid-feedback" role="alert">
+                                            <span class="invalid-feedback text-danger" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
@@ -28,10 +28,10 @@
                                                 class="text-danger">*</span></label>
                                                  <input id="email" type="email"
                                             class="form-control @error('email') is-invalid @enderror" name="email"
-                                            value="{{ old('email') }}" required autocomplete="email"  placeholder="Nhập email">
+                                            value="{{ old('email') }}" autocomplete="email"  placeholder="Nhập email">
                                     
                                         @error('email')
-                                            <span class="invalid-feedback" role="alert">            
+                                            <span class="invalid-feedback text-danger" role="alert">            
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
@@ -41,14 +41,14 @@
                                         <div class="position-relative auth-pass-inputgroup">
                                      
                                             <input id="password" type="password"
-                                            class="form-control pe-5 password-input @error('password') is-invalid @enderror" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                                            required autocomplete="new-password" placeholder="Nhập mật khẩu">
+                                            class="form-control pe-5 password-input @error('password') is-invalid @enderror" name="password"
+                                         autocomplete="new-password" placeholder="Nhập mật khẩu">
                                             <button
                                                 class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
                                                 type="button" id="password-addon"><i
                                                     class="ri-eye-fill align-middle"></i></button>
                                         @error('password')
-                                            <span class="invalid-feedback" role="alert">
+                                            <span class="invalid-feedback text-danger" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
@@ -58,13 +58,13 @@
                                         <label class="form-label" for="password-confirm">Xác Nhận Mật Khẩu</label>
                                         <div class="position-relative auth-pass-inputgroup">
                                               <input id="password-confirm" type="password" class="form-control pe-5 password-input"
-                                            name="password_confirmation" required autocomplete="new-password" placeholder="Nhập lại mật khẩu">
+                                            name="password_confirmation" autocomplete="new-password" placeholder="Nhập lại mật khẩu">
                                            
                                          <button
                                                 class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
                                                 type="button" ><i
                                                     class="ri-eye-fill align-middle"></i></button>
-                                            <div class="invalid-feedback">
+                                            <div class="invalid-feedback text-danger">
                                                 Passwords do not match
                                             </div>
                                         </div>

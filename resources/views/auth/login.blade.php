@@ -17,9 +17,9 @@
                                         <label for="emmail" class="form-label">Username</label>
                                         <input id="email" type="email"
                                             class="form-control @error('email') is-invalid @enderror" name="email"
-                                            value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                            value="{{ old('email') }}" autocomplete="email" autofocus>
                                         @error('email')
-                                            <span class="invalid-feedback" role="alert">
+                                            <span class="invalid-feedback text-danger" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
@@ -38,14 +38,14 @@
                                         <div class="position-relative auth-pass-inputgroup mb-3">
                                             <input id="password" type="password"
                                                 class="form-control password-input @error('password') is-invalid @enderror"
-                                                name="password" required autocomplete="current-password">
+                                                name="password" autocomplete="current-password">
                                             <button
                                                 class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
                                                 type="button" id="password-addon"><i
                                                     class="ri-eye-fill align-middle"></i></button>
                                         </div>
                                         @error('password')
-                                            <span class="invalid-feedback" role="alert">
+                                            <span class="invalid-feedback text-danger" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror

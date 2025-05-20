@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -22,11 +23,11 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-//   protected function authenticated(Request $request, $user)
-//     {
-//         // Redirect về trang trước đó hoặc home nếu không có
-//         return redirect()->intended($request->input('redirect', '/'));
-//     }
+    //   protected function authenticated(Request $request, $user)
+    //     {
+    //         // Redirect về trang trước đó hoặc home nếu không có
+    //         return redirect()->intended($request->input('redirect', '/'));
+    //     }
     /**
      * Where to redirect users after login.
      *
@@ -90,5 +91,20 @@ class LoginController extends Controller
 
         return $this->sendFailedLoginResponse($request);
     }
-
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ], [
+            $this->username() . '.required' => 'Vui lòng nhập email hoặc tên đăng nhập.',
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+        ]);
+    }
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        throw ValidationException::withMessages([
+            $this->username() => ['Email hoặc mật khẩu không đúng.'],
+        ]);
+    }
 }

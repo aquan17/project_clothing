@@ -49,13 +49,23 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-    }
+{
+    return Validator::make($data, [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ], [
+        'name.required' => 'Vui lòng nhập họ tên.',
+        'name.max' => 'Họ tên không được vượt quá 255 ký tự.',
+        'email.required' => 'Vui lòng nhập địa chỉ email.',
+        'email.email' => 'Email không đúng định dạng.',
+        'email.unique' => 'Email đã được sử dụng.',
+        'password.required' => 'Vui lòng nhập mật khẩu.',
+        'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
+        'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
+    ]);
+}
+
 
     /**
      * Create a new user instance after a valid registration.
