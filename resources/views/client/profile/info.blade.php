@@ -548,13 +548,32 @@
     document.addEventListener("DOMContentLoaded", function () {
         const tabKey = "activeTab";
 
-        // Nếu đã lưu tab, active lại tab đó
+        // Lấy tab đã lưu hoặc tab mặc định (tab đầu tiên)
         const savedTab = localStorage.getItem(tabKey);
+        const defaultTab = "#custom-v-pills-profile";
+
+        // Nếu có tab đã lưu, kích hoạt tab đó
         if (savedTab) {
             const triggerEl = document.querySelector(`[data-bs-toggle="tab"][href="${savedTab}"]`);
             if (triggerEl) {
                 const tab = new bootstrap.Tab(triggerEl);
                 tab.show();
+            } else {
+                // Nếu tab đã lưu không tồn tại, kích hoạt tab mặc định
+                const defaultTriggerEl = document.querySelector(`[data-bs-toggle="tab"][href="${defaultTab}"]`);
+                if (defaultTriggerEl) {
+                    const tab = new bootstrap.Tab(defaultTriggerEl);
+                    tab.show();
+                    localStorage.setItem(tabKey, defaultTab);
+                }
+            }
+        } else {
+            // Nếu chưa có tab nào được lưu, kích hoạt tab mặc định
+            const defaultTriggerEl = document.querySelector(`[data-bs-toggle="tab"][href="${defaultTab}"]`);
+            if (defaultTriggerEl) {
+                const tab = new bootstrap.Tab(defaultTriggerEl);
+                tab.show();
+                localStorage.setItem(tabKey, defaultTab);
             }
         }
 
