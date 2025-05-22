@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\category\AdminCategoryController;
+use App\Http\Controllers\admin\comment\AdminCommentsController;
 use App\Http\Controllers\admin\coupon\AdminCouponController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\order\AdminOrderController;
@@ -34,10 +35,10 @@ Route::middleware('web')->group(function () {
         'index' => 'client.products',
         'show' => 'client.products.show',
     ]);
-// Route::get('/test-flash', function () {
-//     session()->flash('success', 'Thông báo test flash thành công!');
-//     return view('client.index'); // Hoặc view bạn dùng
-// });
+    // Route::get('/test-flash', function () {
+    //     session()->flash('success', 'Thông báo test flash thành công!');
+    //     return view('client.index'); // Hoặc view bạn dùng
+    // });
     Route::get('/search', [ProductController::class, 'search'])->name('client.products.search');
     Route::get('/category/{id}', [ProductController::class, 'filterByCategory'])->name('client.category');
     Route::post('/products/{id}/review', [ProductController::class, 'submitReview'])->name('client.products.review');
@@ -85,7 +86,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/cancelled/{id}', [IfUserController::class, 'cancelled'])->name('client.profile.cancelled');
     Route::post('/update', [IfUserController::class, 'update'])->name('client.profile.update');
     Route::post('/change-password', [IfUserController::class, 'changePassword'])->name('password.change');
-
 });
 
 
@@ -100,7 +100,7 @@ Route::prefix('admin')
     ->group(function () {
         // Route cho trang dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-        
+
         // Resource route cho sản phẩm
         Route::resource('products', AdminProductController::class)->names([
             'index' => 'admin.products.index',
@@ -114,20 +114,20 @@ Route::prefix('admin')
 
         // Route phục hồi sản phẩm đã xóa (soft delete)
         Route::get('/products/restore/{id}', [AdminProductController::class, 'restore'])->name('admin.products.restore');
-        
+
         // Route xóa sản phẩm vĩnh viễn (force delete)
         Route::delete('/products/force-delete/{id}', [AdminProductController::class, 'forceDelete'])->name('admin.products.forceDelete');
 
         // Route cho đơn hàng
-            Route::resource('orders', AdminOrderController::class)->names([
-                'index' => 'admin.orders.index',
-                'create' => 'admin.orders.create',
-                'store' => 'admin.orders.store',
-                'show' => 'admin.orders.show',
-                'edit' => 'admin.orders.edit',
-                'update' => 'admin.orders.update',
-                'destroy' => 'admin.orders.destroy',
-            ]);
+        Route::resource('orders', AdminOrderController::class)->names([
+            'index' => 'admin.orders.index',
+            'create' => 'admin.orders.create',
+            'store' => 'admin.orders.store',
+            'show' => 'admin.orders.show',
+            'edit' => 'admin.orders.edit',
+            'update' => 'admin.orders.update',
+            'destroy' => 'admin.orders.destroy',
+        ]);
         Route::get('admin/orders/data', [AdminOrderController::class, 'getOrdersData'])->name('admin.orders.data');
         Route::resource('users', AdminUserController::class)->names([
             'index' => 'admin.users.index',
@@ -139,30 +139,45 @@ Route::prefix('admin')
             'destroy' => 'admin.users.destroy',
         ]);
         Route::get('admin/users/data', [AdminUserController::class, 'getUsersData'])->name('admin.users.data');
+        // Route cho Category
+        Route::resource('categories', AdminCategoryController::class)->names([
+            'index' => 'admin.categories.index',
+            'create' => 'admin.categories.create',
+            'store' => 'admin.categories.store',
+            'show' => 'admin.categories.show',
+            'edit' => 'admin.categories.edit',
+            'update' => 'admin.categories.update',
+            'destroy' => 'admin.categories.destroy',
+        ]);
+        // Route cho coupon
+
+        Route::resource('coupons', AdminCouponController::class)->names([
+            'index' => 'admin.coupons.index',
+            'create' => 'admin.coupons.create',
+            'store' => 'admin.coupons.store',
+            'show' => 'admin.coupons.show',
+            'edit' => 'admin.coupons.edit',
+            'update' => 'admin.coupons.update',
+            'destroy' => 'admin.coupons.destroy',
+        ]);
+        Route::resource('comments', AdminCommentsController::class)->names([
+            'index' => 'admin.comments.index',
+            'create' => 'admin.comments.create',
+            'store' => 'admin.comments.store',
+            'show' => 'admin.comments.show',
+            'edit' => 'admin.comments.edit',
+            'update' => 'admin.comments.update',
+            'destroy' => 'admin.comments.destroy',
+        ]);
+        Route::get('trashed', [AdminCommentsController::class, 'trashed'])
+            ->name('admin.comments.trashed');
+        Route::delete('comments/{comment}/force-delete', [AdminCommentsController::class, 'forceDelete'])
+            ->name('admin.comments.forceDelete');
+        Route::patch('comments/{comment}/restore', [AdminCommentsController::class, 'restore'])
+            ->name('admin.comments.restore');
     });
-    // Route cho Category
-    Route::resource('categories', AdminCategoryController::class)->names([
-        'index' => 'admin.categories.index',
-        'create' => 'admin.categories.create',
-        'store' => 'admin.categories.store',
-        'show' => 'admin.categories.show',
-        'edit' => 'admin.categories.edit',
-        'update' => 'admin.categories.update',
-        'destroy' => 'admin.categories.destroy',
-    ]);
-    // Route cho coupon
-    
-    Route::resource('coupons', AdminCouponController::class)->names([
-        'index' => 'admin.coupons.index',
-        'create' => 'admin.coupons.create',
-        'store' => 'admin.coupons.store',
-        'show' => 'admin.coupons.show',
-        'edit' => 'admin.coupons.edit',
-        'update' => 'admin.coupons.update',
-        'destroy' => 'admin.coupons.destroy',
-    ]);
+
 // Test route for PUT request
-    Route::put('/test-update/{id}', function ($id) {
-        return response()->json(['message' => 'PUT request successful', 'id' => $id]);
-    });
-    
+Route::put('/test-update/{id}', function ($id) {
+    return response()->json(['message' => 'PUT request successful', 'id' => $id]);
+});

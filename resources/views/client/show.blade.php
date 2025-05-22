@@ -21,7 +21,11 @@
             </div><!--end row-->
         </div><!--end container-->
     </section>
-
+    {{-- @if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif --}}
     <section class="section">
         <div id="toast-message"
             class="fixed top-5 right-5 z-50 hidden px-4 py-2 rounded text-white shadow-lg transition-all duration-300">
@@ -227,12 +231,14 @@
                 <div class="col-lg-12">
                     <ul class="nav nav-tabs nav-tabs-custom mb-3" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#home1" role="tab">
+                            <a class="nav-link {{ session('active_tab') != 'profile1' ? 'active' : '' }}"
+                                data-bs-toggle="tab" href="#home1" role="tab">
                                 Mô tả
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#profile1" role="tab">
+                            <a class="nav-link {{ session('active_tab') == 'profile1' ? 'active' : '' }}"
+                                data-bs-toggle="tab" href="#profile1" role="tab">
                                 Xếp hạng & Đánh giá
                             </a>
                         </li>
@@ -240,7 +246,8 @@
 
                     <!-- Tab panes -->
                     <div class="tab-content text-muted">
-                        <div class="tab-pane active" id="home1" role="tabpanel">
+                        <div class="tab-pane {{ session('active_tab') != 'profile1' ? 'active' : '' }}" id="home1"
+                            role="tabpanel">
                             <table class="table table-sm table-borderless align-middle">
                                 <tr>
                                     <th>Danh Mục</th>
@@ -258,7 +265,8 @@
 
                             <p class="text-muted fs-15">{{ $product->description }}</p>
                         </div>
-                        <div class="tab-pane" id="profile1" role="tabpanel">
+                        <div class="tab-pane {{ session('active_tab') == 'profile1' ? 'active' : '' }}" id="profile1"
+                            role="tabpanel">
                             <div>
                                 <div class="d-flex flex-wrap gap-4 justify-content-between align-items-center mt-4">
                                     <div class="flex-shrink-0">
@@ -318,7 +326,7 @@
                                         <div class="d-flex p-3 border-bottom border-bottom-dashed">
                                             <div class="flex-shrink-0 me-3">
                                                 <img class="avatar-xs rounded-circle"
-                                                    src="{{ asset('client/images/users/avatar-5.jpg') }}" alt="">
+                                                    src="{{ asset('client/images/users/loppy.jpg') }}" alt="">
                                             </div>
                                             <div class="flex-grow-1">
                                                 <div class="d-flex mb-3">
@@ -335,12 +343,13 @@
                                                                     @endif
                                                                 @endfor
                                                             </div>
-                                                            <h6 class="mb-0">{{ $comment->customer->name }}</h6>
+                                                            <h6 class="mb-0">{{ $comment->customer->user->name }}</h6>
                                                         </div>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                        <p class="mb-0 text-muted"><i
-                                                                class="ri-calendar-event-fill me-2 align-middle"></i>{{ $comment->created_at->format('M d, Y') }}
+                                                        <p class="mb-0 text-muted">
+                                                            <i class="ri-calendar-event-fill me-2 align-middle"></i>
+                                                            {{ $comment->created_at->format('d/m/Y H:i:s') }}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -354,27 +363,51 @@
                                 </div>
                                 <div class="pt-3">
                                     <h5 class="fs-18">Thêm đánh giá</h5>
+                                    @if (session('success'))
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            {{ session('success') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
+                                        </div>
+                                    @endif
                                     <div>
                                         <form action="{{ route('client.products.review', $product->id) }}" method="POST"
                                             class="form">
                                             @csrf
-                                            <div class="d-flex align-items-center mb-3">
-                                                <span class="fs-14">Đánh giá của bạn:</span>
-                                                <div class="ms-3">
-                                                    <select name="rating" class="form-select">
-                                                        <option value="5">5 sao</option>
-                                                        <option value="4">4 sao</option>
-                                                        <option value="3">3 sao</option>
-                                                        <option value="2">2 sao</option>
-                                                        <option value="1">1 sao</option>
-                                                    </select>
+                                            <input type="hidden" name="active_tab" value="profile1">
+                                            @if ($errors->any())
+                                                <div class="alert alert-danger">
+                                                    <ul>
+                                                        @foreach ($errors->all() as $error)
+                                                            <li>{{ $error }}</li>
+                                                        @endforeach
+                                                    </ul>
                                                 </div>
-                                            </div>
-
+                                            @endif
+                                           @php
+    $hasRated = $product->ratings->where('customer_id', Auth::user()->customer->id)->isNotEmpty();
+@endphp
+@if (!$hasRated)
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <span class="fs-14">Đánh giá của bạn:</span>
+                                                    <div class="ms-3">
+                                                        <select name="rating" class="form-select">
+                                                            <option value="5">5 sao</option>
+                                                            <option value="4">4 sao</option>
+                                                            <option value="3">3 sao</option>
+                                                            <option value="2">2 sao</option>
+                                                            <option value="1">1 sao</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            @endif
                                             <div class="mb-3">
-                                                <textarea class="form-control" name="content" placeholder="Enter your comments & reviews" rows="4" required></textarea>
+                                                <textarea class="form-control @error('content') is-invalid @enderror" name="content"
+                                                    placeholder="Nhập đánh giá của bạn" rows="4" required>{{ old('content') }}</textarea>
                                                 @error('content')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
                                                 @enderror
                                             </div>
 

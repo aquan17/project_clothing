@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Coupon;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -110,7 +113,17 @@ class ProductController extends Controller
         // $categories = Category::findOrFail($id);
 
         // Lấy sản phẩm cùng với variants và comments với customer
-        $product = Product::with('variants', 'comments.customer', 'ratings.customer', 'category')->findOrFail($id);
+        $product = Product::with('variants', 'comments.customer.user', 'ratings.customer', 'category')->findOrFail($id);
+
+        // Gắn rating cho từng comment
+        foreach ($product->comments as $comment) {
+            $rating = $product->ratings
+                ->where('customer_id', $comment->customer_id)
+                ->first();
+
+            $comment->rating = $rating?->rating ?? 0;
+        }
+
 
         // Tính điểm đánh giá trung bình
         $averageRating = $product->ratings->avg('rating');
@@ -140,41 +153,88 @@ class ProductController extends Controller
             ->where('id', '!=', $product->id) // Loại trừ sản phẩm hiện tại
             ->take(4)
             ->get();
+        $customer = Customer::where('user_id', Auth::id())->first();
+
+        $existingRating = null;
+        if ($customer) {
+            $existingRating = Rating::where('product_id', $product->id)
+                ->where('customer_id', $customer->id)
+                ->first();
+        }
 
         $vouchers = Coupon::where('status', 1)->orderBy('end_date', 'desc')->get(); // lấy các voucher còn hiệu lực
-        return view('client.show', compact('product', 'variants', 'averageRating', 'reviewCount', 'relatedProducts', 'ratingPercentages', 'vouchers'));
+        return view('client.show', compact('existingRating', 'product', 'variants', 'averageRating', 'reviewCount', 'relatedProducts', 'ratingPercentages', 'vouchers'));
     }
     public function submitReview(Request $request, $id)
-    {
-        // Validate dữ liệu
-        $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'content' => 'required|string|max:1000',
-        ]);
+{
+    try {
+        // Kiểm tra user đã đăng nhập
+        if (!Auth::check()) {
+            return redirect()->back()
+                ->with('error', 'Vui lòng đăng nhập để đánh giá')
+                ->with('active_tab', 'profile1');
+        }
 
         // Tìm sản phẩm
         $product = Product::findOrFail($id);
+        // Tìm khách hàng
+        $customer = Customer::where('user_id', Auth::id())->firstOrFail();
 
-        // Lưu comment
-        Comment::create([
-            'product_id' => $product->id,
-            'customer_id' => Auth::id(),
-            'name' => Auth::user()->name,
-            'content' => $request->content,
-        ]);
+        // Kiểm tra xem đã từng rating chưa
+        $hasRated = Rating::where('product_id', $product->id)
+                          ->where('customer_id', $customer->id)
+                          ->exists();
 
-        // Lưu rating (nếu bạn vẫn muốn tách bảng ratings)
-        Rating::create([
-            'product_id' => $product->id,
-            'customer_id' => Auth::id(),
-            'rating' => $request->rating,
-        ]);
+        // Xây dựng rule validation
+        $rules = [
+            'content' => 'required|string|max:1000',
+        ];
+        if (!$hasRated) {
+            $rules['rating'] = 'required|integer|min:1|max:5';
+        }
 
-        // Log::info('Comment submitted for product ID: ' . $product->id . ' by user ID: ' . Auth::id());
+        $validated = $request->validate($rules);
 
-        // Chuyển hướng về trang trước với #comments
-        return redirect()->to(url()->previous() . '#comments')->with('success', 'Bình luận đã được gửi.');
+        DB::beginTransaction();
+
+        try {
+            // Lưu comment
+            Comment::create([
+                'product_id' => $product->id,
+                'customer_id' => $customer->id,
+                'content' => $validated['content'],
+            ]);
+
+            // Nếu chưa đánh giá thì mới lưu rating
+            if (!$hasRated) {
+                Rating::create([
+                    'product_id' => $product->id,
+                    'customer_id' => $customer->id,
+                    'rating' => $validated['rating'],
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()->back()
+                ->with('success', 'Cảm ơn bạn đã gửi đánh giá!')
+                ->with('active_tab', 'profile1');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error creating review: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Có lỗi xảy ra, vui lòng thử lại')
+                ->with('active_tab', 'profile1');
+        }
+
+    } catch (\Exception $e) {
+        Log::error('Error in submitReview: ' . $e->getMessage());
+        return redirect()->back()
+            ->with('error', 'Có lỗi xảy ra, vui lòng thử lại')
+            ->with('active_tab', 'profile1');
     }
+}
+
     public function search(Request $request)
     {
         $categories = Category::withCount('products')->get();
