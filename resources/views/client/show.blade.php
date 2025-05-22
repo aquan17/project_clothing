@@ -361,8 +361,9 @@
                                         </div>
                                     @endforeach
                                 </div>
+
                                 <div class="pt-3">
-                                    <h5 class="fs-18">Thêm đánh giá</h5>
+                                    
                                     @if (session('success'))
                                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                                             {{ session('success') }}
@@ -370,53 +371,68 @@
                                                 aria-label="Close"></button>
                                         </div>
                                     @endif
-                                    <div>
-                                        <form action="{{ route('client.products.review', $product->id) }}" method="POST"
-                                            class="form">
-                                            @csrf
-                                            <input type="hidden" name="active_tab" value="profile1">
-                                            @if ($errors->any())
-                                                <div class="alert alert-danger">
-                                                    <ul>
-                                                        @foreach ($errors->all() as $error)
-                                                            <li>{{ $error }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                            @endif
-                                           @php
-    $hasRated = $product->ratings->where('customer_id', Auth::user()->customer->id)->isNotEmpty();
-@endphp
-@if (!$hasRated)
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <span class="fs-14">Đánh giá của bạn:</span>
-                                                    <div class="ms-3">
-                                                        <select name="rating" class="form-select">
-                                                            <option value="5">5 sao</option>
-                                                            <option value="4">4 sao</option>
-                                                            <option value="3">3 sao</option>
-                                                            <option value="2">2 sao</option>
-                                                            <option value="1">1 sao</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                            <div class="mb-3">
-                                                <textarea class="form-control @error('content') is-invalid @enderror" name="content"
-                                                    placeholder="Nhập đánh giá của bạn" rows="4" required>{{ old('content') }}</textarea>
-                                                @error('content')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
 
-                                            <div class="text-end">
-                                                <button class="btn btn-primary btn-hover" type="submit">Gửi đánh giá <i
-                                                        class="ri-send-plane-2-line align-bottom ms-1"></i></button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                    @auth
+                                    <h5 class="fs-18">Thêm đánh giá</h5>
+                                        <div>
+                                            <form action="{{ route('client.products.review', $product->id) }}" method="POST"
+                                                class="form">
+                                                @csrf
+                                                <input type="hidden" name="active_tab" value="profile1">
+                                                @if ($errors->any())
+                                                    <div class="alert alert-danger">
+                                                        <ul>
+                                                            @foreach ($errors->all() as $error)
+                                                                <li>{{ $error }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
+                                                @php
+                                                    $hasRated =
+                                                        Auth::check() &&
+                                                        $product->ratings
+                                                            ->where('customer_id', Auth::user()->customer->id)
+                                                            ->isNotEmpty();
+                                                @endphp
+                                                @if (!$hasRated)
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <span class="fs-14">Đánh giá của bạn:</span>
+                                                        <div class="ms-3">
+                                                            <select name="rating" class="form-select" required>
+                                                                <option value="">Chọn đánh giá</option>
+                                                                <option value="5">5 sao</option>
+                                                                <option value="4">4 sao</option>
+                                                                <option value="3">3 sao</option>
+                                                                <option value="2">2 sao</option>
+                                                                <option value="1">1 sao</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                <div class="mb-3">
+                                                    <textarea class="form-control @error('content') is-invalid @enderror" name="content"
+                                                        placeholder="Nhập đánh giá của bạn" rows="4" required>{{ old('content') }}</textarea>
+                                                    @error('content')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="text-end">
+                                                    <button class="btn btn-primary btn-hover" type="submit">
+                                                        Gửi đánh giá <i class="ri-send-plane-2-line align-bottom ms-1"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    @else
+                                        <div class="alert alert-info">
+                                            Vui lòng <a href="{{ route('login') }}" class="alert-link">đăng nhập</a> để gửi
+                                            đánh giá của bạn.
+                                        </div>
+                                    @endauth
                                 </div>
                             </div>
                         </div>
