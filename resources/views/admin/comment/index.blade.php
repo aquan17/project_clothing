@@ -69,7 +69,8 @@
                                             {{-- @php
                                             dd($comment->rating_value);
                                             @endphp --}}
-                                        <td>{{ $comment->content }}</td>
+                                      <td>{{ \Illuminate\Support\Str::limit($comment->content, 30) }}</td>
+
                                         <td>{{ $comment->created_at->format('H:i:s d/m/Y') }}</td>
                                         <td>
                                             <div class="d-flex gap-2">
