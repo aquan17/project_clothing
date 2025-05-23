@@ -308,14 +308,14 @@
                             </div>
                             <div class="card-body">
                                 <div class="px-5">
-                                    <img src="{{ asset('client/images/products/img-16.png') }}" alt=""
+                                    <img src="{{ asset('client/images/products/img-11.png') }}" alt=""
                                         class="img-fluid d-block mx-auto">
                                 </div>
                                 <div class="mt-4 text-center">
                                     <h4 class="text-body mb-3">$63.00 <span
                                             class="text-muted fs-12"><del>$123.99</del></span></h4>
                                     <a href="#!" class="stretched-link">
-                                        <h5 class="mb-4">Đồng hồ thông minh Ninja Pro Max</h5>
+                                        <h5 class="mb-4">Áo sơ mi xanh độc quyền</h5>
                                     </a>
                                 </div>
                                 <div class="progress animated-progress custom-progress">
