@@ -284,7 +284,7 @@ public function update(Request $request, $id)
 
         $product->delete(); // Hoặc sử dụng soft delete nếu cần
 
-        return response()->json(['success' => true, 'message' => 'Product deleted successfully']);
+        return response()->json(['success' => true, 'message' => 'Đã xóa sản phẩm thành công']);
     } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
@@ -318,7 +318,7 @@ public function update(Request $request, $id)
 
             return response()->json([
                 'success' => true,
-                'message' => 'Product restored successfully',
+                'message' => 'Sản phẩm được khôi phục thành công',
                 'product' => $formattedProduct
             ]);
         } catch (\Exception $e) {
@@ -339,7 +339,7 @@ public function update(Request $request, $id)
 
             return response()->json([
                 'success' => true,
-                'message' => 'Product permanently deleted'
+                'message' => 'Sản phẩm đã bị xóa vĩnh viễn'
             ]);
         } catch (\Exception $e) {
             return response()->json([

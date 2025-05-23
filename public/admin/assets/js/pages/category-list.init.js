@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const storeUrl = addCategoryBtn ? addCategoryBtn.getAttribute('data-store-url') : '';
 
     // URL cho Edit (Cần thay {id} khi sửa)
-    const editUrlTemplate = "/categories/{id}";
-    const deleteUrlTemplate = "/categories/{id}";  // URL cho xóa
+    const editUrlTemplate = "/admin/categories/{id}";
+    const deleteUrlTemplate = "/admin/categories/{id}";  // URL cho xóa
 
     // Xử lý nút Add
     document.querySelectorAll('.add-category-btn').forEach(btn => {

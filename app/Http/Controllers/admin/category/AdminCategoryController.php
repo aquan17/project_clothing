@@ -40,6 +40,7 @@ class AdminCategoryController extends Controller
         $category->update([
             'name' => $request->category_name,
         ]);
+        
 
         return redirect()->back()->with('success', 'Category updated successfully.');
     }

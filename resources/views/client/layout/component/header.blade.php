@@ -135,87 +135,17 @@
                         </div>
                     </div>
                 </li>
-                <li class="nav-item dropdown dropdown-hover">
-                    <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('client.products') }}" role="button"
                         aria-expanded="false" data-key="t-shop">
-                        Cửa hàng
+                        Sản Phẩm
                     </a>
-                    <div class="dropdown-menu dropdown-mega-menu-xl dropdown-menu-center p-0">
-                        <div class="row g-0 g-lg-4">
-                            <div class="col-lg-5 d-none d-lg-block">
-                                <div class="card rounded-start rounded-0 border-0 h-100 mb-0 overflow-hidden"
-                                    style="background-image: url('{{ asset('client/images/ecommerce/img-2.jpg') }}'); background-size: cover;">
-                                    <div class="bg-overlay bg-primary" style="opacity: 0.90;"></div>
-                                    <div
-                                        class="card-body d-flex align-items-center justify-content-center position-relative">
-                                        <div class="text-center">
-                                            <h6 class="card-title text-white">Chào mừng đến với Toner</h6>
-                                            <p class="text-white-75">Xem tất cả sản phẩm cùng một lúc.</p>
-                                            <a href="{{ route('client.products') }}"
-                                                class="btn btn-light btn-sm btn-hover">Mua ngay <i
-                                                    class="ph-arrow-right align-middle"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="row g-0 g-lg-4">
-                                    <div class="col-lg-6">
-                                        <div class="py-3">
-                                            <ul class="dropdown-menu-list list-unstyled mb-0">
-                                                <li>
-                                                    <p class="mb-2 text-uppercase fs-11 fw-medium text-muted menu-title"
-                                                        data-key="t-checkout-pages">Đơn Hàng</p>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="{{ route('client.cart.index') }}" class="nav-link"
-                                                        data-key="t-shopping-cart">Giỏ hàng</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="{{ route('client.profile') }}#custom-v-pills-order"
-                                                        onclick="setTimeout(() => document.querySelector('[href=\'#custom-v-pills-order\']').click(), 100)"
-                                                        class="nav-link" data-key="t-my-orders-order-history">Đơn hàng
-                                                        của tôi / Lịch sử
-                                                        đơn hàng</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="{{ route('client.profile') }}#custom-v-pills-list"
-                                                        onclick="setTimeout(() => document.querySelector('[href=\'#custom-v-pills-list\']').click(), 100)"
-                                                        class="nav-link" data-key="t-wishlist">Danh
-                                                        sách yêu thích</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="py-3">
-                                            <ul class="dropdown-menu-list list-unstyled mb-0">
-                                                <li>
-                                                    <p
-                                                        class="mb-2 text-uppercase fs-11 fw-medium text-muted menu-title">
-                                                        Khám phá</p>
-                                                </li>
-                                                <li class="nav-item"><a href="{{ route('client.products') }}"
-                                                        class="nav-link">Tất cả sản phẩm</a></li>
-                                                <li class="nav-item"><a href="" class="nav-link">Bộ sưu
-                                                        tập</a></li>
-                                                <li class="nav-item"><a href="" class="nav-link">Voucher của
-                                                        bạn</a></li>
-                                                <li class="nav-item"><a href="" class="nav-link">Blog thời
-                                                        trang</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   
                 </li>
                 <li class="nav-item dropdown dropdown-hover">
                     <a class="nav-link dropdown-toggle" data-key="t-pages" href="#" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        Trang
+                        Hỗ Trợ
                     </a>
                     <ul class="dropdown-menu dropdown-menu-md dropdown-menu-center dropdown-menu-list submenu">
                         <li class="nav-item">
@@ -266,7 +196,7 @@
                 </button>
             </div>
 
-            <div class="dropdown topbar-head-dropdown ms-2 header-item dropdown-hover-end">
+            {{-- <div class="dropdown topbar-head-dropdown ms-2 header-item dropdown-hover-end">
                 <button type="button" class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle text-muted"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="bi bi-sun align-middle fs-20"></i>
@@ -279,7 +209,7 @@
                     <a href="#!" class="dropdown-item" data-mode="auto"><i
                             class="bi bi-moon-stars align-middle me-2"></i> Tự động (mặc định hệ thống)</a>
                 </div>
-            </div>
+            </div> --}}
             <div class="dropdown header-item dropdown-hover-end">
                 @if (Auth::check())
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"

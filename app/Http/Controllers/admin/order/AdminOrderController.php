@@ -59,7 +59,8 @@ class AdminOrderController extends Controller
             })->toArray();
 
             return [
-                'id' => $order->order_code,
+                'id' => $order->id,
+                'order_code' => $order->order_code,
                 'customer_id' => $order->customer_id, // Trả về ID khách hàng
                'customer_name' => $order->customer->user->name ?? 'Không có thông tin', // Lấy tên từ bảng users
                 'product_variant_ids' => $productVariantIds, // Mảng ID biến thể sản phẩm

@@ -72,6 +72,7 @@
                                                 </th>
                                                 <th class="sort" data-sort="id">Mã</th>
                                                 <th class="sort" data-sort="category_name">Tên danh mục</th>
+                                                <th class="sort" data-sort="slug">slug</th>
                                                 <th class="sort" data-sort="action">Hành động</th>
                                             </tr>
                                         </thead>
@@ -87,6 +88,7 @@
                                                     </td>
                                                     <td class="id">{{ $category->id }}</td>
                                                     <td class="category_name">{{ $category->name }}</td>
+                                                    <td class="slug">{{ $category->slug }}</td>
                                                     <td>
                                                         <div class="d-flex gap-2">
                                                             <div class="edit">

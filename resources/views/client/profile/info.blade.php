@@ -61,8 +61,7 @@
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link fs-15" data-bs-toggle="tab" href="#custom-v-pills-setting"
-                                        role="tab" aria-selected="false" tabindex="-1"><i
-                                            class="bi bi-gear align-middle me-1"></i> Cài Đặt</a>
+                                        role="tab" aria-selected="false" tabindex="-1"><i class="bi bi-pencil-square align-middle me-1"></i> Chỉnh Sửa Thông Tin</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link fs-15" href="{{ route('logout') }}"
@@ -90,9 +89,9 @@
                                                 <h6 class="fs-16 text-decoration-underline flex-grow-1 mb-0">Thông tin cá
                                                     nhân
                                                 </h6>
-                                                <div class="flex-shrink-0">
+                                                {{-- <div class="flex-shrink-0">
                                                     <a href="#!" class="badge bg-dark-subtle text-dark">Sửa</a>
-                                                </div>
+                                                </div> --}}
                                             </div>
 
                                             <div class="table-responsive table-card px-1">

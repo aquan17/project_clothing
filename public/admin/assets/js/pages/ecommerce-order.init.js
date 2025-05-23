@@ -30,7 +30,7 @@ if (checkAll) {
 }
 
 var options = {
-    valueNames: ["id", "customer_name", "product_name", "date", "amount", "payment", "status"],
+    valueNames: ["id","order_code", "customer_name", "product_name", "date", "amount", "payment", "status"],
     page: perPage,
     pagination: !0,
     plugins: [ListPagination({ left: 2, right: 2 })]
@@ -57,6 +57,7 @@ xhttp.onload = function() {
         var truncatedProductName = item.product_name.length > 20 ? item.product_name.substring(0, 20) + "..." : item.product_name;
         orderList.add({
             id: '<a href="apps-ecommerce-order-details.html" class="fw-medium link-primary">' + item.id + "</a>",
+             order_code: item.order_code,
             customer_name: item.customer_name,
             product_name: truncatedProductName,
             date: str_dt(item.date),

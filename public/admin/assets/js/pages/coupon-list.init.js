@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const storeUrl = addCouponBtn ? addCouponBtn.getAttribute('data-store-url') : '';
 
     // URLs for CRUD operations
-    const editUrlTemplate = "/coupons/{id}";
-    const deleteUrlTemplate = "/coupons/{id}";
+    const editUrlTemplate = "/admin/coupons/{id}";
+    const deleteUrlTemplate = "/admin/coupons/{id}";
 
     // Helper function to format date for input
     const formatDateTimeLocal = (dateStr) => {
