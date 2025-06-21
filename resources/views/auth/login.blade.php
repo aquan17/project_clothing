@@ -14,7 +14,7 @@
                                     @csrf
                                    <input type="hidden" name="redirect" value="{{ request()->query('redirect', url()->previous()) }}">
                                     <div class="mb-3">
-                                        <label for="emmail" class="form-label">Username</label>
+                                        <label for="email" class="form-label">Email</label>
                                         <input id="email" type="email"
                                             class="form-control @error('email') is-invalid @enderror" name="email"
                                             value="{{ old('email') }}" autocomplete="email" autofocus>
